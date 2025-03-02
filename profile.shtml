@@ -9,6 +9,9 @@
 
 <body>
     <div class="back">
+
+        <a class="header">-Profile-</a>
+
         <div class="footer">
             <a class="des" href="text.shtml" title="Text"><img src="images/folder (1).png">Text</a>
             <a class="des" href="lr.shtml" title="LR"><img src="images/right-arrow.png">LR</a>
