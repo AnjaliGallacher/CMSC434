@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LR</title>
     <link rel="stylesheet" href="style.css" type="text/css">
+    <style>
+        .MM {
+            position: absolute;
+            bottom: 0;
+            right: -60px;
+            padding: 70px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="back">
 
         <a class="header">-LR-</a>
+        <div id="MiddleMiddle" class="tabcontent">
+            <p class="MM">Down Here</p>
+        </div>
 
         <div class="footer">
             <a class="des" href="text.shtml" title="Text"><img src="images/folder (1).png">Text</a>
