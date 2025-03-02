@@ -1,24 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="style.css" type="text/css">
-</head>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<style>
+			.main-container {
+				width: 100vw;
+				height: 100vh;
+				display: grid;
+				place-items: center;
+			}
+			.profile-container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			.username {
+				font-weight: bold;
+			}
+			.modal {
+				visibility: hidden;
+			}
+		</style>
+	</head>
 
-<body>
-    <div class="back">
+	<body>
+		<div class="back">
+			<div class="main-container">
+				<div class="profile-container">
+					<img src="" />
+					<p class="username">User 1</p>
+					<div class="modal">This is a modal</div>
+				</div>
+			</div>
 
-        <a class="header">-Profile-</a>
+			<div class="footer">
+				<a class="des" href="text.shtml" title="Text"
+					><img src="images/folder (1).png" />Text</a
+				>
+				<a class="des" href="lr.shtml" title="LR"
+					><img src="images/right-arrow.png" />LR</a
+				>
+				<a class="des" href="colors.shtml" title="Colors"
+					><img src="images/paint-palette.png" />Colors</a
+				>
+				<a class="des" href="profile.shtml" title="Profile"
+					><img src="images/user.png" />Profile</a
+				>
+				<a class="des" href="choices.shtml" title="Choices"
+					><img src="images/choice.png" />Choices</a
+				>
+				<a class="des" href="todo.shtml" title="ToDo"
+					><img src="images/to-do-list.png" />ToDo</a
+				>
+			</div>
+		</div>
+	</body>
 
-        <div class="footer">
-            <a class="des" href="text.shtml" title="Text"><img src="images/folder (1).png">Text</a>
-            <a class="des" href="lr.shtml" title="LR"><img src="images/right-arrow.png">LR</a>
-            <a class="des" href="colors.shtml" title="Colors"><img src="images/paint-palette.png">Colors</a>
-            <a class="des" href="profile.shtml" title="Profile"><img src="images/user.png">Profile</a>
-            <a class="des" href="choices.shtml" title="Choices"><img src="images/choice.png">Choices</a>
-            <a class="des" href="todo.shtml" title="ToDo"><img src="images/to-do-list.png">ToDo</a>
-        </div>  
-    </div>
-</body>
+	<script type="text/javascript">
+		const image = document.querySelector("img");
+		const modal = document.querySelector(".modal");
+
+		function openModal() {
+			modal.style.visibility = "visible";
+		}
+	</script>
+</html>
