@@ -12,6 +12,14 @@
 
         <a class="header">-Colors-</a>
 
+        <div class="container">
+            <a class="hello">Hello There</a>
+        </div>
+
+        <div class="container2">
+            <a class="hi">Hi Again</a>
+        </div>
+
         <div class="footer">
             <a class="des" href="text.shtml" title="Text"><img src="images/folder (1).png">Text</a>
             <a class="des" href="lr.shtml" title="LR"><img src="images/right-arrow.png">LR</a>

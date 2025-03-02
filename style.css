@@ -6,6 +6,42 @@ body{
     background-color: black;
 }
 
+
+.container{
+    background-color: black;
+    width: 29rem;
+    height: 2rem;
+    margin: 0 auto; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:1rem;
+}
+
+.container2{
+    background-color: yellow;
+    width: 29rem;
+    height: 2rem;
+    margin: 0 auto; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hello{
+    color:yellow;
+    font-size:1.4rem;
+    font-weight: bold;
+}
+
+.hi{
+    color:purple;
+    font-size:1.4rem;
+    font-weight: bold;
+}
+
+
+
 .back {
     background-color: lightpink;
     background-position: center;
