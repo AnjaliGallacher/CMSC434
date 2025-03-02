@@ -8,11 +8,17 @@
 </head>
 
 <body>
+    <div class="back">
+        
+        <a class="des" href="text.shtml" title="Text"><img src="images/folder (1).png"></a>
+        <a class="des" href="lr.shtml" title="LR"><img src="images/right-arrow.png"></a>
+        <a class="des" href="colors.shtml" title="Colors"><img src="images/paint-palette.png"></a>
+        <a class="des" href="profile.shtml" title="Profile"><img src="images/user.png"></a>
+        <a class="des" href="choices.shtml" title="Choices"><img src="images/choice.png"></a>
+        <a class="des" href="todo.shtml" title="ToDo"><img src="images/to-do-list.png"></a>
 
-</body>
-
-<footer>
-    <div>
+        <!--#include virtual= "footer.shtml"-->
         
     </div>
-</footer>
+
+</body>
