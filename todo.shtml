@@ -108,8 +108,6 @@
 		<div class="back">
 			<a class="header">-ToDo-</a>
 
-			<a class="header">-ToDo-</a>
-
 			<div id="myDIV" class="header">
 				<input type="text" id="myInput" placeholder="Add entry..." />
 				<span onclick="newElement()" class="addBtn">Add</span>
