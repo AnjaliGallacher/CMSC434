@@ -11,6 +11,7 @@
 				height: 100%;
 				display: grid;
 				place-items: center;
+				margin-top: -40px;
 			}
 			.profile-container {
 				display: flex;
@@ -52,6 +53,7 @@
 
 	<body>
 		<div class="back">
+			<a class="header">-Profile-</a>
 			<div class="main-container">
 				<div class="profile-container">
 					<img
