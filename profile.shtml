@@ -7,8 +7,8 @@
 		<link rel="stylesheet" href="style.css" type="text/css" />
 		<style>
 			.main-container {
-				width: 100vw;
-				height: 100vh;
+				width: 100%;
+				height: 100%;
 				display: grid;
 				place-items: center;
 			}
@@ -18,11 +18,34 @@
 				align-items: center;
 				justify-content: center;
 			}
+			.user-pfp {
+				width: 100px;
+				height: 100px;
+				display: block;
+				border-radius: 50%;
+				border: 2px solid black;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
 			.username {
 				font-weight: bold;
 			}
 			.modal {
+				position: absolute;
+				top: 10px;
+				right: 10px;
 				visibility: hidden;
+				background-color: lightblue;
+				padding: 20px 40px;
+			}
+			.close-modal {
+				cursor: pointer;
+				float: right;
+				position: absolute;
+				top: 4px;
+				right: 4px;
 			}
 		</style>
 	</head>
@@ -31,9 +54,16 @@
 		<div class="back">
 			<div class="main-container">
 				<div class="profile-container">
-					<img src="" />
-					<p class="username">User 1</p>
-					<div class="modal">This is a modal</div>
+					<img
+						class="user-pfp"
+						src="images/pfp.jpg"
+						onClick="openModal()"
+					/>
+					<p class="username">Mr. Smile</p>
+				</div>
+				<div class="modal">
+					<div class="close-modal" onclick="closeModal()">X</div>
+					Hello There!
 				</div>
 			</div>
 
@@ -47,7 +77,7 @@
 				<a class="des" href="colors.shtml" title="Colors"
 					><img src="images/paint-palette.png" />Colors</a
 				>
-				<a class="des" href="profile.shtml" title="Profile"
+				<a class="des selected" href="profile.shtml" title="Profile"
 					><img src="images/user.png" />Profile</a
 				>
 				<a class="des" href="choices.shtml" title="Choices"
@@ -66,6 +96,12 @@
 
 		function openModal() {
 			modal.style.visibility = "visible";
+			console.log("Modal opened");
+		}
+
+		function closeModal() {
+			modal.style.visibility = "hidden";
+			console.log("Modal closed");
 		}
 	</script>
 </html>
