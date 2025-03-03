@@ -6,23 +6,19 @@
 		<title>Choices</title>
 		<link rel="stylesheet" href="style.css" type="text/css" />
 		<style>
-				h1 {
-				text-align: center;
-				margin-bottom: 30px;
-				}
 
 				.choice-container {
 				margin-bottom: 20px;
 				}
 
 				button {
-				background-color: #E0E0E0; /* Light gray button */
-				color: #333; /* Dark gray text */
+				background-color: white;
+				color: darkgray;
 				padding: 10px 20px;
 				border: none;
-				border-radius: 5px; /* Rounded corners */
+				border-radius: 5px;
 				display: block;
-				margin: 20px auto; /* Center button */
+				margin: 20px auto;
 				}
 
 				.button-container {
@@ -45,7 +41,7 @@
 				}
 
 				.content-area {
-				flex-grow: 1; /* Allow content area to expand */
+				flex-grow: 1;
 				}
 		</style>
 	</head>
@@ -95,5 +91,12 @@
 				>
 			</div>
 		</div>
+		<script>
+			function displayChoices() {
+			  let camera1 = document.querySelector('input[name="camera1"]:checked').value;
+			  let camera2 = document.getElementById("camera2").value;
+			  alert(`Camera 1: ${camera1}, Camera 2: ${camera2}`);
+			}
+		</script>
 	</body>
 </html>
