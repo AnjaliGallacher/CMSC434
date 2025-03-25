@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<style>
+			.main-container {
+				width: 100%;
+				height: 100%;
+				display: grid;
+				place-items: center;
+				margin-top: -40px;
+			}
+			.profile-container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			.user-pfp {
+				width: 100px;
+				height: 100px;
+				display: block;
+				border-radius: 50%;
+				border: 2px solid black;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+			.username {
+				font-weight: bold;
+			}
+			.modal {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				visibility: hidden;
+				background-color: lightblue;
+				padding: 20px 40px;
+			}
+			.close-modal {
+				cursor: pointer;
+				float: right;
+				position: absolute;
+				top: 4px;
+				right: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="back">
+			<a class="header">-Profile-</a>
+			<div class="main-container">
+				<div class="profile-container">
+					<img
+						class="user-pfp"
+						src="images/pfp.jpg"
+						onClick="openModal()"
+					/>
+					<p class="username">Mr. Smile</p>
+				</div>
+				<div class="modal">
+					<div class="close-modal" onclick="closeModal()">X</div>
+					Hello There!
+				</div>
+			</div>
+
+			<div class="footer">
+				<a class="des" href="text.shtml" title="Text"
+					><img src="images/folder (1).png" />Text</a
+				>
+				<a class="des" href="lr.shtml" title="LR"
+					><img src="images/right-arrow.png" />LR</a
+				>
+				<a class="des" href="colors.shtml" title="Colors"
+					><img src="images/paint-palette.png" />Colors</a
+				>
+				<a class="des selected" href="profile.shtml" title="Profile"
+					><img src="images/user.png" />Profile</a
+				>
+				<a class="des" href="choices.shtml" title="Choices"
+					><img src="images/choice.png" />Choices</a
+				>
+				<a class="des" href="todo.shtml" title="ToDo"
+					><img src="images/to-do-list.png" />ToDo</a
+				>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		const image = document.querySelector("img");
+		const modal = document.querySelector(".modal");
+
+		function openModal() {
+			modal.style.visibility = "visible";
+			console.log("Modal opened");
+		}
+
+		function closeModal() {
+			modal.style.visibility = "hidden";
+			console.log("Modal closed");
+		}
+	</script>
+</html>

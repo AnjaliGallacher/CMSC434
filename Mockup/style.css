@@ -1,0 +1,96 @@
+html {
+	font-size: 14px;
+}
+
+body {
+	background-color: black;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+}
+
+.container {
+	background-color: black;
+	width: 29rem;
+	height: 2rem;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.container2 {
+	background-color: yellow;
+	width: 29rem;
+	height: 2rem;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hello {
+	color: yellow;
+	font-size: 1.4rem;
+	font-weight: bold;
+}
+
+.hi {
+	color: purple;
+	font-size: 1.4rem;
+	font-weight: bold;
+}
+
+.back {
+	background-color: lightpink;
+	background-position: center;
+	width: 30rem;
+	height: 47rem;
+	margin: auto;
+	margin-top: 6rem;
+	position: relative;
+}
+
+.footer {
+	background-color: blue;
+	width: 30rem;
+	height: 5rem;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: center; 
+	align-items: center;
+	z-index: 10; 
+}
+
+.selected {
+	background-color: rgba(255, 255, 0, 0.5);
+}
+
+.des {
+	height: 100%;
+	display: grid;
+	place-items: center;
+	color: white;
+	margin: 0 0.5rem;
+	position: relative;
+	text-decoration: none;
+	text-align: center;
+}
+
+.des img {
+	width: 3rem;
+	height: auto;
+	margin: 0 0.5rem;
+	position: relative;
+	z-index: 11;
+}
+
+.header {
+	font-size: 2.5rem;
+	margin-top: 2rem;
+	margin-left: 1rem;
+}

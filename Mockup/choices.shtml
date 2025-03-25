@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Choices</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<style>
+
+				.choice-container {
+				margin-bottom: 20px;
+				}
+
+				button {
+				background-color: white;
+				color: darkgray;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				display: block;
+				margin: 20px auto;
+				}
+
+				.button-container {
+				text-align: center;
+				}
+
+				select {
+				padding: 5px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				}
+
+				input[type="radio"] {
+				margin-right: 5px;
+				}
+
+				.radio-label {
+				display: inline-block;
+				margin-right: 15px;
+				}
+
+				.content-area {
+				flex-grow: 1;
+				}
+		</style>
+	</head>
+
+	<body>
+		<div class="back">
+			<a class="header">-Choices-</a>
+			<div class="content-area">
+				<div class="choice-container">
+				  <p>Camera Type #1:</p>
+				  <input type="radio" id="dslr1" name="camera1" value="dSLR">
+				  <label for="dslr1" class="radio-label">dSLR</label><br>
+				  <input type="radio" id="mirrorless1" name="camera1" value="Mirrorless">
+				  <label for="mirrorless1" class="radio-label">Mirrorless</label>
+				</div>
+			  
+				<div class="choice-container">
+				  <p>Camera Type #2:</p>
+				  <select id="camera2">
+					<option value="dSLR">dSLR</option>
+				  </select>
+				</div>
+			  
+				<div class="button-container">
+				  <button onclick="displayChoices()">Print something based on above choices...</button>
+				</div>
+			  </div>
+			<script src="script.js"></script>
+			<div class="footer">
+				<a class="des" href="text.shtml" title="Text"
+					><img src="images/folder (1).png" />Text</a
+				>
+				<a class="des" href="lr.shtml" title="LR"
+					><img src="images/right-arrow.png" />LR</a
+				>
+				<a class="des" href="colors.shtml" title="Colors"
+					><img src="images/paint-palette.png" />Colors</a
+				>
+				<a class="des" href="profile.shtml" title="Profile"
+					><img src="images/user.png" />Profile</a
+				>
+				<a class="des selected" href="choices.shtml" title="Choices"
+					><img src="images/choice.png" />Choices</a
+				>
+				<a class="des" href="todo.shtml" title="ToDo"
+					><img src="images/to-do-list.png" />ToDo</a
+				>
+			</div>
+		</div>
+		<script>
+			function displayChoices() {
+			  let camera1 = document.querySelector('input[name="camera1"]:checked').value;
+			  let camera2 = document.getElementById("camera2").value;
+			  alert(`Camera 1: ${camera1}, Camera 2: ${camera2}`);
+			}
+		</script>
+	</body>
+</html>
