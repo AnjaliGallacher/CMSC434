@@ -337,7 +337,7 @@
 			<!-- Header -->
 			<div class="header">
 				<div class="menu-icon" id="menu-toggle">☰</div>
-				<div class="notification-icon" title="Notifications"></div>
+				<div class="notification-icon" title="Notifications">?</div>
 			</div>
 
 			<!-- Side Menu (Initially Hidden) -->
@@ -393,25 +393,25 @@
 						<div class="stats-page">
 							<div class="stat-box">
 								<div class="stat-value">4 / 5</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Trophy -->
 								<div class="stat-label">Goals Today</div>
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">2150</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Fire -->
 								<div class="stat-label">Calories Burned</div>
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">7h 45m</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Bed -->
 								<div class="stat-label">Sleep</div>
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">4.5 Miles</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Running -->
 								<div class="stat-label">Run Distance</div>
 							</div>
@@ -421,13 +421,13 @@
 						<div class="stats-page">
 							<div class="stat-box">
 								<div class="stat-value">12,830</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Footprints -->
 								<div class="stat-label">Steps</div>
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">7 / 8</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Droplet -->
 								<div class="stat-label">Water Intake</div>
 							</div>
@@ -439,7 +439,7 @@
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">75 Min</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Flexed Biceps -->
 								<div class="stat-label">Strength Training</div>
 							</div>
@@ -449,13 +449,13 @@
 						<div class="stats-page">
 							<div class="stat-box">
 								<div class="stat-value">15</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Medal -->
 								<div class="stat-label">Badges Earned</div>
 							</div>
 							<div class="stat-box">
 								<div class="stat-value">21 Days</div>
-								<div class="stat-icon"></div>
+								<div class="stat-icon">?</div>
 								<!-- Calendar -->
 								<div class="stat-label">Activity Streak</div>
 							</div>
