@@ -1,109 +1,611 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Profile</title>
-		<link rel="stylesheet" href="style.css" type="text/css" />
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
+		<title>Modern Profile</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
-			.main-container {
-				width: 100%;
-				height: 100%;
-				display: grid;
-				place-items: center;
-				margin-top: -40px;
+			:root {
+				--primary-color: #007aff; /* iOS Blue - vibrant and modern */
+				--primary-light: #e6f2ff;
+				--background-color: #ffffff;
+				--card-background: #f8f9fa; /* Slightly off-white for cards */
+				--text-primary: #1c1c1e; /* Near black */
+				--text-secondary: #8a8a8e; /* Medium gray */
+				--text-tertiary: #c7c7cc; /* Lighter gray */
+				--border-color: #e5e5ea;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
 			}
-			.profile-container {
+
+			/* Basic Reset & Body */
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				height: 100%;
+				background-color: #e9e9ef; /* Background outside the phone */
+				-webkit-font-smoothing: antialiased; /* Smoother fonts on Mac/iOS */
+				-moz-osx-font-smoothing: grayscale;
+			}
+			* {
+				box-sizing: border-box;
+			}
+
+			/* Phone Container Simulation */
+			.phone-container {
+				width: 375px;
+				height: 667px;
+				border: 1px solid var(--border-color);
+				margin: 30px auto; /* More space around */
+				background-color: var(--background-color);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px; /* Rounded corners for modern feel */
+				box-shadow: 0 10px 30px var(--shadow-strong-color);
+			}
+
+			/* Header */
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 18px 20px; /* Slightly more padding */
+				/* border-bottom: 1px solid var(--border-color); removed for cleaner look */
+				flex-shrink: 0;
+				position: relative; /* For potential absolute positioning within */
+				z-index: 10; /* Above main content */
+			}
+			.menu-icon,
+			.notification-icon {
+				font-size: 22px; /* Slightly smaller/refined */
+				color: var(--text-primary);
+				cursor: pointer;
+				padding: 5px; /* Easier touch target */
+				transition: color 0.2s ease;
+			}
+			.menu-icon:hover,
+			.notification-icon:hover {
+				color: var(--primary-color);
+			}
+			/* Notification dot (optional) */
+			.notification-icon::after {
+				content: "";
+				display: block;
+				width: 8px;
+				height: 8px;
+				background-color: var(--primary-color);
+				border-radius: 50%;
+				position: absolute;
+				top: 18px;
+				right: 18px;
+				border: 1px solid var(--background-color);
+			}
+
+			/* Side Menu (Hamburger) */
+			.side-menu {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 75%; /* Slightly wider */
+				max-width: 280px;
+				height: 100%;
+				background-color: #ffffff; /* Use white for clean overlay */
+				border-right: 1px solid var(--border-color);
+				padding: 60px 25px 30px 25px;
+				transform: translateX(-100%);
+				transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother ease */
+				z-index: 100;
+				box-shadow: 5px 0 15px var(--shadow-strong-color);
+			}
+			.side-menu.open {
+				transform: translateX(0);
+			}
+			.side-menu a {
+				display: block;
+				padding: 18px 0; /* More vertical space */
+				text-decoration: none;
+				color: var(--text-primary);
+				font-size: 18px;
+				font-weight: 500; /* Medium weight */
+				border-bottom: 1px solid var(--border-color);
+				transition: color 0.2s ease;
+			}
+			.side-menu a:last-child {
+				border-bottom: none;
+			}
+			.side-menu a:hover,
+			.side-menu a.active {
+				/* Add active class possibility */
+				color: var(--primary-color);
+			}
+
+			/* Main Content Area (Profile + Space) */
+			.main-content {
+				flex-grow: 1;
+				overflow-y: auto;
+				padding: 0 20px 30px 20px; /* Add side padding too */
+				/* Hide scrollbar visual */
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE and Edge */
+			}
+			.main-content::-webkit-scrollbar {
+				display: none; /* Chrome, Safari, Opera */
+			}
+
+			/* Profile Section */
+			.profile-section {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				justify-content: center;
+				padding-top: 20px; /* Adjusted from header padding */
+				padding-bottom: 50px; /* Even more spacing */
+				text-align: center;
 			}
-			.user-pfp {
-				width: 100px;
-				height: 100px;
-				display: block;
+			.profile-picture {
+				width: 140px; /* Slightly smaller */
+				height: 140px;
 				border-radius: 50%;
-				border: 2px solid black;
-
-				&:hover {
-					cursor: pointer;
-				}
+				/* Subtle gradient background */
+				background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+				margin-bottom: 20px; /* More space */
+				position: relative;
+				box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2); /* Subtle blue shadow */
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			/* Simple Placeholder Icon instead of drawn face */
+			.profile-picture::before {
+				content: "👤"; /* User icon */
+				font-size: 60px;
+				color: rgba(255, 255, 255, 0.8);
+				opacity: 0.8;
 			}
 			.username {
+				font-size: 24px; /* Larger */
+				font-weight: 600; /* Semibold */
+				color: var(--text-primary);
+				margin-top: 5px; /* Add some space if needed */
+			}
+
+			/* Fixed Bottom Section */
+			.bottom-fixed-section {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: var(--background-color);
+				/* Subtle top shadow to indicate layering */
+				box-shadow: 0 -5px 15px var(--shadow-color);
+				padding-top: 20px; /* Space above the badges */
+				border-top-left-radius: 20px; /* Match container rounding */
+				border-top-right-radius: 20px;
+				flex-shrink: 0;
+			}
+
+			/* Stats Scroller Wrapper */
+			.stats-scroller-wrapper {
+				position: relative;
+				margin: 0 20px; /* Consistent side margins */
+			}
+
+			/* Arrows for Scrolling */
+			.scroll-arrow {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				background-color: rgba(
+					255,
+					255,
+					255,
+					0.8
+				); /* Semi-transparent white */
+				backdrop-filter: blur(5px); /* Glass effect */
+				color: var(--text-secondary);
+				border: 1px solid var(--border-color);
+				border-radius: 50%;
+				width: 32px;
+				height: 32px;
+				font-size: 16px;
 				font-weight: bold;
-			}
-			.modal {
-				position: absolute;
-				top: 10px;
-				right: 10px;
-				visibility: hidden;
-				background-color: lightblue;
-				padding: 20px 40px;
-			}
-			.close-modal {
+				line-height: 30px; /* Center arrow */
+				text-align: center;
 				cursor: pointer;
-				float: right;
-				position: absolute;
-				top: 4px;
-				right: 4px;
+				z-index: 10;
+				display: none; /* Hidden by default, shown via JS */
+				transition: all 0.2s ease;
+				box-shadow: 0 2px 5px var(--shadow-color);
+			}
+			.scroll-arrow:hover {
+				background-color: rgba(255, 255, 255, 1);
+				color: var(--primary-color);
+				border-color: var(--primary-light);
+			}
+			.scroll-arrow.left {
+				left: -16px; /* Overlap slightly */
+			}
+			.scroll-arrow.right {
+				right: -16px; /* Overlap slightly */
+			}
+			.stats-scroller-wrapper.show-arrows .scroll-arrow {
+				display: block;
+			}
+
+			/* Actual Scrolling Container */
+			.stats-scroller {
+				display: flex;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				padding-bottom: 15px; /* Space below cards */
+				margin-bottom: 15px; /* Space between scroller and dots */
+				/* Hide scrollbar visual */
+				scrollbar-width: none;
+				-ms-overflow-style: none;
+			}
+			.stats-scroller::-webkit-scrollbar {
+				display: none;
+			}
+
+			/* Individual Page/Screen within the Scroller */
+			.stats-page {
+				width: 100%;
+				flex-shrink: 0;
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 15px; /* Space between grid items */
+				padding: 0 2px; /* Tiny padding to prevent edge clipping */
+				scroll-snap-align: center; /* Center snap */
+			}
+
+			/* Stat Box Styling */
+			.stat-box {
+				height: 110px; /* Slightly taller */
+				border: none; /* Remove border */
+				border-radius: 12px; /* More rounded */
+				display: flex;
+				flex-direction: column;
+				justify-content: center; /* Vertically center content */
+				align-items: center;
+				text-align: center;
+				padding: 15px 10px; /* Adjusted padding */
+				background-color: var(--card-background);
+				box-shadow: 0 3px 8px var(--shadow-color); /* Subtle shadow */
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			.stat-box:hover {
+				transform: translateY(-3px); /* Slight lift on hover */
+				box-shadow: 0 6px 12px var(--shadow-strong-color);
+			}
+
+			.stat-value {
+				font-size: 18px;
+				font-weight: 600; /* Semibold */
+				color: var(--text-primary);
+				margin-bottom: 4px; /* Space between value and icon */
+			}
+			.stat-icon {
+				font-size: 26px; /* Larger icons */
+				margin-bottom: 6px; /* Space between icon and label */
+				color: var(--primary-color); /* Use accent color */
+				line-height: 1; /* Ensure icon alignment */
+			}
+			.stat-label {
+				font-size: 13px; /* Slightly smaller */
+				color: var(--text-secondary);
+				font-weight: 500; /* Medium weight */
+			}
+
+			/* Pagination Dots */
+			.pagination-dots {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-bottom: 20px; /* Bottom padding for the whole section */
+			}
+			.dot {
+				width: 7px; /* Slightly smaller */
+				height: 7px;
+				background-color: var(
+					--text-tertiary
+				); /* Lighter inactive color */
+				border-radius: 50%;
+				margin: 0 5px; /* More space between dots */
+				transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+			}
+			.dot.active {
+				background-color: var(--primary-color); /* Active color */
+				transform: scale(1.2); /* Slightly larger active dot */
 			}
 		</style>
 	</head>
-
 	<body>
-		<div class="back">
-			<a class="header">-Profile-</a>
-			<div class="main-container">
-				<div class="profile-container">
-					<img
-						class="user-pfp"
-						src="images/pfp.jpg"
-						onClick="openModal()"
-					/>
-					<p class="username">Mr. Smile</p>
-				</div>
-				<div class="modal">
-					<div class="close-modal" onclick="closeModal()">X</div>
-					Hello There!
-				</div>
+		<div class="phone-container">
+			<!-- Header -->
+			<div class="header">
+				<div class="menu-icon" id="menu-toggle">☰</div>
+				<div class="notification-icon" title="Notifications"></div>
 			</div>
 
-			<div class="footer">
-				<a class="des" href="text.shtml" title="Text"
-					><img src="images/folder (1).png" />Text</a
-				>
-				<a class="des" href="lr.shtml" title="LR"
-					><img src="images/right-arrow.png" />LR</a
-				>
-				<a class="des" href="colors.shtml" title="Colors"
-					><img src="images/paint-palette.png" />Colors</a
-				>
-				<a class="des selected" href="profile.shtml" title="Profile"
-					><img src="images/user.png" />Profile</a
-				>
-				<a class="des" href="choices.shtml" title="Choices"
-					><img src="images/choice.png" />Choices</a
-				>
-				<a class="des" href="todo.shtml" title="ToDo"
-					><img src="images/to-do-list.png" />ToDo</a
-				>
+			<!-- Side Menu (Initially Hidden) -->
+			<div class="side-menu" id="sideMenu">
+				<a href="#" class="active">Home</a>
+				<!-- Example active link -->
+				<a href="#">Profile</a>
+				<a href="#">Activity Feed</a>
+				<a href="#">Friends</a>
+				<a href="#">Settings</a>
+				<a href="#">Logout</a>
 			</div>
+
+			<!-- Main Scrollable Content Area -->
+			<div class="main-content">
+				<!-- Profile Section -->
+				<div class="profile-section">
+					<div class="profile-picture">
+						<!-- Placeholder via ::before pseudo-element -->
+					</div>
+					<div class="username">Alex Johnson</div>
+				</div>
+				<!-- Add more content here if needed -->
+				<!-- Example: Add a small bio -->
+				<p
+					style="
+						text-align: center;
+						color: var(--text-secondary);
+						margin-top: -30px;
+						margin-bottom: 30px;
+						padding: 0 20px;
+					"
+				>
+					Fitness enthusiast | Daily goals tracker | Lover of hiking
+				</p>
+			</div>
+
+			<!-- Fixed Bottom Section -->
+			<div class="bottom-fixed-section">
+				<div class="stats-scroller-wrapper" id="scrollerWrapper">
+					<!-- Arrows -->
+					<button
+						class="scroll-arrow left"
+						id="scrollLeftBtn"
+						title="Previous Stats"
+					>
+						<
+					</button>
+
+					<!-- Stats Scroller -->
+					<div class="stats-scroller" id="statsScroller">
+						<!-- Page 1: Primary -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">4 / 5</div>
+								<div class="stat-icon"></div>
+								<!-- Trophy -->
+								<div class="stat-label">Goals Today</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">2150</div>
+								<div class="stat-icon"></div>
+								<!-- Fire -->
+								<div class="stat-label">Calories Burned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7h 45m</div>
+								<div class="stat-icon"></div>
+								<!-- Bed -->
+								<div class="stat-label">Sleep</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">4.5 Miles</div>
+								<div class="stat-icon"></div>
+								<!-- Running -->
+								<div class="stat-label">Run Distance</div>
+							</div>
+						</div>
+
+						<!-- Page 2: Activity -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">12,830</div>
+								<div class="stat-icon"></div>
+								<!-- Footprints -->
+								<div class="stat-label">Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7 / 8</div>
+								<div class="stat-icon"></div>
+								<!-- Droplet -->
+								<div class="stat-label">Water Intake</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">68 bpm</div>
+								<div class="stat-icon">❤️</div>
+								<!-- Heart -->
+								<div class="stat-label">Resting HR</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">75 Min</div>
+								<div class="stat-icon"></div>
+								<!-- Flexed Biceps -->
+								<div class="stat-label">Strength Training</div>
+							</div>
+						</div>
+
+						<!-- Page 3: Achievements -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">15</div>
+								<div class="stat-icon"></div>
+								<!-- Medal -->
+								<div class="stat-label">Badges Earned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">21 Days</div>
+								<div class="stat-icon"></div>
+								<!-- Calendar -->
+								<div class="stat-label">Activity Streak</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">Top 10%</div>
+								<div class="stat-icon">🏆</div>
+								<!-- Trophy Cup -->
+								<div class="stat-label">Weekly Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">5K PR</div>
+								<div class="stat-icon">⏱️</div>
+								<!-- Stopwatch -->
+								<div class="stat-label">24:15</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Stats Scroller -->
+
+					<button
+						class="scroll-arrow right"
+						id="scrollRightBtn"
+						title="Next Stats"
+					>
+						>
+					</button>
+				</div>
+				<!-- End Scroller Wrapper -->
+
+				<!-- Pagination Dots -->
+				<div class="pagination-dots" id="paginationDots">
+					<!-- Dots generated by JS -->
+				</div>
+			</div>
+			<!-- End Fixed Bottom Section -->
 		</div>
+		<!-- End Phone Container -->
+
+		<script>
+			// --- Hamburger Menu Toggle ---
+			const menuToggle = document.getElementById("menu-toggle");
+			const sideMenu = document.getElementById("sideMenu");
+
+			menuToggle.addEventListener("click", (event) => {
+				event.stopPropagation();
+				sideMenu.classList.toggle("open");
+			});
+
+			document.addEventListener("click", (event) => {
+				if (
+					sideMenu.classList.contains("open") &&
+					!sideMenu.contains(event.target) &&
+					event.target !== menuToggle
+				) {
+					sideMenu.classList.remove("open");
+				}
+			});
+
+			// --- Stats Scroller & Pagination ---
+			const scroller = document.getElementById("statsScroller");
+			const paginationDotsContainer =
+				document.getElementById("paginationDots");
+			const pages = scroller.querySelectorAll(".stats-page");
+			const scrollWrapper = document.getElementById("scrollerWrapper");
+			const scrollLeftBtn = document.getElementById("scrollLeftBtn");
+			const scrollRightBtn = document.getElementById("scrollRightBtn");
+			const numPages = pages.length;
+			let currentPage = 0;
+
+			// Generate Pagination Dots
+			for (let i = 0; i < numPages; i++) {
+				const dot = document.createElement("span");
+				dot.classList.add("dot");
+				if (i === 0) dot.classList.add("active");
+				dot.dataset.index = i;
+				paginationDotsContainer.appendChild(dot);
+			}
+			const dots = paginationDotsContainer.querySelectorAll(".dot");
+
+			function updatePagination(activeIndex) {
+				dots.forEach((dot, index) => {
+					dot.classList.toggle("active", index === activeIndex);
+				});
+				currentPage = activeIndex;
+				updateArrowVisibility();
+			}
+
+			function updateArrowVisibility() {
+				if (numPages <= 1) {
+					scrollWrapper.classList.remove("show-arrows");
+					return;
+				}
+				scrollWrapper.classList.add("show-arrows");
+				scrollLeftBtn.style.display =
+					currentPage > 0 ? "block" : "none";
+				scrollRightBtn.style.display =
+					currentPage < numPages - 1 ? "block" : "none";
+			}
+
+			// Debounce function to limit scroll event handler frequency
+			function debounce(func, wait) {
+				let timeout;
+				return function executedFunction(...args) {
+					const later = () => {
+						clearTimeout(timeout);
+						func(...args);
+					};
+					clearTimeout(timeout);
+					timeout = setTimeout(later, wait);
+				};
+			}
+
+			// Update dots on scroll (debounced)
+			const handleScroll = debounce(() => {
+				const pageWidth = scroller.offsetWidth;
+				// Use Math.round for better snapping with scroll-snap-align: center
+				const activeIndex = Math.round(scroller.scrollLeft / pageWidth);
+
+				if (
+					activeIndex >= 0 &&
+					activeIndex < numPages &&
+					activeIndex !== currentPage
+				) {
+					updatePagination(activeIndex);
+				} else {
+					// Ensure arrows update even if page index doesn't change (e.g., during scroll animation)
+					updateArrowVisibility();
+				}
+			}, 50); // Adjust debounce wait time (ms) as needed
+
+			scroller.addEventListener("scroll", handleScroll);
+
+			function scrollPage(direction) {
+				const pageWidth = scroller.offsetWidth;
+				let targetPage = currentPage + direction;
+				targetPage = Math.max(0, Math.min(targetPage, numPages - 1));
+
+				scroller.scrollTo({
+					left: targetPage * pageWidth,
+					behavior: "smooth",
+				});
+				// Manually update pagination after starting scroll for faster feedback
+				// updatePagination(targetPage); // Let scroll event handle it for consistency with snapping
+			}
+
+			scrollLeftBtn.addEventListener("click", () => scrollPage(-1));
+			scrollRightBtn.addEventListener("click", () => scrollPage(1));
+
+			// Initial setup
+			updateArrowVisibility(); // Check arrow visibility on load
+		</script>
 	</body>
-
-	<script type="text/javascript">
-		const image = document.querySelector("img");
-		const modal = document.querySelector(".modal");
-
-		function openModal() {
-			modal.style.visibility = "visible";
-			console.log("Modal opened");
-		}
-
-		function closeModal() {
-			modal.style.visibility = "hidden";
-			console.log("Modal closed");
-		}
-	</script>
 </html>
