@@ -17,7 +17,7 @@
 			:root {
 				--primary-color: #007aff; /* iOS Blue - vibrant and modern */
 				--primary-light: #e6f2ff;
-				--background-color: #ffffff;
+				--background-color: #f2f2f7;
 				--card-background: #f8f9fa; /* Slightly off-white for cards */
 				--text-primary: #1c1c1e; /* Near black */
 				--text-secondary: #8a8a8e; /* Medium gray */
@@ -170,9 +170,8 @@
 			}
 			/* Simple Placeholder Icon instead of drawn face */
 			.profile-picture::before {
-				content: "👤"; /* User icon */
+				content: "?"; /* User icon */
 				font-size: 60px;
-				color: rgba(255, 255, 255, 0.8);
 				opacity: 0.8;
 			}
 			.username {
@@ -190,7 +189,6 @@
 				right: 0;
 				background-color: var(--background-color);
 				/* Subtle top shadow to indicate layering */
-				box-shadow: 0 -5px 15px var(--shadow-color);
 				padding-top: 20px; /* Space above the badges */
 				border-top-left-radius: 20px; /* Match container rounding */
 				border-top-right-radius: 20px;

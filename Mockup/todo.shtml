@@ -349,7 +349,7 @@
 			<!-- Header -->
 			<div class="header">
 				<div class="menu-icon" id="menu-toggle" title="Menu">☰</div>
-				<div class="notification-icon" title="Notifications"></div>
+				<div class="notification-icon" title="Notifications">?</div>
 			</div>
 
 			<!-- Side Menu (Initially Hidden - reuse from previous example) -->
