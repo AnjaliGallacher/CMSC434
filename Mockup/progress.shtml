@@ -7,128 +7,34 @@
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
 		<title>Progress & Stats - iPad View</title>
-		<!-- New Page Title -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
+		<link rel="stylesheet" href="shared-styles.css" />
 		<!-- Include Chart.js library -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+		<!-- Date Adapter -->
+
 		<style>
-			/* --- Root Variables (Consistent - Copied from log-exercise) --- */
-			:root {
-				--primary-color: #007aff;
-				--primary-light: #e6f2ff;
-				--accent-purple: #af52de;
-				--accent-teal: #5ac8fa;
-				--accent-orange: #ff9500;
-				--accent-green: #34c759;
-				--accent-red: #ff3b30;
-				--background-color: #f2f2f7;
-				--surface-color: #ffffff;
-				--surface-secondary-color: #e5e5ea;
-				--bottom-nav-background: rgba(248, 248, 248, 0.92);
-				--text-primary: #000000;
-				--text-secondary: #3c3c43;
-				--text-tertiary: #8e8e93;
-				--text-link: var(--primary-color);
-				--text-on-primary: #ffffff;
-				--border-color: #d1d1d6;
-				--shadow-color: rgba(0, 0, 0, 0.05);
-				--shadow-strong-color: rgba(0, 0, 0, 0.1);
-				--nav-height: 70px;
-				--content-padding: 24px;
-				--card-border-radius: 16px;
-				--chart-track-color: #ebebf0;
-			}
-
-			body,
-			html {
-				margin: 0;
-				padding: 0;
-				font-family: "Inter", -apple-system, BlinkMacSystemFont,
-					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-				height: 100%;
-				background-color: #dcdce1;
-				-webkit-font-smoothing: antialiased;
-				-moz-osx-font-smoothing: grayscale;
-			}
-			* {
-				box-sizing: border-box;
-			}
-
-			/* --- iPad Container Simulation --- */
-			.ipad-container {
-				width: 768px;
-				height: 1024px;
-				border: 1px solid var(--border-color);
-				margin: 40px auto;
-				background-color: var(--background-color);
-				display: flex;
-				flex-direction: column;
-				position: relative;
-				overflow: hidden;
-				border-radius: 20px;
-				box-shadow: 0 15px 40px var(--shadow-strong-color);
-			}
-
-			/* Header */
-			.header {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 20px var(--content-padding) 15px var(--content-padding);
-				flex-shrink: 0;
-				position: relative;
-				z-index: 10;
-				background-color: var(--surface-color); /* White header */
-				border-bottom: 1px solid var(--border-color);
-			}
-			.header-title {
-				font-size: 20px;
-				font-weight: 600;
-				color: var(--text-primary);
-				flex-grow: 1; /* Allow title to take space */
-				text-align: center; /* Center title */
-			}
-			.header-action {
-				/* Placeholder for potential right-side actions */
-				width: 50px; /* Balance the title */
-			}
-
-			/* Main Content Area */
-			.main-content {
-				flex-grow: 1;
-				overflow-y: auto;
-				padding: var(--content-padding);
-				padding-top: 30px;
-				padding-bottom: calc(
-					var(--nav-height) + var(--content-padding)
-				);
-				scrollbar-width: thin;
-				scrollbar-color: var(--border-color) transparent;
-			}
-			.main-content::-webkit-scrollbar {
-				width: 6px;
-			}
-			.main-content::-webkit-scrollbar-thumb {
-				background-color: var(--border-color);
-				border-radius: 3px;
-			}
-			.main-content::-webkit-scrollbar-track {
-				background: transparent;
-			}
-
-			/* Section Styling */
+			/* Page-specific styles */
 			.progress-section {
 				background-color: var(--surface-color);
 				border-radius: var(--card-border-radius);
 				margin-bottom: 25px;
 				padding: var(--content-padding);
 				box-shadow: 0 5px 15px var(--shadow-color);
+				border: 1px solid transparent;
 			}
+			@media (prefers-color-scheme: light) {
+				.progress-section {
+					border-color: var(--border-color);
+				}
+			}
+
 			.section-title {
 				font-size: 18px;
 				font-weight: 600;
@@ -142,31 +48,40 @@
 			}
 			.section-title-icon {
 				font-size: 20px;
-				margin-right: 10px;
+				margin-right: 10px; /* Color set per section */
 			}
 			.section-controls {
 				font-size: 14px;
+				display: flex;
+				gap: 10px;
+				align-items: center;
 			}
 			.section-controls select,
 			.section-controls button {
-				margin-left: 10px;
-				padding: 5px 10px;
+				padding: 6px 12px;
 				font-size: 13px;
 				border: 1px solid var(--border-color);
 				border-radius: 8px;
 				background-color: var(--surface-secondary-color);
+				color: var(--text-link);
 				cursor: pointer;
 			}
+			.section-controls button {
+				background-color: var(--surface-secondary-color);
+				color: var(--text-link);
+				font-weight: 500;
+			}
+			.section-controls button:hover {
+				background-color: var(--border-color);
+			}
 
-			/* Chart Container Styling */
 			.chart-container {
 				position: relative;
-				height: 250px; /* Adjust height as needed */
+				height: 280px;
 				width: 100%;
 				margin-bottom: 20px;
 			}
 
-			/* Summary Stats Grid */
 			.summary-stats-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -192,7 +107,7 @@
 				letter-spacing: 0.3px;
 			}
 
-			/* Achievements List (Example) */
+			/* Achievements List */
 			.achievements-list {
 				list-style: none;
 				padding: 0;
@@ -202,7 +117,7 @@
 				display: flex;
 				align-items: center;
 				padding: 12px 0;
-				border-bottom: 1px solid var(--background-color);
+				border-bottom: 1px solid var(--surface-secondary-color);
 			}
 			.achievement-item:last-child {
 				border-bottom: none;
@@ -210,7 +125,7 @@
 			.achievement-icon {
 				font-size: 28px;
 				margin-right: 15px;
-				flex-shrink: 0;
+				flex-shrink: 0; /* Color set per achievement */
 			}
 			.achievement-details {
 				flex-grow: 1;
@@ -225,62 +140,16 @@
 				color: var(--text-secondary);
 				margin-top: 3px;
 			}
-
-			/* --- Bottom Navigation Bar (Consistent - Copied from log-exercise) --- */
-			.bottom-nav {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				height: var(--nav-height);
-				background-color: var(--bottom-nav-background);
-				backdrop-filter: blur(15px);
-				-webkit-backdrop-filter: blur(15px);
-				border-top: 0.5px solid var(--border-color);
-				display: flex;
-				justify-content: space-around;
-				align-items: stretch;
-				z-index: 100;
-				padding: 0 15px;
-			}
-			.nav-item {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				text-decoration: none;
-				color: var(--text-tertiary);
-				font-size: 11px;
-				font-weight: 500;
-				flex-grow: 1;
-				text-align: center;
-				transition: color 0.2s ease;
-				padding: 8px 0 6px 0;
-				position: relative;
-				cursor: pointer;
-			}
-			.nav-icon {
-				font-size: 26px;
-				margin-bottom: 4px;
-				line-height: 1;
-			}
-			.nav-item:hover {
-				color: var(--text-secondary);
-			}
-			.nav-item.active {
-				color: var(--primary-color);
-			}
 		</style>
 	</head>
 	<body>
 		<div class="ipad-container">
-			<!-- Changed class name -->
 			<!-- Header -->
 			<div class="header">
-				<div class="header-action"></div>
+				<div class="header-spacer"></div>
 				<!-- Spacer -->
 				<span class="header-title">Progress & Stats</span>
-				<div class="header-action"></div>
+				<div class="header-spacer"></div>
 				<!-- Spacer -->
 			</div>
 
@@ -290,19 +159,46 @@
 				<section class="progress-section">
 					<h2 class="section-title">
 						<div>
-							<span class="section-title-icon">📈</span>Activity
-							Trends
+							<span
+								class="section-title-icon"
+								style="color: var(--primary-color)"
+								>📈</span
+							>Activity Trends
 						</div>
 						<div class="section-controls">
+							<label
+								for="activityStatType"
+								class="visually-hidden"
+								>Stat Type:</label
+							>
+							<select
+								id="activityStatType"
+								onchange="updateActivityChart()"
+							>
+								<option value="steps" selected>Steps</option>
+								<option value="duration">
+									Exercise Duration
+								</option>
+								<option value="distance">
+									Distance (Running)
+								</option>
+								<!-- Add more relevant stats -->
+							</select>
+							<label
+								for="activityTrendPeriod"
+								class="visually-hidden"
+								>Period:</label
+							>
 							<select
 								id="activityTrendPeriod"
 								onchange="updateActivityChart()"
 							>
-								<option value="weekly">Weekly</option>
-								<option value="monthly" selected>
-									Monthly
+								<option value="7d">Last 7 Days</option>
+								<option value="30d" selected>
+									Last 30 Days
 								</option>
-								<option value="yearly">Yearly</option>
+								<option value="90d">Last 90 Days</option>
+								<option value="1y">Last Year</option>
 							</select>
 						</div>
 					</h2>
@@ -312,13 +208,13 @@
 					<div class="summary-stats-grid">
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgSteps">
-								11,500
+								--
 							</div>
 							<div class="summary-stat-label">Avg Steps/Day</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgExercise">
-								40 min
+								-- min
 							</div>
 							<div class="summary-stat-label">
 								Avg Exercise/Day
@@ -326,13 +222,13 @@
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="totalDistance">
-								150 km
+								-- km
 							</div>
 							<div class="summary-stat-label">Total Distance</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="activeDays">
-								25 days
+								-- days
 							</div>
 							<div class="summary-stat-label">Active Days</div>
 						</div>
@@ -343,29 +239,51 @@
 				<section class="progress-section">
 					<h2 class="section-title">
 						<div>
-							<span class="section-title-icon">🍎</span>Nutrition
-							Overview
+							<span
+								class="section-title-icon"
+								style="color: var(--accent-orange)"
+								>🍎</span
+							>Nutrition Overview
 						</div>
 						<div class="section-controls">
+							<label
+								for="nutritionChartType"
+								class="visually-hidden"
+								>Chart Type:</label
+							>
+							<select
+								id="nutritionChartType"
+								onchange="updateNutritionChart()"
+							>
+								<option value="calories" selected>
+									Calories Trend
+								</option>
+								<option value="macros">Macros Pie (Avg)</option>
+							</select>
+							<label
+								for="nutritionTrendPeriod"
+								class="visually-hidden"
+								>Period:</label
+							>
 							<select
 								id="nutritionTrendPeriod"
 								onchange="updateNutritionChart()"
 							>
-								<option value="weekly">Last 7 Days</option>
-								<option value="monthly" selected>
+								<option value="7d">Last 7 Days</option>
+								<option value="30d" selected>
 									Last 30 Days
 								</option>
+								<option value="90d">Last 90 Days</option>
 							</select>
 						</div>
 					</h2>
 					<div class="chart-container">
 						<canvas id="nutritionChart"></canvas>
-						<!-- Could be calorie trend or macros pie -->
 					</div>
 					<div class="summary-stats-grid">
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgCalories">
-								1950 kcal
+								-- kcal
 							</div>
 							<div class="summary-stat-label">
 								Avg Calories/Day
@@ -373,43 +291,114 @@
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgProtein">
-								100 g
+								-- g
 							</div>
 							<div class="summary-stat-label">Avg Protein</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgCarbs">
-								220 g
+								-- g
 							</div>
 							<div class="summary-stat-label">Avg Carbs</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgFat">
-								65 g
+								-- g
 							</div>
 							<div class="summary-stat-label">Avg Fat</div>
 						</div>
 					</div>
 				</section>
 
-				<!-- Section 3: Recent Achievements -->
+				<!-- Section 3: Weight Trend -->
 				<section class="progress-section">
 					<h2 class="section-title">
 						<div>
-							<span class="section-title-icon">🏆</span>Recent
-							Achievements
+							<span
+								class="section-title-icon"
+								style="color: var(--accent-red)"
+								>⚖️</span
+							>Weight Trend
+						</div>
+						<div class="section-controls">
+							<label
+								for="weightTrendPeriod"
+								class="visually-hidden"
+								>Period:</label
+							>
+							<select
+								id="weightTrendPeriod"
+								onchange="updateWeightChart()"
+							>
+								<option value="30d" selected>
+									Last 30 Days
+								</option>
+								<option value="90d">Last 90 Days</option>
+								<option value="6m">Last 6 Months</option>
+								<option value="1y">Last Year</option>
+								<option value="all">All Time</option>
+							</select>
+							<button onclick="logWeight()">Log Weight</button>
+						</div>
+					</h2>
+					<div class="chart-container">
+						<canvas id="weightChart"></canvas>
+					</div>
+					<div class="summary-stats-grid">
+						<div class="summary-stat">
+							<div class="summary-stat-value" id="currentWeight">
+								-- kg
+							</div>
+							<div class="summary-stat-label">Current Weight</div>
+						</div>
+						<div class="summary-stat">
+							<div class="summary-stat-value" id="weightChange">
+								-- kg
+							</div>
+							<div class="summary-stat-label">
+								Change (Period)
+							</div>
+						</div>
+						<div class="summary-stat">
+							<div class="summary-stat-value" id="bmi">--</div>
+							<div class="summary-stat-label">BMI</div>
+						</div>
+						<div class="summary-stat">
+							<div class="summary-stat-value" id="weightGoal">
+								-- kg
+							</div>
+							<div class="summary-stat-label">Weight Goal</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Section 4: Recent Achievements -->
+				<section class="progress-section">
+					<h2 class="section-title">
+						<div>
+							<span
+								class="section-title-icon"
+								style="color: var(--accent-purple)"
+								>🏆</span
+							>Recent Achievements
 						</div>
 						<div class="section-controls">
 							<button
-								onclick="navigateTo('achievements-all.shtml')"
+								onclick="navigateTo('profile.shtml#achievements')"
 							>
 								View All
 							</button>
+							<!-- Link to profile section -->
 						</div>
 					</h2>
 					<ul class="achievements-list" id="achievementsList">
+						<!-- Populated by JS -->
 						<li class="achievement-item">
-							<span class="achievement-icon">🏅</span>
+							<span
+								class="achievement-icon"
+								style="color: var(--accent-green)"
+								>🏅</span
+							>
 							<div class="achievement-details">
 								<div class="achievement-name">
 									10k Steps Milestone
@@ -420,7 +409,11 @@
 							</div>
 						</li>
 						<li class="achievement-item">
-							<span class="achievement-icon">📅</span>
+							<span
+								class="achievement-icon"
+								style="color: var(--primary-color)"
+								>📅</span
+							>
 							<div class="achievement-details">
 								<div class="achievement-name">
 									Perfect Week (All Goals Met)
@@ -431,8 +424,11 @@
 							</div>
 						</li>
 						<li class="achievement-item">
-							<span class="achievement-icon">🏃‍♀️</span>
-							<!-- Specific activity -->
+							<span
+								class="achievement-icon"
+								style="color: var(--accent-orange)"
+								>🏃</span
+							>
 							<div class="achievement-details">
 								<div class="achievement-name">
 									First 5km Run
@@ -442,199 +438,573 @@
 								</div>
 							</div>
 						</li>
-						<li class="achievement-item">
-							<span class="achievement-icon">💧</span>
-							<div class="achievement-details">
-								<div class="achievement-name">
-									Hydration Hero (7 Days)
-								</div>
-								<div class="achievement-date">
-									Achieved: 2 weeks ago
-								</div>
-							</div>
-						</li>
 					</ul>
+					<p
+						id="noAchievements"
+						class="text-center text-tertiary d-none mt-2"
+					>
+						No achievements earned yet.
+					</p>
 				</section>
 			</div>
 			<!-- End Main Content -->
 
-			<!-- Bottom Navigation Bar (UPDATED) -->
+			<!-- Bottom Navigation Bar -->
 			<nav class="bottom-nav" id="bottomNav">
-				<a href="todo.shtml" class="nav-item" data-page="home">
+				<button
+					onclick="window.location.href='todo.shtml'"
+					class="nav-item"
+					data-page="home"
+				>
 					<span class="nav-icon">🏠</span>
 					<span class="nav-label">Home</span>
-				</a>
-				<a
-					href="progress.shtml"
+				</button>
+				<button
+					onclick="window.location.href='progress.shtml'"
 					class="nav-item active"
 					data-page="progress"
 				>
-					<!-- Active -->
 					<span class="nav-icon">📊</span>
 					<span class="nav-label">Progress</span>
-				</a>
-				<a href="log-meal.shtml" class="nav-item" data-page="log-meal">
+				</button>
+				<button
+					onclick="window.location.href='log-meal.shtml'"
+					class="nav-item"
+					data-page="log-meal"
+				>
 					<span class="nav-icon">🍔</span>
 					<span class="nav-label">Log Meal</span>
-				</a>
-				<a
-					href="log-exercise.shtml"
+				</button>
+				<button
+					onclick="window.location.href='log-exercise.shtml'"
 					class="nav-item"
 					data-page="log-exercise"
 				>
 					<span class="nav-icon">🏃</span>
 					<span class="nav-label">Log Exercise</span>
-				</a>
-				<a href="profile.shtml" class="nav-item" data-page="profile">
+				</button>
+				<button
+					onclick="window.location.href='profile.shtml'"
+					class="nav-item"
+					data-page="profile"
+				>
 					<span class="nav-icon">👤</span>
 					<span class="nav-label">Profile</span>
-				</a>
+				</button>
 			</nav>
-			<!-- End Bottom Navigation Bar -->
 		</div>
 		<!-- End ipad Container -->
 
 		<script>
+			// --- Chart Instances ---
 			let activityChartInstance = null;
 			let nutritionChartInstance = null;
+			let weightChartInstance = null;
 
-			// Mock Data Generation
-			function generateChartData(period, numPoints, maxVal) {
-				const labels = [];
-				const data = [];
-				let labelPrefix = "";
-				if (period === "weekly") labelPrefix = "Day ";
-				if (period === "monthly") labelPrefix = "Wk ";
-				if (period === "yearly") labelPrefix = "M ";
+			// --- Mock Data Storage (Use localStorage for basic persistence) ---
+			const MOCK_DATA = {
+				// Example: Weight log [{date: 'YYYY-MM-DD', weight: 70}, ...]
+				weightLog: JSON.parse(
+					localStorage.getItem("weightLog") ||
+						'[{"date": "2023-10-01", "weight": 75}, {"date": "2023-10-15", "weight": 74.5}, {"date": "2023-11-01", "weight": 74}]'
+				),
+				// Add mealHistory, exerciseHistory if needed for charts
+				mealHistory: JSON.parse(
+					localStorage.getItem("mealHistory") || "[]"
+				),
+				exerciseHistory: JSON.parse(
+					localStorage.getItem("exerciseHistory") || "[]"
+				),
+				profile: JSON.parse(
+					localStorage.getItem("userProfile") || "{}"
+				), // Load profile data
+				goals: JSON.parse(localStorage.getItem("userGoals") || "[]"),
+				achievements: JSON.parse(
+					localStorage.getItem("userAchievements") ||
+						'[{"name": "10k Steps Milestone", "date": "Yesterday", "icon": "🏅", "color": "var(--accent-green)"}, {"name": "Perfect Week (All Goals Met)", "date": "3 days ago", "icon": "📅", "color": "var(--primary-color)"}, {"name": "First 5km Run", "date": "Last Sunday", "icon": "🏃", "color": "var(--accent-orange)"}]'
+				), // Example achievements
+			};
 
-				for (let i = 1; i <= numPoints; i++) {
-					labels.push(labelPrefix + i);
-					data.push(Math.random() * maxVal);
-				}
-				return { labels, data };
+			function saveMockData() {
+				localStorage.setItem(
+					"weightLog",
+					JSON.stringify(MOCK_DATA.weightLog)
+				);
+				localStorage.setItem(
+					"mealHistory",
+					JSON.stringify(MOCK_DATA.mealHistory)
+				);
+				localStorage.setItem(
+					"exerciseHistory",
+					JSON.stringify(MOCK_DATA.exerciseHistory)
+				);
+				localStorage.setItem(
+					"userAchievements",
+					JSON.stringify(MOCK_DATA.achievements)
+				);
+				// Profile & Goals saved elsewhere (e.g., profile page)
 			}
 
-			// --- Chart Initialization ---
-			function initActivityChart(period = "monthly") {
+			// --- Utility: Get Date Range ---
+			function getDateRange(period) {
+				const endDate = new Date();
+				let startDate = new Date();
+				let numDays = 7; // default '7d'
+
+				switch (period) {
+					case "30d":
+						numDays = 30;
+						break;
+					case "90d":
+						numDays = 90;
+						break;
+					case "6m":
+						numDays = 180;
+						break; // Approx
+					case "1y":
+						numDays = 365;
+						break;
+					case "all":
+						startDate = new Date(2000, 0, 1);
+						break; // Very old start date for 'all'
+					case "7d": // Fallthrough default
+					default:
+						numDays = 7;
+						break;
+				}
+				if (period !== "all") {
+					startDate.setDate(endDate.getDate() - numDays);
+				}
+				return { startDate, endDate };
+			}
+
+			// --- Chart Configuration ---
+			const chartDefaultOptions = {
+				responsive: true,
+				maintainAspectRatio: false,
+				interaction: { intersect: false, mode: "index" },
+				scales: {
+					x: {
+						type: "time",
+						time: { unit: "day" },
+						grid: { display: false },
+					},
+					y: {
+						beginAtZero: true,
+						grid: { color: "var(--border-color)" },
+					},
+				},
+				plugins: {
+					legend: { display: false },
+					tooltip: { enabled: true },
+				},
+				elements: { point: { radius: 3, hoverRadius: 5 } },
+			};
+
+			// --- Update Chart Functions ---
+			function updateActivityChart() {
+				const period = document.getElementById(
+					"activityTrendPeriod"
+				).value;
+				const statType =
+					document.getElementById("activityStatType").value;
+				const { startDate, endDate } = getDateRange(period);
 				const ctx = document
 					.getElementById("activityChart")
 					?.getContext("2d");
 				if (!ctx) return;
 
-				let numPoints = 12; // Default yearly
-				let maxVal = 15000; // Steps example
-				if (period === "weekly") {
-					numPoints = 7;
-					maxVal = 18000;
-				}
-				if (period === "monthly") {
-					numPoints = 4;
-					maxVal = 16000;
-				}
-
-				const { labels, data } = generateChartData(
-					period,
-					numPoints,
-					maxVal
+				// Filter data based on period (using MOCK_DATA.exerciseHistory)
+				const filteredData = MOCK_DATA.exerciseHistory.filter(
+					(entry) => {
+						const entryDate = new Date(entry.exercise_date);
+						return entryDate >= startDate && entryDate <= endDate;
+					}
 				);
 
-				// Destroy previous instance if exists
-				if (activityChartInstance) {
-					activityChartInstance.destroy();
-				}
+				// Aggregate data by date (example for steps - needs refinement for other types)
+				const aggregatedData = {};
+				filteredData.forEach((entry) => {
+					const dateStr = entry.exercise_date;
+					if (!aggregatedData[dateStr])
+						aggregatedData[dateStr] = {
+							steps: 0,
+							duration: 0,
+							distance: 0,
+							count: 0,
+						};
 
+					// Logic to get the correct value based on statType
+					let value = 0;
+					switch (statType) {
+						case "steps":
+							// Assuming steps might be in notes or a dedicated field later
+							if (
+								entry.exercise_type.toLowerCase() ===
+									"walking" ||
+								entry.exercise_type.toLowerCase() === "running"
+							) {
+								value =
+									(parseFloat(entry.exercise_distance) || 0) *
+									(entry.exercise_distance_unit === "km"
+										? 1250
+										: 2000); // Rough estimate
+							}
+							break;
+						case "duration":
+							value = parseFloat(entry.exercise_duration) || 0;
+							break;
+						case "distance":
+							if (
+								entry.exercise_type.toLowerCase() === "running"
+							) {
+								let distKm =
+									parseFloat(entry.exercise_distance) || 0;
+								if (entry.exercise_distance_unit === "miles")
+									distKm *= 1.609;
+								else if (
+									entry.exercise_distance_unit === "meters"
+								)
+									distKm /= 1000;
+								else if (
+									entry.exercise_distance_unit === "yards"
+								)
+									distKm *= 0.0009144;
+								value = distKm;
+							}
+							break;
+					}
+					aggregatedData[dateStr][statType] =
+						(aggregatedData[dateStr][statType] || 0) + value;
+					aggregatedData[dateStr].count++; // Needed for averaging maybe
+				});
+
+				const chartData = Object.entries(aggregatedData)
+					.map(([date, values]) => ({
+						x: date,
+						y: values[statType] || 0,
+					}))
+					.sort((a, b) => new Date(a.x) - new Date(b.x)); // Sort by date
+
+				if (activityChartInstance) activityChartInstance.destroy();
 				activityChartInstance = new Chart(ctx, {
-					type: "line", // Or 'bar'
+					type: "line",
 					data: {
-						labels: labels,
 						datasets: [
 							{
-								label: "Average Steps",
-								data: data,
+								label:
+									statType.charAt(0).toUpperCase() +
+									statType.slice(1),
+								data: chartData,
 								borderColor: "var(--primary-color)",
-								backgroundColor: "rgba(0, 122, 255, 0.1)",
+								backgroundColor: "rgba(0, 122, 255, 0.1)", // Use primary color with alpha
 								fill: true,
-								tension: 0.3, // Smoothen line
+								tension: 0.3,
 							},
 						],
 					},
 					options: {
-						responsive: true,
-						maintainAspectRatio: false,
+						...chartDefaultOptions,
 						scales: {
-							y: { beginAtZero: true },
+							...chartDefaultOptions.scales,
+							x: {
+								...chartDefaultOptions.scales.x,
+								time: {
+									unit: period === "1y" ? "month" : "day",
+								},
+							},
 						},
-						plugins: { legend: { display: false } },
 					},
 				});
-				// Update summary stats (mock)
-				document.getElementById("avgSteps").textContent = Math.round(
-					data.reduce((a, b) => a + b, 0) / data.length
-				);
-				// ... update other stats based on period
+				// Update summary stats (basic example)
+				let totalSteps = 0,
+					totalDuration = 0,
+					totalDist = 0,
+					days = new Set();
+				MOCK_DATA.exerciseHistory.forEach((e) => {
+					const d = new Date(e.exercise_date);
+					if (d >= startDate && d <= endDate) {
+						days.add(e.exercise_date);
+						totalDuration += parseFloat(e.exercise_duration) || 0;
+						// Add step/distance calculation if needed
+					}
+				});
+				const numDays = days.size || 1;
+				document.getElementById("avgSteps").textContent = "--"; // Needs better calculation
+				document.getElementById(
+					"avgExercise"
+				).textContent = `${Math.round(totalDuration / numDays)} min`;
+				document.getElementById("totalDistance").textContent = "-- km"; // Needs calculation
+				document.getElementById(
+					"activeDays"
+				).textContent = `${days.size} days`;
 			}
 
-			function initNutritionChart(period = "monthly") {
+			function updateNutritionChart() {
+				const period = document.getElementById(
+					"nutritionTrendPeriod"
+				).value;
+				const chartType =
+					document.getElementById("nutritionChartType").value;
+				const { startDate, endDate } = getDateRange(period);
 				const ctx = document
 					.getElementById("nutritionChart")
 					?.getContext("2d");
 				if (!ctx) return;
 
-				// Example: Macronutrient Pie Chart (doesn't change with period in this mock)
-				const macroData = {
-					labels: ["Protein (g)", "Carbs (g)", "Fat (g)"],
-					data: [100, 220, 65], // Corresponds to summary stats
-				};
+				const filteredData = MOCK_DATA.mealHistory.filter((entry) => {
+					const entryDate = new Date(entry.date);
+					return entryDate >= startDate && entryDate <= endDate;
+				});
 
-				// Destroy previous instance if exists
-				if (nutritionChartInstance) {
-					nutritionChartInstance.destroy();
+				// Calculate averages
+				let totalCalories = 0,
+					totalProtein = 0,
+					totalCarbs = 0,
+					totalFat = 0;
+				const daysCounted =
+					new Set(filteredData.map((e) => e.date)).size || 1;
+
+				filteredData.forEach((meal) => {
+					totalCalories += meal.summary.calories || 0;
+					totalProtein += meal.summary.protein || 0;
+					totalCarbs += meal.summary.carbs || 0;
+					totalFat += meal.summary.fat || 0;
+				});
+
+				const avgCalories = Math.round(totalCalories / daysCounted);
+				const avgProtein = Math.round(totalProtein / daysCounted);
+				const avgCarbs = Math.round(totalCarbs / daysCounted);
+				const avgFat = Math.round(totalFat / daysCounted);
+
+				// Update summary stats
+				document.getElementById(
+					"avgCalories"
+				).textContent = `${avgCalories} kcal`;
+				document.getElementById(
+					"avgProtein"
+				).textContent = `${avgProtein} g`;
+				document.getElementById(
+					"avgCarbs"
+				).textContent = `${avgCarbs} g`;
+				document.getElementById("avgFat").textContent = `${avgFat} g`;
+
+				if (nutritionChartInstance) nutritionChartInstance.destroy();
+
+				if (chartType === "calories") {
+					// Aggregate calories by date
+					const aggregatedData = {};
+					filteredData.forEach((entry) => {
+						const dateStr = entry.date;
+						aggregatedData[dateStr] =
+							(aggregatedData[dateStr] || 0) +
+							(entry.summary.calories || 0);
+					});
+					const chartData = Object.entries(aggregatedData)
+						.map(([date, value]) => ({ x: date, y: value }))
+						.sort((a, b) => new Date(a.x) - new Date(b.x));
+
+					nutritionChartInstance = new Chart(ctx, {
+						type: "bar", // Bar chart for daily calories
+						data: {
+							datasets: [
+								{
+									label: "Daily Calories",
+									data: chartData,
+									backgroundColor: "var(--accent-orange)",
+								},
+							],
+						},
+						options: {
+							...chartDefaultOptions,
+							scales: {
+								...chartDefaultOptions.scales,
+								x: {
+									...chartDefaultOptions.scales.x,
+									time: {
+										unit: period === "90d" ? "week" : "day",
+									},
+								},
+							},
+						},
+					});
+				} else {
+					// Macros Pie
+					nutritionChartInstance = new Chart(ctx, {
+						type: "doughnut",
+						data: {
+							labels: ["Protein (g)", "Carbs (g)", "Fat (g)"],
+							datasets: [
+								{
+									label: "Avg Macros",
+									data: [avgProtein, avgCarbs, avgFat],
+									backgroundColor: [
+										"var(--accent-green)",
+										"var(--accent-teal)",
+										"var(--accent-red)",
+									],
+									hoverOffset: 4,
+								},
+							],
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							plugins: { legend: { position: "bottom" } },
+						},
+					});
 				}
+			}
 
-				nutritionChartInstance = new Chart(ctx, {
-					type: "doughnut",
+			function updateWeightChart() {
+				const period =
+					document.getElementById("weightTrendPeriod").value;
+				const { startDate, endDate } = getDateRange(period);
+				const ctx = document
+					.getElementById("weightChart")
+					?.getContext("2d");
+				if (!ctx) return;
+
+				const filteredData = MOCK_DATA.weightLog
+					.filter((entry) => {
+						const entryDate = new Date(entry.date);
+						return entryDate >= startDate && entryDate <= endDate;
+					})
+					.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
+
+				const chartData = filteredData.map((entry) => ({
+					x: entry.date,
+					y: entry.weight,
+				}));
+
+				if (weightChartInstance) weightChartInstance.destroy();
+				weightChartInstance = new Chart(ctx, {
+					type: "line",
 					data: {
-						labels: macroData.labels,
 						datasets: [
 							{
-								label: "Avg Macros",
-								data: macroData.data,
-								backgroundColor: [
-									"var(--accent-green)",
-									"var(--accent-orange)",
-									"var(--accent-red)",
-								],
-								hoverOffset: 4,
+								label: "Weight (kg)",
+								data: chartData,
+								borderColor: "var(--accent-red)",
+								backgroundColor: "rgba(255, 59, 48, 0.1)",
+								fill: false, // Usually don't fill weight chart
+								tension: 0.1,
 							},
 						],
 					},
 					options: {
-						responsive: true,
-						maintainAspectRatio: false,
-						plugins: {
-							legend: { position: "bottom" },
+						...chartDefaultOptions,
+						scales: {
+							...chartDefaultOptions.scales,
+							y: { beginAtZero: false },
+							x: {
+								...chartDefaultOptions.scales.x,
+								time: {
+									unit:
+										period === "1y" || period === "all"
+											? "month"
+											: "day",
+								},
+							},
 						},
-					},
+					}, // Don't start Y at 0 for weight
 				});
-				// Update summary stats (already done above)
+
+				// Update summary stats
+				const currentWeight =
+					filteredData.length > 0
+						? filteredData[filteredData.length - 1].weight
+						: "--";
+				const startWeight =
+					filteredData.length > 0 ? filteredData[0].weight : null;
+				const weightChange =
+					startWeight !== null && currentWeight !== "--"
+						? (currentWeight - startWeight).toFixed(1)
+						: "--";
+				const profileHeight = MOCK_DATA.profile.height_cm; // Get height from profile
+				const bmi =
+					currentWeight !== "--" && profileHeight
+						? (currentWeight / (profileHeight / 100) ** 2).toFixed(
+								1
+						  )
+						: "--";
+				const weightGoal =
+					MOCK_DATA.goals.find((g) => g.type === "weight")
+						?.targetValue || "--";
+
+				document.getElementById(
+					"currentWeight"
+				).textContent = `${currentWeight} kg`;
+				document.getElementById(
+					"weightChange"
+				).textContent = `${weightChange} kg`;
+				document.getElementById("bmi").textContent = bmi;
+				document.getElementById(
+					"weightGoal"
+				).textContent = `${weightGoal} kg`;
 			}
 
-			// --- Update Functions (Called by dropdowns) ---
-			function updateActivityChart() {
-				const period = document.getElementById(
-					"activityTrendPeriod"
-				).value;
-				initActivityChart(period);
-			}
-			function updateNutritionChart() {
-				const period = document.getElementById(
-					"nutritionTrendPeriod"
-				).value;
-				// For this mock, pie chart doesn't change with period, but you could add logic here
-				initNutritionChart(period);
-				alert(
-					`Nutrition chart period changed to: ${period} (Chart type may not change in this demo)`
+			function logWeight() {
+				const today = new Date().toISOString().split("T")[0];
+				const currentWeight =
+					MOCK_DATA.weightLog.length > 0
+						? MOCK_DATA.weightLog[MOCK_DATA.weightLog.length - 1]
+								.weight
+						: "";
+				const weightStr = prompt(
+					`Enter current weight (kg) for ${today}:`,
+					currentWeight
 				);
+				const weight = parseFloat(weightStr);
+
+				if (!isNaN(weight) && weight > 0) {
+					// Avoid duplicate entries for the same day (replace if exists)
+					const existingIndex = MOCK_DATA.weightLog.findIndex(
+						(e) => e.date === today
+					);
+					if (existingIndex > -1) {
+						MOCK_DATA.weightLog[existingIndex].weight = weight;
+					} else {
+						MOCK_DATA.weightLog.push({
+							date: today,
+							weight: weight,
+						});
+					}
+					saveMockData();
+					updateWeightChart(); // Refresh chart
+				} else if (weightStr !== null) {
+					// Only show alert if user didn't cancel
+					alert("Invalid weight entered.");
+				}
+			}
+
+			function loadAchievements() {
+				const list = document.getElementById("achievementsList");
+				const noAchievementsMsg =
+					document.getElementById("noAchievements");
+				if (!list || !noAchievementsMsg) return;
+
+				list.innerHTML = ""; // Clear existing
+				if (MOCK_DATA.achievements.length === 0) {
+					noAchievementsMsg.classList.remove("d-none");
+				} else {
+					noAchievementsMsg.classList.add("d-none");
+					MOCK_DATA.achievements.forEach((ach) => {
+						const item = document.createElement("li");
+						item.classList.add("achievement-item");
+						item.innerHTML = `
+                            <span class="achievement-icon" style="color: ${
+								ach.color || "var(--accent-purple)"
+							}">${ach.icon || "🏆"}</span>
+                            <div class="achievement-details">
+                                <div class="achievement-name">${ach.name}</div>
+                                <div class="achievement-date">Achieved: ${
+									ach.date
+								}</div>
+                            </div>`;
+						list.appendChild(item);
+					});
+				}
 			}
 
 			// --- Mock Navigation ---
@@ -651,8 +1021,16 @@
 
 			// --- Initial Load ---
 			document.addEventListener("DOMContentLoaded", () => {
-				initActivityChart(); // Initialize with default period
-				initNutritionChart(); // Initialize with default period
+				// Load profile data needed for charts/stats (e.g., height for BMI)
+				MOCK_DATA.profile = JSON.parse(
+					localStorage.getItem("userProfile") || "{}"
+				);
+
+				// Initial chart renders
+				updateActivityChart();
+				updateNutritionChart();
+				updateWeightChart();
+				loadAchievements();
 			});
 		</script>
 	</body>

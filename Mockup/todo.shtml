@@ -6,161 +6,32 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
-		<title>Health Dashboard - iPad View</title> <!-- Updated Title -->
+		<title>Health Dashboard - iPad View</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
+		<link rel="stylesheet" href="shared-styles.css" />
 		<style>
-			/* --- Root Variables (Consistent - Copied from log-exercise) --- */
-			:root {
-				--primary-color: #007aff;
-				--primary-light: #e6f2ff;
-				--accent-purple: #af52de;
-				--accent-teal: #5ac8fa;
-				--accent-orange: #ff9500;
-				--accent-green: #34c759;
-				--accent-red: #ff3b30;
-				--background-color: #f2f2f7;
-				--surface-color: #ffffff;
-				--surface-secondary-color: #e5e5ea;
-				--bottom-nav-background: rgba(248, 248, 248, 0.92);
-				--text-primary: #000000;
-				--text-secondary: #3c3c43;
-				--text-tertiary: #8e8e93;
-				--text-link: var(--primary-color);
-				--text-on-primary: #ffffff;
-				--border-color: #d1d1d6;
-				--shadow-color: rgba(0, 0, 0, 0.05);
-				--shadow-strong-color: rgba(0, 0, 0, 0.1);
-				--nav-height: 70px;
-				--content-padding: 24px;
-				--card-border-radius: 16px;
-                --chart-track-color: #ebebf0;
-				--chart-sleep-color: var(--accent-purple);
-			}
-
-			body,
-			html {
-				margin: 0;
-				padding: 0;
-				font-family: "Inter", -apple-system, BlinkMacSystemFont,
-					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-				height: 100%;
-				background-color: #dcdce1;
-				-webkit-font-smoothing: antialiased;
-				-moz-osx-font-smoothing: grayscale;
-			}
-			* {
-				box-sizing: border-box;
-			}
-
-			/* --- iPad Container Simulation --- */
-			.ipad-container {
-				width: 768px;
-				height: 1024px;
-				border: 1px solid var(--border-color);
-				margin: 40px auto;
-				background-color: var(--background-color);
-				display: flex;
-				flex-direction: column;
-				position: relative;
-				overflow: hidden;
-				border-radius: 20px;
-				box-shadow: 0 15px 40px var(--shadow-strong-color);
-			}
-
-			/* Header */
-			.header {
-				display: flex;
-				justify-content: space-between; /* Space for potential title/logo and icons */
-				align-items: center;
-				padding: 20px var(--content-padding) 15px var(--content-padding);
-				flex-shrink: 0;
-				position: relative;
-				z-index: 10;
-				background-color: var(--background-color); /* Match page background */
-                /* border-bottom: 1px solid var(--border-color); Optional */
-			}
-            /* Optional: Add a logo or title if needed */
-            .header-logo {
-                font-size: 22px;
-                font-weight: 700;
-                color: var(--text-primary);
-            }
-			.header-actions {
-                display: flex;
-                gap: 15px;
-            }
-            .action-icon { /* Reusing profile style */
-				font-size: 26px;
-				color: var(--text-secondary);
-				cursor: pointer;
-				padding: 8px;
-				transition: color 0.2s ease;
-				position: relative;
-			}
-			.action-icon:hover {
-				color: var(--text-primary);
-			}
-            /* Notification specific styling */
-			.notification-icon::after {
-				content: "";
-				display: block;
-				width: 9px; /* Slightly larger dot */
-				height: 9px;
-				background-color: var(--accent-red);
-				border-radius: 50%;
-				position: absolute;
-				top: 8px; /* Adjust position */
-				right: 5px;
-				border: 2px solid var(--background-color);
-			}
-
-			/* Main Content Area */
-			.main-content {
-				flex-grow: 1;
-				overflow-y: auto;
-				padding: var(--content-padding);
-                padding-top: 10px; /* Less top padding */
-				padding-bottom: calc(
-					var(--nav-height) + var(--content-padding)
-				);
-				scrollbar-width: thin;
-				scrollbar-color: var(--border-color) transparent;
-			}
-			.main-content::-webkit-scrollbar {
-				width: 6px;
-			}
-            .main-content::-webkit-scrollbar-thumb {
-				background-color: var(--border-color);
-				border-radius: 3px;
-			}
-             .main-content::-webkit-scrollbar-track {
-				background: transparent;
-			}
-
-			/* Greeting Message */
+			/* Page-specific styles */
 			.greeting {
-				font-size: 28px; /* Larger greeting */
+				font-size: 28px;
 				font-weight: 700;
 				color: var(--text-primary);
-				margin: 15px 0 25px 0; /* Adjusted spacing */
+				margin: 15px 0 25px 0;
 			}
-
-			/* Time Filters */
 			.time-filters {
 				display: flex;
-				gap: 12px; /* Increased gap */
-				margin-bottom: 30px; /* More space below filters */
+				gap: 12px;
+				margin-bottom: 30px;
 			}
 			.filter-btn {
-				padding: 9px 20px; /* Larger buttons */
+				padding: 9px 20px;
 				border: none;
 				border-radius: 25px;
-				font-size: 14px; /* Slightly larger font */
+				font-size: 14px;
 				font-weight: 600;
 				color: var(--text-link);
 				background-color: var(--surface-color);
@@ -170,99 +41,53 @@
 			}
 			.filter-btn:hover {
 				background-color: var(--surface-secondary-color);
-                transform: translateY(-1px);
+				transform: translateY(-1px);
 			}
 			.filter-btn.active {
 				background-color: var(--primary-color);
 				color: var(--text-on-primary);
 				box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3);
-                transform: translateY(0);
+				transform: translateY(0);
+			}
+			@media (prefers-color-scheme: dark) {
+				.filter-btn {
+					background-color: var(--surface-secondary-color);
+					color: var(--text-link);
+					box-shadow: none;
+				}
+				.filter-btn:hover {
+					background-color: var(--border-color);
+				}
+				.filter-btn.active {
+					background-color: var(--primary-color);
+					color: var(--text-on-primary);
+				}
 			}
 
-			/* --- Card Styles (Adapted for iPad) --- */
-			.card {
-				background-color: var(--surface-color);
-				border-radius: var(--card-border-radius);
-				margin-bottom: 20px; /* Increased spacing */
-				padding: var(--content-padding); /* Use variable */
-				box-shadow: 0 5px 15px var(--shadow-color); /* Slightly stronger shadow */
-				overflow: hidden;
-				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				cursor: pointer;
-				position: relative;
+			/* Sleep Card */
+			.sleep-card .card-header-icon {
+				color: var(--accent-purple);
 			}
-			.card:hover {
-				transform: translateY(-3px);
-				box-shadow: 0 8px 20px var(--shadow-strong-color);
-			}
-
-			/* Card Header */
-			.card-header {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				margin-bottom: 15px; /* Increased spacing */
-				font-size: 13px; /* Slightly larger */
-				font-weight: 600;
-				color: var(--text-secondary);
-				text-transform: uppercase;
-				letter-spacing: 0.6px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid var(--surface-secondary-color); /* Subtle separator */
-			}
-			.card-header-title {
-				display: flex;
-				align-items: center;
-			}
-			.card-header-icon {
-				font-size: 18px; /* Larger icon */
-				margin-right: 8px;
-			}
-			/* Chevron indicator */
-			.card::after {
-				content: "❯"; /* Use a better chevron */
-				position: absolute;
-				top: 22px; /* Adjust position */
-				right: 20px;
-				color: var(--text-tertiary);
-				font-weight: 600;
-				font-size: 20px;
-				opacity: 0.6;
-				transition: opacity 0.2s ease, transform 0.2s ease;
-			}
-			.card:hover::after {
-				opacity: 1;
-				color: var(--text-secondary);
-                transform: translateX(3px);
-			}
-			.card-body {
-				display: flex;
-				align-items: center;
-                padding-top: 5px;
-			}
-
-			/* Sleep Analysis Card */
-			.sleep-card .card-header-icon { color: var(--chart-sleep-color); }
 			.sleep-card .card-body {
 				justify-content: space-between;
 				align-items: center;
-				gap: 25px; /* More gap */
+				gap: 25px;
+				display: flex;
 			}
 			.sleep-chart-container {
-				width: 110px; /* Larger chart */
+				width: 110px;
 				height: 110px;
 				position: relative;
 				flex-shrink: 0;
 			}
-			.sleep-chart { /* Recreate with SVG for better control? For now, keep CSS */
+			.sleep-chart {
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
 				background: conic-gradient(
-					var(--chart-sleep-color) 0% 80.4%, /* Example value */
-					var(--chart-track-color) 80.4% 100%
-				);
-                /* Adjust mask for thicker ring */
+					var(--accent-purple) 0% 80%,
+					var(--chart-track-color) 80% 100%
+				); /* Updated by JS */
 				mask-image: radial-gradient(transparent 65%, black 66%);
 				-webkit-mask-image: radial-gradient(transparent 65%, black 66%);
 			}
@@ -275,80 +100,88 @@
 				font-weight: 600;
 			}
 			.sleep-chart-percentage {
-				font-size: 20px; /* Larger percentage */
+				font-size: 20px;
 				color: var(--text-primary);
 				line-height: 1.1;
 			}
 			.sleep-chart-label {
-				font-size: 11px; /* Larger label */
+				font-size: 11px;
 				color: var(--text-secondary);
 			}
 			.sleep-details {
 				text-align: right;
 			}
 			.sleep-duration {
-				font-size: 26px; /* Larger duration */
+				font-size: 26px;
 				font-weight: 600;
 				color: var(--text-primary);
 				margin-bottom: 5px;
 			}
 			.sleep-duration-label {
-				font-size: 13px; /* Larger label */
+				font-size: 13px;
 				color: var(--text-secondary);
 				font-weight: 500;
 			}
 
-			/* Stats Grid - Adapted for iPad */
+			/* Stats Grid */
 			.stats-grid {
 				display: grid;
-                /* Use 3 columns for dashboard */
 				grid-template-columns: repeat(3, 1fr);
-				gap: 18px; /* Consistent gap */
+				gap: 18px;
 			}
 			.stat-card {
-				padding: 18px; /* Consistent padding */
+				padding: 18px;
 				margin-bottom: 0;
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
-				min-height: 150px; /* Increased height */
+				min-height: 150px;
+				/* Inherits .card styles, add .clickable class */
 			}
-			.stat-card .card-header { margin-bottom: 12px; border-bottom: none; padding-bottom: 0;}
-			.stat-card::after { content: "❯"; } /* Keep chevron on stat cards too */
-
+			.stat-card .card-header {
+				margin-bottom: 12px;
+				border-bottom: none;
+				padding-bottom: 0;
+			}
+			.stat-card.clickable::after {
+				content: "❯";
+			} /* Keep chevron */
 			.stat-card .card-body {
 				flex-grow: 1;
 				width: 100%;
 				display: flex;
 				flex-direction: column;
-				justify-content: flex-start; /* Align content top */
+				justify-content: flex-start;
 				align-items: flex-start;
 				padding-top: 0px;
-                margin-top: auto; /* Push body content down */
+				margin-top: auto;
 			}
-
 			.stat-value {
-				font-size: 24px; /* Larger value */
+				font-size: 24px;
 				font-weight: 600;
 				color: var(--text-primary);
 				line-height: 1.2;
 			}
-			.stat-unit, .stat-label {
-				font-size: 12px; /* Larger labels */
+			.stat-unit,
+			.stat-label {
+				font-size: 12px;
 				color: var(--text-secondary);
 				font-weight: 500;
 				line-height: 1.4;
 			}
-			.stat-unit { margin-left: 3px; }
-			.stat-label { margin-top: 4px; }
-
+			.stat-unit {
+				margin-left: 3px;
+			}
+			.stat-label {
+				margin-top: 4px;
+			}
 			.stat-progress-bar {
 				width: 100%;
-				height: 8px; /* Thicker bar */
+				height: 8px;
 				background-color: var(--chart-track-color);
 				border-radius: 4px;
 				overflow: hidden;
-				margin-top: 12px; /* More space */
+				margin-top: 12px;
 			}
 			.stat-progress-bar-fill {
 				height: 100%;
@@ -359,82 +192,139 @@
 			}
 
 			/* Specific Stat Card Styling */
-			.goals-card .card-header-icon { color: var(--accent-green); }
-			.goals-card .stat-progress-bar-fill { background-color: var(--accent-green); }
-			.kcal-card .card-header-icon { color: var(--accent-orange); }
-			.kcal-card .stat-progress-bar-fill { background-color: var(--accent-orange); }
-			.water-card .card-header-icon { color: var(--accent-teal); }
-			.water-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
-			.exercise-card .card-header-icon { color: var(--primary-color); }
-			.exercise-card .stat-progress-bar-fill { background-color: var(--primary-color); }
-            /* Add Steps Card */
-            .steps-card .card-header-icon { color: var(--accent-teal); }
-            .steps-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
-             /* Add Mindfulness Card */
-            .mind-card .card-header-icon { color: var(--accent-purple); }
-            .mind-card .stat-progress-bar-fill { background-color: var(--accent-purple); }
-
-			/* --- Bottom Navigation Bar (Consistent - Copied from log-exercise) --- */
-			.bottom-nav {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				height: var(--nav-height);
-				background-color: var(--bottom-nav-background);
-				backdrop-filter: blur(15px);
-				-webkit-backdrop-filter: blur(15px);
-				border-top: 0.5px solid var(--border-color);
-				display: flex;
-				justify-content: space-around;
-				align-items: stretch;
-				z-index: 100;
-				padding: 0 15px;
+			.steps-card .card-header-icon,
+			.water-card .card-header-icon {
+				color: var(--accent-teal);
 			}
-			.nav-item {
+			.steps-card .stat-progress-bar-fill,
+			.water-card .stat-progress-bar-fill {
+				background-color: var(--accent-teal);
+			}
+			.exercise-card .card-header-icon {
+				color: var(--primary-color);
+			}
+			.exercise-card .stat-progress-bar-fill {
+				background-color: var(--primary-color);
+			}
+			.kcal-card .card-header-icon {
+				color: var(--accent-orange);
+			}
+			.kcal-card .stat-progress-bar-fill {
+				background-color: var(--accent-orange);
+			}
+			.mind-card .card-header-icon {
+				color: var(--accent-purple);
+			}
+			.mind-card .stat-progress-bar-fill {
+				background-color: var(--accent-purple);
+			}
+			.goals-card .card-header-icon {
+				color: var(--accent-green);
+			}
+			.goals-card .stat-progress-bar-fill {
+				background-color: var(--accent-green);
+			}
+
+			/* Quick Log Section */
+			.quick-log-section {
+				margin-top: 30px;
+			}
+			.quick-log-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 18px;
+			}
+			.quick-log-card {
+				padding: 18px; /* Uses card styles */
+			}
+			.quick-log-card .card-header {
+				margin-bottom: 15px;
+			}
+			.quick-log-input-group {
 				display: flex;
-				flex-direction: column;
+				gap: 10px;
 				align-items: center;
-				justify-content: center;
-				text-decoration: none;
-				color: var(--text-tertiary);
-				font-size: 11px;
-				font-weight: 500;
+			}
+			.quick-log-input-group input {
 				flex-grow: 1;
-				text-align: center;
-				transition: color 0.2s ease;
-				padding: 8px 0 6px 0;
-				position: relative;
+			}
+			.quick-log-input-group button {
+				margin-top: 0;
+				padding: 10px 15px;
+				font-size: 14px;
+				flex-shrink: 0;
+			}
+
+			/* Goals Checklist */
+			.goals-checklist-section {
+				margin-top: 30px;
+			}
+			.goals-checklist {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.goals-checklist-item {
+				display: flex;
+				align-items: center;
+				padding: 12px 0;
+				border-bottom: 1px solid var(--surface-secondary-color);
+			}
+			.goals-checklist-item:last-child {
+				border-bottom: none;
+			}
+			.goals-checklist-item input[type="checkbox"] {
+				width: 20px;
+				height: 20px;
+				margin-right: 15px;
+				accent-color: var(--primary-color);
 				cursor: pointer;
 			}
-			.nav-icon {
-				font-size: 26px;
-				margin-bottom: 4px;
-				line-height: 1;
+			.goals-checklist-item label {
+				flex-grow: 1;
+				cursor: pointer;
 			}
-			.nav-item:hover {
+			.goals-checklist-item .goal-name {
+				font-weight: 500;
+			}
+			.goals-checklist-item .goal-details {
+				font-size: 13px;
 				color: var(--text-secondary);
+				margin-top: 3px;
 			}
-			.nav-item.active {
-				color: var(--primary-color);
+			.goals-checklist-item.completed label {
+				text-decoration: line-through;
+				color: var(--text-tertiary);
 			}
 		</style>
 	</head>
 	<body>
-		<div class="ipad-container"> <!-- Changed class name -->
+		<div class="ipad-container">
 			<!-- Header -->
 			<div class="header">
-                <div class="header-logo">Wellness Hub</div> <!-- Optional Title/Logo -->
-                <div class="header-actions">
-                    <div class="action-icon notification-icon" title="Notifications">🔔</div>
-                    <div class="action-icon search-icon" title="Search">🔍</div> <!-- Example: Add Search -->
-                </div>
+				<div class="header-logo">Wellness Hub</div>
+				<div class="header-actions">
+					<button
+						class="action-icon notification-icon"
+						title="Notifications"
+						onclick="showNotifications()"
+					>
+						🔔<span class="visually-hidden">Notifications</span>
+					</button>
+					<button
+						class="action-icon search-icon"
+						title="Search"
+						onclick="showSearch()"
+					>
+						🔍<span class="visually-hidden">Search</span>
+					</button>
+				</div>
 			</div>
 
 			<!-- Main Scrollable Content Area -->
 			<div class="main-content">
 				<!-- Greeting -->
-				<h1 class="greeting">Hello Alex,</h1> <!-- Personalized -->
+				<h1 class="greeting" id="userGreeting">Hello,</h1>
 
 				<!-- Time Filters -->
 				<div class="time-filters" id="timeFilters">
@@ -451,24 +341,32 @@
 
 				<!-- Sleep Analysis Card -->
 				<div
-					class="card sleep-card"
-					onclick="navigateTo('sleep-details.shtml')" <!-- Example: Link to detail page -->
+					class="card sleep-card clickable"
+					onclick="navigateTo('progress.shtml#sleep')"
 				>
 					<div class="card-header">
 						<div class="card-header-title">
-							<span class="card-header-icon">🌙</span> Sleep Analysis
+							<span class="card-header-icon">🌙</span> Sleep
+							Analysis
 						</div>
 					</div>
 					<div class="card-body">
 						<div class="sleep-chart-container">
-							<div class="sleep-chart" id="sleepChart"></div> <!-- JS can update background -->
+							<div class="sleep-chart" id="sleepChart"></div>
 							<div class="sleep-chart-text">
-								<div class="sleep-chart-percentage" id="sleepQuality">80%</div>
+								<div
+									class="sleep-chart-percentage"
+									id="sleepQuality"
+								>
+									--%
+								</div>
 								<div class="sleep-chart-label">Quality</div>
 							</div>
 						</div>
 						<div class="sleep-details">
-							<div class="sleep-duration" id="sleepDuration">7h 30m</div>
+							<div class="sleep-duration" id="sleepDuration">
+								--h --m
+							</div>
 							<div class="sleep-duration-label">
 								Last Night's Sleep
 							</div>
@@ -476,12 +374,11 @@
 					</div>
 				</div>
 
-				<!-- Stats Grid - Now 3 columns -->
+				<!-- Stats Grid -->
 				<div class="stats-grid">
-					<!-- Steps Card (Added) -->
 					<div
-						class="card stat-card steps-card"
-						onclick="navigateTo('activity-details.shtml')"
+						class="card stat-card steps-card clickable"
+						onclick="navigateTo('progress.shtml#activity')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -489,21 +386,22 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value">8,520</div>
-							<div class="stat-label">Goal: 10,000 steps</div>
+							<div class="stat-value" id="statSteps">0</div>
+							<div class="stat-label">
+								Goal: <span id="goalSteps">10,000</span> steps
+							</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 85%" id="stepsProgress"
+									id="stepsProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
-
-                    <!-- Exercise Card -->
 					<div
-						class="card stat-card exercise-card"
-						onclick="navigateTo('log-exercise.shtml')"
+						class="card stat-card exercise-card clickable"
+						onclick="navigateTo('progress.shtml#activity')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -513,22 +411,25 @@
 						</div>
 						<div class="card-body">
 							<div class="stat-value">
-								45<span class="stat-unit">min</span>
+								<span id="statExercise">0</span
+								><span class="stat-unit">min</span>
 							</div>
-							<div class="stat-label">Goal: 60 min active</div>
+							<div class="stat-label">
+								Goal: <span id="goalExercise">60</span> min
+								active
+							</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 75%" id="exerciseProgress"
+									id="exerciseProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
-
-                    <!-- Kcal Consumed Card -->
 					<div
-						class="card stat-card kcal-card"
-						onclick="navigateTo('log-meal.shtml')"
+						class="card stat-card kcal-card clickable"
+						onclick="navigateTo('progress.shtml#nutrition')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -538,22 +439,24 @@
 						</div>
 						<div class="card-body">
 							<div class="stat-value">
-								1580<span class="stat-unit">kcal</span>
+								<span id="statKcal">0</span
+								><span class="stat-unit">kcal</span>
 							</div>
-							<div class="stat-label">Goal: 2000 kcal</div>
+							<div class="stat-label">
+								Goal: <span id="goalKcal">2000</span> kcal
+							</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 79%" id="kcalProgress"
+									id="kcalProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
-
-					<!-- Water Consumed Card -->
 					<div
-						class="card stat-card water-card"
-						onclick="navigateTo('log-water.shtml')" /* Example: Separate water log */
+						class="card stat-card water-card clickable"
+						onclick="navigateTo('progress.shtml#water')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -563,46 +466,51 @@
 						</div>
 						<div class="card-body">
 							<div class="stat-value">
-								1.2<span class="stat-unit">L</span>
+								<span id="statWater">0</span
+								><span class="stat-unit">L</span>
 							</div>
-							<div class="stat-label">Goal: 2.0 L</div>
+							<div class="stat-label">
+								Goal: <span id="goalWater">2.0</span> L
+							</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 60%" id="waterProgress"
+									id="waterProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
-
-					<!-- Mindfulness Card (Added) -->
-                    <div
-						class="card stat-card mind-card"
-						onclick="navigateTo('log-mindfulness.shtml')" /* Example: Log mindfulness */
+					<div
+						class="card stat-card mind-card clickable"
+						onclick="navigateTo('progress.shtml#mindfulness')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
-								<span class="card-header-icon">🧘</span> Mindfulness
+								<span class="card-header-icon">🧘</span>
+								Mindfulness
 							</div>
 						</div>
 						<div class="card-body">
 							<div class="stat-value">
-								10<span class="stat-unit">min</span>
+								<span id="statMind">0</span
+								><span class="stat-unit">min</span>
 							</div>
-							<div class="stat-label">Goal: 15 min today</div>
+							<div class="stat-label">
+								Goal: <span id="goalMind">15</span> min today
+							</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 66%" id="mindProgress"
+									id="mindProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
-
-                    <!-- Goals Card -->
 					<div
-						class="card stat-card goals-card"
-						onclick="navigateTo('goals.shtml')" /* Example: Goals page */
+						class="card stat-card goals-card clickable"
+						onclick="navigateTo('profile.shtml#goals')"
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -610,135 +518,551 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value">3 / 5</div>
+							<div class="stat-value" id="statGoals">0 / 0</div>
 							<div class="stat-label">Active Goals Met Today</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									style="width: 60%" id="goalsProgress"
+									id="goalsProgress"
+									style="width: 0%"
 								></div>
 							</div>
 						</div>
 					</div>
+				</div>
+				<!-- End Stats Grid -->
 
-				</div> <!-- End Stats Grid -->
+				<!-- Quick Log Section -->
+				<section class="quick-log-section">
+					<h2
+						class="section-header"
+						style="
+							border: none;
+							margin-bottom: 15px;
+							font-size: 18px;
+						"
+					>
+						Quick Log
+					</h2>
+					<div class="quick-log-grid">
+						<!-- Quick Log Steps -->
+						<div class="card quick-log-card">
+							<div
+								class="card-header"
+								style="border: none; padding-bottom: 0"
+							>
+								<div class="card-header-title">
+									<span
+										class="card-header-icon"
+										style="color: var(--accent-teal)"
+										>👣</span
+									>
+									Log Steps
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="quick-log-input-group">
+									<input
+										type="number"
+										id="quickLogSteps"
+										name="quick_steps"
+										class="form-input"
+										placeholder="Enter steps"
+										min="0"
+									/>
+									<button
+										class="button button-secondary"
+										onclick="quickLogSteps()"
+									>
+										Log
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- Quick Log Water -->
+						<div class="card quick-log-card">
+							<div
+								class="card-header"
+								style="border: none; padding-bottom: 0"
+							>
+								<div class="card-header-title">
+									<span
+										class="card-header-icon"
+										style="color: var(--accent-teal)"
+										>💧</span
+									>
+									Log Water
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="quick-log-input-group">
+									<input
+										type="number"
+										id="quickLogWater"
+										name="quick_water"
+										class="form-input"
+										placeholder="Amount (mL)"
+										min="0"
+										step="50"
+									/>
+									<button
+										class="button button-secondary"
+										onclick="quickLogWater()"
+									>
+										Log
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- Quick Log Weight (Optional) -->
+						<div class="card quick-log-card">
+							<div
+								class="card-header"
+								style="border: none; padding-bottom: 0"
+							>
+								<div class="card-header-title">
+									<span
+										class="card-header-icon"
+										style="color: var(--accent-red)"
+										>⚖️</span
+									>
+									Log Weight
+								</div>
+							</div>
+							<div class="card-body">
+								<div class="quick-log-input-group">
+									<input
+										type="number"
+										id="quickLogWeight"
+										name="quick_weight"
+										class="form-input"
+										placeholder="Weight (kg)"
+										min="0"
+										step="0.1"
+									/>
+									<button
+										class="button button-secondary"
+										onclick="quickLogWeight()"
+									>
+										Log
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Today's Goals Checklist -->
+				<section class="goals-checklist-section card">
+					<!-- Wrap in a card -->
+					<h2
+						class="section-header"
+						style="
+							border: none;
+							margin-bottom: 15px;
+							font-size: 18px;
+						"
+					>
+						🎯 Today's Goals Checklist
+					</h2>
+					<ul class="goals-checklist" id="goalsChecklist">
+						<!-- Goals loaded by JS -->
+					</ul>
+					<p
+						id="noGoalsToday"
+						class="text-center text-tertiary d-none mt-2"
+					>
+						No active goals for today.
+					</p>
+				</section>
 			</div>
 			<!-- End Main Content -->
 
-			<!-- Bottom Navigation Bar (UPDATED) -->
+			<!-- Bottom Navigation Bar -->
 			<nav class="bottom-nav" id="bottomNav">
-				<a href="todo.shtml" class="nav-item active" data-page="home"> <!-- Active -->
+				<button
+					onclick="window.location.href='todo.shtml'"
+					class="nav-item active"
+					data-page="home"
+				>
 					<span class="nav-icon">🏠</span>
 					<span class="nav-label">Home</span>
-				</a>
-				<a href="progress.shtml" class="nav-item" data-page="progress">
+				</button>
+				<button
+					onclick="window.location.href='progress.shtml'"
+					class="nav-item"
+					data-page="progress"
+				>
 					<span class="nav-icon">📊</span>
 					<span class="nav-label">Progress</span>
-				</a>
-				<a href="log-meal.shtml" class="nav-item" data-page="log-meal">
+				</button>
+				<button
+					onclick="window.location.href='log-meal.shtml'"
+					class="nav-item"
+					data-page="log-meal"
+				>
 					<span class="nav-icon">🍔</span>
 					<span class="nav-label">Log Meal</span>
-				</a>
-                <a href="log-exercise.shtml" class="nav-item" data-page="log-exercise">
+				</button>
+				<button
+					onclick="window.location.href='log-exercise.shtml'"
+					class="nav-item"
+					data-page="log-exercise"
+				>
 					<span class="nav-icon">🏃</span>
 					<span class="nav-label">Log Exercise</span>
-				</a>
-				<a href="profile.shtml" class="nav-item" data-page="profile">
+				</button>
+				<button
+					onclick="window.location.href='profile.shtml'"
+					class="nav-item"
+					data-page="profile"
+				>
 					<span class="nav-icon">👤</span>
 					<span class="nav-label">Profile</span>
-				</a>
+				</button>
 			</nav>
-			<!-- End Bottom Navigation Bar -->
-        </div>
+		</div>
 		<!-- End ipad Container -->
 
 		<script>
+			let currentFilter = "daily"; // Track active filter
+			let userGoals = [];
+			let dailyLog = {}; // Store today's logs { steps: 1000, water: 500, kcal: 1200, exercise: 30, mind: 10 }
+
+			// --- Data Loading & Calculation ---
+			function loadDashboardData() {
+				// 1. Load User Profile & Goals
+				const userProfile = JSON.parse(
+					localStorage.getItem("userProfile") || "{}"
+				);
+				userGoals = JSON.parse(
+					localStorage.getItem("userGoals") || "[]"
+				);
+				document.getElementById("userGreeting").textContent = `Hello, ${
+					userProfile.username || "User"
+				}!`;
+
+				// Set goals in stat cards
+				document.getElementById("goalSteps").textContent =
+					userGoals.find((g) => g.type === "steps")?.targetValue ||
+					"10,000";
+				document.getElementById("goalExercise").textContent =
+					userGoals.find((g) => g.type === "exercise_duration")
+						?.targetValue || "60"; // Assuming weekly goal, display daily portion?
+				document.getElementById("goalKcal").textContent =
+					userGoals.find((g) => g.type === "calories")?.targetValue ||
+					"2000";
+				document.getElementById("goalWater").textContent =
+					(userGoals.find((g) => g.type === "water")?.targetValue ||
+						"2000") / 1000; // Assuming goal in mL, display in L
+				document.getElementById("goalMind").textContent =
+					userGoals.find((g) => g.type === "mindfulness")
+						?.targetValue || "15";
+
+				// 2. Load or calculate data based on filter (currentFilter)
+				// This part needs more robust logic to fetch/aggregate data for week/month
+				// For this demo, we'll primarily use a simplified 'dailyLog' from localStorage
+
+				const todayStr = new Date().toISOString().split("T")[0];
+				dailyLog = JSON.parse(
+					localStorage.getItem(`dailyLog_${todayStr}`) || "{}"
+				);
+
+				// 3. Update UI elements
+				updateStatsUI();
+				updateSleepUI(); // Needs sleep data source
+				loadGoalsChecklist();
+			}
+
+			function updateStatsUI() {
+				// Update stat values
+				document.getElementById("statSteps").textContent =
+					dailyLog.steps || 0;
+				document.getElementById("statExercise").textContent =
+					dailyLog.exercise || 0;
+				document.getElementById("statKcal").textContent =
+					dailyLog.kcal || 0;
+				document.getElementById("statWater").textContent = (
+					(dailyLog.water || 0) / 1000
+				).toFixed(1); // Display in L
+				document.getElementById("statMind").textContent =
+					dailyLog.mind || 0;
+
+				// Update progress bars
+				updateProgressBar(
+					"stepsProgress",
+					dailyLog.steps || 0,
+					parseInt(document.getElementById("goalSteps").textContent)
+				);
+				updateProgressBar(
+					"exerciseProgress",
+					dailyLog.exercise || 0,
+					parseInt(
+						document.getElementById("goalExercise").textContent
+					)
+				);
+				updateProgressBar(
+					"kcalProgress",
+					dailyLog.kcal || 0,
+					parseInt(document.getElementById("goalKcal").textContent)
+				);
+				updateProgressBar(
+					"waterProgress",
+					dailyLog.water || 0,
+					parseFloat(
+						document.getElementById("goalWater").textContent
+					) * 1000
+				); // Compare in mL
+				updateProgressBar(
+					"mindProgress",
+					dailyLog.mind || 0,
+					parseInt(document.getElementById("goalMind").textContent)
+				);
+
+				// Update goals met count (simplified)
+				const goalsMet = calculateGoalsMet();
+				const totalActiveGoals = userGoals.filter(
+					(g) => g.status !== "completed"
+				).length; // Count active goals
+				document.getElementById(
+					"statGoals"
+				).textContent = `${goalsMet} / ${totalActiveGoals}`;
+				updateProgressBar("goalsProgress", goalsMet, totalActiveGoals);
+			}
+
+			function updateProgressBar(elementId, currentValue, goalValue) {
+				const progressBar = document.getElementById(elementId);
+				if (!progressBar || goalValue <= 0) return;
+				const percentage = Math.min(
+					100,
+					Math.max(0, (currentValue / goalValue) * 100)
+				);
+				progressBar.style.width = `${percentage}%`;
+			}
+
+			function updateSleepUI() {
+				// TODO: Needs data source for sleep (e.g., from manual log or device)
+				const quality = 80; // Mock
+				const durationHours = 7; // Mock
+				const durationMinutes = 30; // Mock
+
+				document.getElementById(
+					"sleepQuality"
+				).textContent = `${quality}%`;
+				document.getElementById(
+					"sleepDuration"
+				).textContent = `${durationHours}h ${durationMinutes}m`;
+				const sleepChart = document.getElementById("sleepChart");
+				if (sleepChart) {
+					sleepChart.style.background = `conic-gradient(var(--accent-purple) 0% ${quality}%, var(--chart-track-color) ${quality}% 100%)`;
+				}
+			}
+
+			function calculateGoalsMet() {
+				// Simple check based on daily log vs goals
+				let metCount = 0;
+				userGoals.forEach((goal) => {
+					if (goal.status === "completed") return; // Skip completed
+					const goalValue = parseFloat(goal.targetValue);
+					if (isNaN(goalValue)) return; // Skip goals without numeric targets for now
+
+					switch (goal.type) {
+						case "steps":
+							if ((dailyLog.steps || 0) >= goalValue) metCount++;
+							break;
+						// case 'exercise_duration': // Needs weekly calculation
+						// case 'weight': // Not a daily check
+						case "water":
+							if ((dailyLog.water || 0) >= goalValue) metCount++;
+							break; // Assuming goalValue is in mL
+						// case 'frequency': // Needs more complex tracking
+						// case 'mindfulness': if ((dailyLog.mind || 0) >= goalValue) metCount++; break; // Assuming goal name matches dailyLog key
+					}
+				});
+				return metCount;
+			}
+
+			function loadGoalsChecklist() {
+				const checklist = document.getElementById("goalsChecklist");
+				const noGoalsMsg = document.getElementById("noGoalsToday");
+				checklist.innerHTML = ""; // Clear existing
+
+				// Filter for goals relevant for today (e.g., daily types, or active goals)
+				const todayGoals = userGoals.filter(
+					(g) =>
+						g.status !== "completed" &&
+						(g.type === "steps" ||
+							g.type === "water" ||
+							g.type === "mindfulness" ||
+							g.type === "custom") // Add types relevant for daily checkoff
+				);
+
+				if (todayGoals.length === 0) {
+					noGoalsMsg.classList.remove("d-none");
+					return;
+				}
+
+				noGoalsMsg.classList.add("d-none");
+				todayGoals.forEach((goal) => {
+					const item = document.createElement("li");
+					item.classList.add("goals-checklist-item");
+					const isCompleted = checkGoalCompletionStatus(goal.id); // Check if manually marked complete today
+					if (isCompleted) item.classList.add("completed");
+
+					item.innerHTML = `
+                        <input type="checkbox" id="goalCheck_${
+							goal.id
+						}" data-goal-id="${goal.id}" ${
+						isCompleted ? "checked" : ""
+					} onchange="toggleGoalCompletion(this)">
+                        <label for="goalCheck_${goal.id}">
+                            <div class="goal-name">${goal.name}</div>
+                            ${
+								goal.targetValue
+									? `<div class="goal-details">Target: ${goal.targetValue}</div>`
+									: ""
+							}
+                        </label>
+                     `;
+					checklist.appendChild(item);
+				});
+			}
+
+			// --- Quick Log Functions ---
+			function quickLogSteps() {
+				const input = document.getElementById("quickLogSteps");
+				const steps = parseInt(input.value);
+				if (!isNaN(steps) && steps >= 0) {
+					dailyLog.steps = (dailyLog.steps || 0) + steps; // Add to existing steps
+					saveDailyLog();
+					updateStatsUI();
+					input.value = ""; // Clear input
+					alert(`${steps} steps logged!`);
+				} else {
+					alert("Please enter a valid number of steps.");
+				}
+			}
+			function quickLogWater() {
+				const input = document.getElementById("quickLogWater");
+				const water = parseInt(input.value);
+				if (!isNaN(water) && water > 0) {
+					dailyLog.water = (dailyLog.water || 0) + water; // Add water in mL
+					saveDailyLog();
+					updateStatsUI();
+					input.value = "";
+					alert(`${water} mL water logged!`);
+				} else {
+					alert("Please enter a valid amount of water in mL.");
+				}
+			}
+			function quickLogWeight() {
+				const input = document.getElementById("quickLogWeight");
+				const weight = parseFloat(input.value);
+				if (!isNaN(weight) && weight > 0) {
+					const today = new Date().toISOString().split("T")[0];
+					logWeightValue(today, weight); // Use profile function to update log
+					// Update profile display if needed
+					const userProfile = JSON.parse(
+						localStorage.getItem("userProfile") || "{}"
+					);
+					userProfile.weight_kg = weight;
+					localStorage.setItem(
+						"userProfile",
+						JSON.stringify(userProfile)
+					);
+					loadDashboardData(); // Reload to reflect weight change in profile stats potentially
+					input.value = "";
+					alert(`Weight ${weight} kg logged for today!`);
+				} else {
+					alert("Please enter a valid weight in kg.");
+				}
+			}
+
+			function saveDailyLog() {
+				const todayStr = new Date().toISOString().split("T")[0];
+				localStorage.setItem(
+					`dailyLog_${todayStr}`,
+					JSON.stringify(dailyLog)
+				);
+			}
+
+			// --- Goal Checklist Functions ---
+			function toggleGoalCompletion(checkbox) {
+				const goalId = checkbox.dataset.goalId;
+				const isCompleted = checkbox.checked;
+				const listItem = checkbox.closest(".goals-checklist-item");
+				listItem.classList.toggle("completed", isCompleted);
+
+				// Store completion status (e.g., in dailyLog or separate storage)
+				const todayStr = new Date().toISOString().split("T")[0];
+				let completedGoals = JSON.parse(
+					localStorage.getItem(`completedGoals_${todayStr}`) || "{}"
+				);
+				if (isCompleted) {
+					completedGoals[goalId] = true;
+				} else {
+					delete completedGoals[goalId];
+				}
+				localStorage.setItem(
+					`completedGoals_${todayStr}`,
+					JSON.stringify(completedGoals)
+				);
+
+				// Optionally update overall goals met stat immediately
+				// updateStatsUI(); // Recalculate if needed
+			}
+
+			function checkGoalCompletionStatus(goalId) {
+				const todayStr = new Date().toISOString().split("T")[0];
+				let completedGoals = JSON.parse(
+					localStorage.getItem(`completedGoals_${todayStr}`) || "{}"
+				);
+				return completedGoals[goalId] === true;
+			}
+
 			// --- Time Filter Button Handler ---
 			const timeFiltersContainer = document.getElementById("timeFilters");
 			if (timeFiltersContainer) {
-				const filterButtons = timeFiltersContainer.querySelectorAll(".filter-btn");
 				timeFiltersContainer.addEventListener("click", (event) => {
 					if (event.target.classList.contains("filter-btn")) {
-						filterButtons.forEach((btn) => btn.classList.remove("active"));
+						const filterButtons =
+							timeFiltersContainer.querySelectorAll(
+								".filter-btn"
+							);
+						filterButtons.forEach((btn) =>
+							btn.classList.remove("active")
+						);
 						event.target.classList.add("active");
-						const selectedFilter = event.target.dataset.filter;
-						console.log("Selected Filter:", selectedFilter);
-						// Add logic to update card data based on filter
-                        // e.g., fetchWeeklyData(), fetchMonthlyData()
-                        updateDashboardData(selectedFilter); // Mock update
+						currentFilter = event.target.dataset.filter;
+						console.log("Selected Filter:", currentFilter);
+						alert(
+							`Data view changed to ${currentFilter}. (Full data aggregation not implemented in demo)`
+						);
+						// TODO: Add logic to fetch and update card data based on filter
+						// loadDashboardData(); // Reload data for the new filter
 					}
 				});
 			}
 
-            // --- Mock Data Update Function ---
-            function updateDashboardData(filter) {
-                console.log(`Updating dashboard for ${filter} view...`);
-                // In a real app, fetch data and update DOM elements
-                // Example: Change sleep duration based on filter
-                const sleepDurationEl = document.getElementById('sleepDuration');
-                const sleepQualityEl = document.getElementById('sleepQuality');
-                const sleepChartEl = document.getElementById('sleepChart');
-
-                if (filter === 'daily') {
-                    sleepDurationEl.textContent = '7h 30m';
-                    sleepQualityEl.textContent = '80%';
-                    if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 80%, var(--chart-track-color) 80% 100%)';
-                    // Update other cards... e.g., steps, kcal, etc.
-                    document.getElementById('stepsProgress').style.width = '85%';
-                    document.getElementById('exerciseProgress').style.width = '75%';
-                    document.getElementById('kcalProgress').style.width = '79%';
-                    document.getElementById('waterProgress').style.width = '60%';
-                    document.getElementById('mindProgress').style.width = '66%';
-                    document.getElementById('goalsProgress').style.width = '60%';
-
-
-                } else if (filter === 'weekly') {
-                    sleepDurationEl.textContent = '7h 15m'; // Avg for week
-                    sleepQualityEl.textContent = '75%'; // Avg quality
-                     if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 75%, var(--chart-track-color) 75% 100%)';
-                    // Update other cards...
-                     document.getElementById('stepsProgress').style.width = '92%'; // Example weekly progress
-                     document.getElementById('exerciseProgress').style.width = '88%';
-                     document.getElementById('kcalProgress').style.width = '85%';
-                     document.getElementById('waterProgress').style.width = '70%';
-                     document.getElementById('mindProgress').style.width = '75%';
-                     document.getElementById('goalsProgress').style.width = '70%';
-
-                } else if (filter === 'monthly') {
-                     sleepDurationEl.textContent = '7h 20m'; // Avg for month
-                     sleepQualityEl.textContent = '78%'; // Avg quality
-                      if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 78%, var(--chart-track-color) 78% 100%)';
-                     // Update other cards...
-                     document.getElementById('stepsProgress').style.width = '95%'; // Example monthly progress
-                     document.getElementById('exerciseProgress').style.width = '90%';
-                     document.getElementById('kcalProgress').style.width = '82%';
-                     document.getElementById('waterProgress').style.width = '75%';
-                     document.getElementById('mindProgress').style.width = '80%';
-                     document.getElementById('goalsProgress').style.width = '75%';
-                }
-                 alert(`Dashboard updated for ${filter} view (mock data)`);
-            }
-
-			// --- Mock Navigation Function (for card clicks) ---
+			// --- Mock Navigation & Actions ---
 			function navigateTo(url) {
 				console.log("Navigating to:", url);
-                if (url && url !== '#') {
-                   window.location.href = url; // Navigate for real if URL is provided
-                } else {
-				    alert(`Navigation to ${url} section (implementation needed)`);
-                }
+				if (url && url !== "#") {
+					window.location.href = url;
+				} else {
+					alert(`Navigation to ${url} section not implemented.`);
+				}
+			}
+			function showNotifications() {
+				alert("Notifications panel not implemented.");
+			}
+			function showSearch() {
+				alert("Search function not implemented.");
 			}
 
 			// --- Initial Setup ---
 			document.addEventListener("DOMContentLoaded", () => {
-				// Set initial state based on 'daily' filter
-				updateDashboardData('daily');
-
-                // Optional: Add listeners for header icons
-                const notificationIcon = document.querySelector('.notification-icon');
-                if(notificationIcon) notificationIcon.addEventListener('click', () => alert('Show Notifications'));
-                const searchIcon = document.querySelector('.search-icon');
-                 if(searchIcon) searchIcon.addEventListener('click', () => alert('Show Search'));
+				loadDashboardData();
 			});
 		</script>
 	</body>
