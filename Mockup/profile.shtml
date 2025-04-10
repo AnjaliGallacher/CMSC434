@@ -6,8 +6,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
-		<!-- Updated Title -->
-		<title>User Profile</title>
+		<title>Modern Profile</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -16,34 +15,16 @@
 		/>
 		<style>
 			:root {
-				/* --- Adopted Color Palette (from revised todo.shtml) --- */
-				--primary-color: #007aff;
+				--primary-color: #007aff; /* iOS Blue - vibrant and modern */
 				--primary-light: #e6f2ff;
-				--accent-purple: #af52de;
-				--accent-teal: #5ac8fa;
-				--accent-orange: #ff9500;
-				--accent-green: #34c759;
-				--accent-red: #ff3b30;
-
 				--background-color: #f2f2f7;
-				--surface-color: #ffffff;
-				--surface-secondary-color: #e5e5ea;
-				--bottom-nav-background: rgba(248, 248, 248, 0.92);
-
-				--text-primary: #000000;
-				--text-secondary: #3c3c43; /* Dark Gray (Opacity 95%) */
-				--text-tertiary: #8e8e93; /* Medium Gray (Opacity 60%) */
-				--text-link: var(--primary-color);
-				--text-on-primary: #ffffff;
-
-				--border-color: #d1d1d6;
+				--card-background: #f8f9fa; /* Slightly off-white for cards */
+				--text-primary: #1c1c1e; /* Near black */
+				--text-secondary: #8a8a8e; /* Medium gray */
+				--text-tertiary: #c7c7cc; /* Lighter gray */
+				--border-color: #e5e5ea;
 				--shadow-color: rgba(0, 0, 0, 0.05);
 				--shadow-strong-color: rgba(0, 0, 0, 0.1);
-
-				/* --- Dimensions --- */
-				--nav-height: 65px;
-				--content-padding: 16px;
-				--card-border-radius: 16px; /* Consistent radius */
 			}
 
 			/* Basic Reset & Body */
@@ -54,8 +35,8 @@
 				font-family: "Inter", -apple-system, BlinkMacSystemFont,
 					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 				height: 100%;
-				background-color: #e9e9ef;
-				-webkit-font-smoothing: antialiased;
+				background-color: #e9e9ef; /* Background outside the phone */
+				-webkit-font-smoothing: antialiased; /* Smoother fonts on Mac/iOS */
 				-moz-osx-font-smoothing: grayscale;
 			}
 			* {
@@ -67,509 +48,562 @@
 				width: 375px;
 				height: 667px;
 				border: 1px solid var(--border-color);
-				margin: 30px auto;
+				margin: 30px auto; /* More space around */
 				background-color: var(--background-color);
 				display: flex;
 				flex-direction: column;
 				position: relative;
 				overflow: hidden;
-				border-radius: 25px;
+				border-radius: 20px; /* Rounded corners for modern feel */
 				box-shadow: 0 10px 30px var(--shadow-strong-color);
 			}
 
-			/* Header - Simplified, only right-side actions */
+			/* Header */
 			.header {
 				display: flex;
-				justify-content: flex-end; /* Align items to the right */
+				justify-content: space-between;
 				align-items: center;
-				padding: 15px var(--content-padding) 8px var(--content-padding);
+				padding: 18px 20px; /* Slightly more padding */
+				/* border-bottom: 1px solid var(--border-color); removed for cleaner look */
 				flex-shrink: 0;
-				position: relative;
-				z-index: 10;
-				background-color: var(--background-color);
+				position: relative; /* For potential absolute positioning within */
+				z-index: 10; /* Above main content */
 			}
-			/* Removed .menu-icon styles */
-			.action-icon {
-				/* Generic class for header icons */
-				font-size: 22px;
-				color: var(--text-secondary);
-				cursor: pointer;
-				padding: 5px;
-				transition: color 0.2s ease;
-				position: relative;
-			}
-			.action-icon:hover {
+			.menu-icon,
+			.notification-icon {
+				font-size: 22px; /* Slightly smaller/refined */
 				color: var(--text-primary);
+				cursor: pointer;
+				padding: 5px; /* Easier touch target */
+				transition: color 0.2s ease;
 			}
-			/* Example: Settings icon instead of notifications on profile */
-			.settings-icon::after {
-				/* Optional badge styling if needed */
-				/* content: ''; display: block; ... */
+			.menu-icon:hover,
+			.notification-icon:hover {
+				color: var(--primary-color);
+			}
+			/* Notification dot (optional) */
+			.notification-icon::after {
+				content: "";
+				display: block;
+				width: 8px;
+				height: 8px;
+				background-color: var(--primary-color);
+				border-radius: 50%;
+				position: absolute;
+				top: 18px;
+				right: 18px;
+				border: 1px solid var(--background-color);
 			}
 
-			/* Removed Side Menu Styles */
+			/* Side Menu (Hamburger) */
+			.side-menu {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 75%; /* Slightly wider */
+				max-width: 280px;
+				height: 100%;
+				background-color: #ffffff; /* Use white for clean overlay */
+				border-right: 1px solid var(--border-color);
+				padding: 60px 25px 30px 25px;
+				transform: translateX(-100%);
+				transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother ease */
+				z-index: 100;
+				box-shadow: 5px 0 15px var(--shadow-strong-color);
+			}
+			.side-menu.open {
+				transform: translateX(0);
+			}
+			.side-menu a {
+				display: block;
+				padding: 18px 0; /* More vertical space */
+				text-decoration: none;
+				color: var(--text-primary);
+				font-size: 18px;
+				font-weight: 500; /* Medium weight */
+				border-bottom: 1px solid var(--border-color);
+				transition: color 0.2s ease;
+			}
+			.side-menu a:last-child {
+				border-bottom: none;
+			}
+			.side-menu a:hover,
+			.side-menu a.active {
+				/* Add active class possibility */
+				color: var(--primary-color);
+			}
 
-			/* Main Content Area */
+			/* Main Content Area (Profile + Space) */
 			.main-content {
 				flex-grow: 1;
 				overflow-y: auto;
-				padding: var(--content-padding); /* Consistent padding */
-				/* Add padding-bottom for bottom nav */
-				padding-bottom: calc(
-					var(--nav-height) + var(--content-padding)
-				);
-				scrollbar-width: none;
-				-ms-overflow-style: none;
+				padding: 0 20px 30px 20px; /* Add side padding too */
+				/* Hide scrollbar visual */
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE and Edge */
 			}
 			.main-content::-webkit-scrollbar {
-				display: none;
+				display: none; /* Chrome, Safari, Opera */
 			}
 
-			/* Profile Section - More Compact */
+			/* Profile Section */
 			.profile-section {
-				display: flex; /* Align items horizontally */
-				align-items: center; /* Vertically align items */
-				padding-bottom: 25px; /* Space below profile section */
-				margin-bottom: 20px; /* Space before stats */
-				border-bottom: 1px solid var(--border-color); /* Separator */
-				gap: 15px; /* Space between picture and text */
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding-top: 20px; /* Adjusted from header padding */
+				padding-bottom: 50px; /* Even more spacing */
+				text-align: center;
 			}
 			.profile-picture {
-				width: 80px; /* Smaller picture */
-				height: 80px;
+				width: 140px; /* Slightly smaller */
+				height: 140px;
 				border-radius: 50%;
-				background-color: var(--primary-light); /* Simple background */
+				/* Subtle gradient background */
+				background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+				margin-bottom: 20px; /* More space */
 				position: relative;
-				box-shadow: 0 2px 8px rgba(0, 122, 255, 0.15);
+				box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2); /* Subtle blue shadow */
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				flex-shrink: 0; /* Prevent shrinking */
-				color: var(--primary-color); /* Icon color */
 			}
+			/* Simple Placeholder Icon instead of drawn face */
 			.profile-picture::before {
-				content: "👤"; /* Standard user icon */
-				font-size: 40px; /* Adjusted size */
-				opacity: 0.9;
-			}
-			.profile-info {
-				flex-grow: 1; /* Allow text to take available space */
-				text-align: left; /* Align text left */
+				content: "?"; /* User icon */
+				font-size: 60px;
+				opacity: 0.8;
 			}
 			.username {
-				font-size: 20px; /* Slightly smaller */
-				font-weight: 600;
+				font-size: 24px; /* Larger */
+				font-weight: 600; /* Semibold */
 				color: var(--text-primary);
-				margin: 0 0 4px 0; /* Adjust spacing */
-			}
-			.user-bio {
-				/* Class for the bio */
-				font-size: 14px;
-				color: var(--text-secondary);
-				line-height: 1.4;
-				margin: 0;
-			}
-			.edit-profile-btn {
-				display: inline-block; /* Or block if needed */
-				margin-top: 8px;
-				padding: 6px 12px;
-				background-color: var(--surface-secondary-color);
-				color: var(--text-link);
-				border: none;
-				border-radius: 20px; /* Pill shape */
-				font-size: 13px;
-				font-weight: 500;
-				cursor: pointer;
-				transition: background-color 0.2s ease;
-			}
-			.edit-profile-btn:hover {
-				background-color: var(--border-color);
+				margin-top: 5px; /* Add some space if needed */
 			}
 
-			/* Stats Section (Integrated into main content) */
-			.stats-section {
-				/* No specific container needed if just a grid */
-			}
-			.stats-section-header {
-				font-size: 16px;
-				font-weight: 600;
-				color: var(--text-primary);
-				margin-bottom: 15px;
-			}
-			.profile-stats-grid {
-				display: grid;
-				grid-template-columns: repeat(2, 1fr); /* Keep 2 columns */
-				gap: 12px; /* Consistent gap */
-			}
-
-			/* Stat Box Styling (Adapted from dashboard stat-card) */
-			.profile-stat-box {
-				background-color: var(--surface-color);
-				border-radius: var(--card-border-radius);
-				padding: 15px; /* Consistent padding */
-				box-shadow: 0 3px 8px var(--shadow-color);
-				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				/* Add cursor if these are clickable */
-				/* cursor: pointer; */
-			}
-			/* Add hover if clickable */
-			/* .profile-stat-box:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 5px 12px var(--shadow-strong-color);
-			} */
-
-			.profile-stat-header {
-				display: flex;
-				align-items: center;
-				font-size: 12px;
-				font-weight: 500;
-				color: var(--text-secondary);
-				margin-bottom: 8px;
-			}
-			.profile-stat-icon {
-				font-size: 16px;
-				margin-right: 6px;
-				/* Assign colors based on stat type */
-				/* Example: color: var(--accent-green); */
-			}
-			.profile-stat-value {
-				font-size: 20px;
-				font-weight: 600;
-				color: var(--text-primary);
-				line-height: 1.2;
-			}
-			.profile-stat-unit {
-				font-size: 12px;
-				color: var(--text-secondary);
-				margin-left: 3px;
-			}
-			.profile-stat-label {
-				/* Optional secondary label if needed */
-				font-size: 11px;
-				color: var(--text-tertiary);
-				margin-top: 2px;
-			}
-
-			/* Specific Icon Colors */
-			.icon-goals {
-				color: var(--accent-green);
-			}
-			.icon-calories {
-				color: var(--accent-orange);
-			}
-			.icon-sleep {
-				color: var(--accent-purple);
-			}
-			.icon-run {
-				color: var(--primary-color);
-			}
-			.icon-steps {
-				color: var(--accent-teal);
-			}
-			.icon-water {
-				color: var(--accent-teal);
-			}
-			.icon-heart {
-				color: var(--accent-red);
-			}
-			.icon-strength {
-				color: var(--primary-color);
-			}
-			.icon-badges {
-				color: var(--accent-orange);
-			}
-			.icon-streak {
-				color: var(--accent-green);
-			}
-			.icon-achievements {
-				color: var(--accent-purple);
-			}
-
-			/* Removed Fixed Bottom Section, Scroller, Arrows, Pagination Styles */
-
-			/* --- Bottom Navigation Bar (Copied from revised todo.shtml) --- */
-			.bottom-nav {
+			/* Fixed Bottom Section */
+			.bottom-fixed-section {
 				position: absolute;
 				bottom: 0;
 				left: 0;
 				right: 0;
-				height: var(--nav-height);
-				background-color: var(--bottom-nav-background);
-				backdrop-filter: blur(12px);
-				-webkit-backdrop-filter: blur(12px);
-				border-top: 0.5px solid var(--border-color);
-				display: flex;
-				justify-content: space-around;
-				align-items: stretch;
-				z-index: 100;
-				padding: 0 5px;
+				background-color: var(--background-color);
+				/* Subtle top shadow to indicate layering */
+				padding-top: 20px; /* Space above the badges */
+				border-top-left-radius: 20px; /* Match container rounding */
+				border-top-right-radius: 20px;
+				flex-shrink: 0;
 			}
-			.nav-item {
+
+			/* Stats Scroller Wrapper */
+			.stats-scroller-wrapper {
+				position: relative;
+				margin: 0 20px; /* Consistent side margins */
+			}
+
+			/* Arrows for Scrolling */
+			.scroll-arrow {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				background-color: rgba(
+					255,
+					255,
+					255,
+					0.8
+				); /* Semi-transparent white */
+				backdrop-filter: blur(5px); /* Glass effect */
+				color: var(--text-secondary);
+				border: 1px solid var(--border-color);
+				border-radius: 50%;
+				width: 32px;
+				height: 32px;
+				font-size: 16px;
+				font-weight: bold;
+				line-height: 30px; /* Center arrow */
+				text-align: center;
+				cursor: pointer;
+				z-index: 10;
+				display: none; /* Hidden by default, shown via JS */
+				transition: all 0.2s ease;
+				box-shadow: 0 2px 5px var(--shadow-color);
+			}
+			.scroll-arrow:hover {
+				background-color: rgba(255, 255, 255, 1);
+				color: var(--primary-color);
+				border-color: var(--primary-light);
+			}
+			.scroll-arrow.left {
+				left: -16px; /* Overlap slightly */
+			}
+			.scroll-arrow.right {
+				right: -16px; /* Overlap slightly */
+			}
+			.stats-scroller-wrapper.show-arrows .scroll-arrow {
+				display: block;
+			}
+
+			/* Actual Scrolling Container */
+			.stats-scroller {
+				display: flex;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				padding-bottom: 15px; /* Space below cards */
+				margin-bottom: 15px; /* Space between scroller and dots */
+				/* Hide scrollbar visual */
+				scrollbar-width: none;
+				-ms-overflow-style: none;
+			}
+			.stats-scroller::-webkit-scrollbar {
+				display: none;
+			}
+
+			/* Individual Page/Screen within the Scroller */
+			.stats-page {
+				width: 100%;
+				flex-shrink: 0;
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 15px; /* Space between grid items */
+				padding: 0 2px; /* Tiny padding to prevent edge clipping */
+				scroll-snap-align: center; /* Center snap */
+			}
+
+			/* Stat Box Styling */
+			.stat-box {
+				height: 110px; /* Slightly taller */
+				border: none; /* Remove border */
+				border-radius: 12px; /* More rounded */
 				display: flex;
 				flex-direction: column;
+				justify-content: center; /* Vertically center content */
 				align-items: center;
-				justify-content: center;
-				text-decoration: none;
-				color: var(--text-tertiary);
-				font-size: 10px;
-				font-weight: 500;
-				flex-grow: 1;
 				text-align: center;
-				transition: color 0.2s ease;
-				padding: 6px 0 4px 0;
-				position: relative;
-				cursor: pointer;
+				padding: 15px 10px; /* Adjusted padding */
+				background-color: var(--card-background);
+				box-shadow: 0 3px 8px var(--shadow-color); /* Subtle shadow */
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
 			}
-			.nav-icon {
-				font-size: 22px;
-				margin-bottom: 3px;
-				line-height: 1;
+			.stat-box:hover {
+				transform: translateY(-3px); /* Slight lift on hover */
+				box-shadow: 0 6px 12px var(--shadow-strong-color);
 			}
-			.nav-item:hover {
+
+			.stat-value {
+				font-size: 18px;
+				font-weight: 600; /* Semibold */
+				color: var(--text-primary);
+				margin-bottom: 4px; /* Space between value and icon */
+			}
+			.stat-icon {
+				font-size: 26px; /* Larger icons */
+				margin-bottom: 6px; /* Space between icon and label */
+				color: var(--primary-color); /* Use accent color */
+				line-height: 1; /* Ensure icon alignment */
+			}
+			.stat-label {
+				font-size: 13px; /* Slightly smaller */
 				color: var(--text-secondary);
+				font-weight: 500; /* Medium weight */
 			}
-			.nav-item.active {
-				color: var(--primary-color);
+
+			/* Pagination Dots */
+			.pagination-dots {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-bottom: 20px; /* Bottom padding for the whole section */
+			}
+			.dot {
+				width: 7px; /* Slightly smaller */
+				height: 7px;
+				background-color: var(
+					--text-tertiary
+				); /* Lighter inactive color */
+				border-radius: 50%;
+				margin: 0 5px; /* More space between dots */
+				transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+			}
+			.dot.active {
+				background-color: var(--primary-color); /* Active color */
+				transform: scale(1.2); /* Slightly larger active dot */
 			}
 		</style>
 	</head>
 	<body>
 		<div class="phone-container">
-			<!-- Header - Simplified -->
+			<!-- Header -->
 			<div class="header">
-				<!-- Removed Menu Icon -->
-				<!-- Example: Settings Icon -->
-				<div class="action-icon settings-icon" title="Settings">⚙️</div>
+				<div class="menu-icon" id="menu-toggle">☰</div>
+				<div class="notification-icon" title="Notifications">?</div>
 			</div>
 
-			<!-- Removed Side Menu -->
+			<!-- Side Menu (Initially Hidden) -->
+			<div class="side-menu" id="sideMenu">
+				<a href="#" class="active">Home</a>
+				<!-- Example active link -->
+				<a href="#">Profile</a>
+				<a href="#">Activity Feed</a>
+				<a href="#">Friends</a>
+				<a href="#">Settings</a>
+				<a href="#">Logout</a>
+			</div>
 
 			<!-- Main Scrollable Content Area -->
 			<div class="main-content">
 				<!-- Profile Section -->
 				<div class="profile-section">
 					<div class="profile-picture">
-						<!-- Icon via ::before -->
+						<!-- Placeholder via ::before pseudo-element -->
 					</div>
-					<div class="profile-info">
-						<div class="username">Alex Johnson</div>
-						<p class="user-bio">
-							Fitness enthusiast | Daily goals tracker | Lover of
-							hiking
-						</p>
-						<!-- Edit Profile Button -->
-						<button
-							class="edit-profile-btn"
-							onclick="editProfile()"
-						>
-							Edit Profile
-						</button>
-					</div>
+					<div class="username">Alex Johnson</div>
 				</div>
-
-				<!-- Stats Section -->
-				<div class="stats-section">
-					<h2 class="stats-section-header">Activity Summary</h2>
-					<div class="profile-stats-grid">
-						<!-- Example Stats - Adapt as needed -->
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-goals"
-									>🎯</span
-								>
-								Goals Today
-							</div>
-							<div class="profile-stat-value">4 / 5</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-calories"
-									>🔥</span
-								>
-								Avg Calories Burned
-							</div>
-							<div class="profile-stat-value">
-								2150<span class="profile-stat-unit">kcal</span>
-							</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-sleep"
-									>🌙</span
-								>
-								Avg Sleep
-							</div>
-							<div class="profile-stat-value">7h 45m</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-run"
-									>🏃</span
-								>
-								Weekly Run Distance
-							</div>
-							<div class="profile-stat-value">
-								18.5<span class="profile-stat-unit">Miles</span>
-							</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-steps"
-									>👣</span
-								>
-								Daily Steps Avg
-							</div>
-							<div class="profile-stat-value">12,830</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-water"
-									>💧</span
-								>
-								Water Intake Goal
-							</div>
-							<div class="profile-stat-value">
-								85%<span class="profile-stat-unit">met</span>
-							</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-heart"
-									>❤️</span
-								>
-								Resting HR
-							</div>
-							<div class="profile-stat-value">
-								68<span class="profile-stat-unit">bpm</span>
-							</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-badges"
-									>🏅</span
-								>
-								Badges Earned
-							</div>
-							<div class="profile-stat-value">15</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span class="profile-stat-icon icon-streak"
-									>📅</span
-								>
-								Longest Streak
-							</div>
-							<div class="profile-stat-value">
-								21<span class="profile-stat-unit">Days</span>
-							</div>
-						</div>
-						<div class="profile-stat-box">
-							<div class="profile-stat-header">
-								<span
-									class="profile-stat-icon icon-achievements"
-									>🏆</span
-								>
-								Achievements
-							</div>
-							<div class="profile-stat-value">View All</div>
-							<!-- Making this one clearly clickable -->
-							<style>
-								.clickable-stat {
-									cursor: pointer;
-								}
-							</style>
-							<script>
-								function viewAchievements() {
-									alert("Navigate to Achievements");
-								}
-							</script>
-							<div
-								class="profile-stat-value clickable-stat"
-								onclick="viewAchievements()"
-							>
-								View All
-							</div>
-						</div>
-					</div>
-					<!-- End Grid -->
-				</div>
-				<!-- End Stats Section -->
-			</div>
-			<!-- End Main Content -->
-
-			<!-- Bottom Navigation Bar -->
-			<nav class="bottom-nav" id="bottomNav">
-				<a href="todo.shtml" class="nav-item" data-page="home">
-					<!-- Link to home -->
-					<span class="nav-icon">🏠</span>
-					<span class="nav-label">Home</span>
-				</a>
-				<a href="#" class="nav-item" data-page="stats">
-					<span class="nav-icon">📊</span>
-					<span class="nav-label">Stats</span>
-				</a>
-				<a href="#" class="nav-item" data-page="log">
-					<span class="nav-icon">➕</span>
-					<span class="nav-label">Log</span>
-				</a>
-				<a
-					href="profile.shtml"
-					class="nav-item active"
-					data-page="profile"
+				<!-- Add more content here if needed -->
+				<!-- Example: Add a small bio -->
+				<p
+					style="
+						text-align: center;
+						color: var(--text-secondary);
+						margin-top: -30px;
+						margin-bottom: 30px;
+						padding: 0 20px;
+					"
 				>
-					<!-- Active state -->
-					<span class="nav-icon">👤</span>
-					<span class="nav-label">Profile</span>
-				</a>
-			</nav>
-			<!-- End Bottom Navigation Bar -->
+					Fitness enthusiast | Daily goals tracker | Lover of hiking
+				</p>
+			</div>
+
+			<!-- Fixed Bottom Section -->
+			<div class="bottom-fixed-section">
+				<div class="stats-scroller-wrapper" id="scrollerWrapper">
+					<!-- Arrows -->
+					<button
+						class="scroll-arrow left"
+						id="scrollLeftBtn"
+						title="Previous Stats"
+					>
+						<
+					</button>
+
+					<!-- Stats Scroller -->
+					<div class="stats-scroller" id="statsScroller">
+						<!-- Page 1: Primary -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">4 / 5</div>
+								<div class="stat-icon">?</div>
+								<!-- Trophy -->
+								<div class="stat-label">Goals Today</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">2150</div>
+								<div class="stat-icon">?</div>
+								<!-- Fire -->
+								<div class="stat-label">Calories Burned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7h 45m</div>
+								<div class="stat-icon">?</div>
+								<!-- Bed -->
+								<div class="stat-label">Sleep</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">4.5 Miles</div>
+								<div class="stat-icon">?</div>
+								<!-- Running -->
+								<div class="stat-label">Run Distance</div>
+							</div>
+						</div>
+
+						<!-- Page 2: Activity -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">12,830</div>
+								<div class="stat-icon">?</div>
+								<!-- Footprints -->
+								<div class="stat-label">Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7 / 8</div>
+								<div class="stat-icon">?</div>
+								<!-- Droplet -->
+								<div class="stat-label">Water Intake</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">68 bpm</div>
+								<div class="stat-icon">❤️</div>
+								<!-- Heart -->
+								<div class="stat-label">Resting HR</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">75 Min</div>
+								<div class="stat-icon">?</div>
+								<!-- Flexed Biceps -->
+								<div class="stat-label">Strength Training</div>
+							</div>
+						</div>
+
+						<!-- Page 3: Achievements -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">15</div>
+								<div class="stat-icon">?</div>
+								<!-- Medal -->
+								<div class="stat-label">Badges Earned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">21 Days</div>
+								<div class="stat-icon">?</div>
+								<!-- Calendar -->
+								<div class="stat-label">Activity Streak</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">Top 10%</div>
+								<div class="stat-icon">🏆</div>
+								<!-- Trophy Cup -->
+								<div class="stat-label">Weekly Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">5K PR</div>
+								<div class="stat-icon">⏱️</div>
+								<!-- Stopwatch -->
+								<div class="stat-label">24:15</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Stats Scroller -->
+
+					<button
+						class="scroll-arrow right"
+						id="scrollRightBtn"
+						title="Next Stats"
+					>
+						>
+					</button>
+				</div>
+				<!-- End Scroller Wrapper -->
+
+				<!-- Pagination Dots -->
+				<div class="pagination-dots" id="paginationDots">
+					<!-- Dots generated by JS -->
+				</div>
+			</div>
+			<!-- End Fixed Bottom Section -->
 		</div>
 		<!-- End Phone Container -->
 
 		<script>
-			// --- Removed Hamburger Menu Toggle Script ---
+			// --- Hamburger Menu Toggle ---
+			const menuToggle = document.getElementById("menu-toggle");
+			const sideMenu = document.getElementById("sideMenu");
 
-			// --- Mock Edit Profile Function ---
-			function editProfile() {
-				alert(
-					"Navigate to Profile Edit Screen (Implementation Needed)"
-				);
-				// In a real app, this would likely navigate to a different page
-				// or display a modal form for editing profile details.
+			menuToggle.addEventListener("click", (event) => {
+				event.stopPropagation();
+				sideMenu.classList.toggle("open");
+			});
+
+			document.addEventListener("click", (event) => {
+				if (
+					sideMenu.classList.contains("open") &&
+					!sideMenu.contains(event.target) &&
+					event.target !== menuToggle
+				) {
+					sideMenu.classList.remove("open");
+				}
+			});
+
+			// --- Stats Scroller & Pagination ---
+			const scroller = document.getElementById("statsScroller");
+			const paginationDotsContainer =
+				document.getElementById("paginationDots");
+			const pages = scroller.querySelectorAll(".stats-page");
+			const scrollWrapper = document.getElementById("scrollerWrapper");
+			const scrollLeftBtn = document.getElementById("scrollLeftBtn");
+			const scrollRightBtn = document.getElementById("scrollRightBtn");
+			const numPages = pages.length;
+			let currentPage = 0;
+
+			// Generate Pagination Dots
+			for (let i = 0; i < numPages; i++) {
+				const dot = document.createElement("span");
+				dot.classList.add("dot");
+				if (i === 0) dot.classList.add("active");
+				dot.dataset.index = i;
+				paginationDotsContainer.appendChild(dot);
 			}
+			const dots = paginationDotsContainer.querySelectorAll(".dot");
 
-			// --- Bottom Navigation Active State Handler (Optional visual only) ---
-			const bottomNavContainer = document.getElementById("bottomNav");
-			if (bottomNavContainer) {
-				const navItems =
-					bottomNavContainer.querySelectorAll(".nav-item");
-
-				// No click listener needed IF navigation is handled by page loads (<a> href)
-				// If it were a single-page app, you'd add the click listener back
-				// to handle view switching and active state updates.
-
-				// Set active state based on current page (simple example)
-				const currentPage = window.location.pathname.split("/").pop(); // Gets 'profile.shtml'
-				navItems.forEach((item) => {
-					const itemPage = item
-						.getAttribute("href")
-						?.split("/")
-						.pop();
-					// Check if the item's href matches the current page file name
-					// Or if the item's data-page matches a known identifier for the current page
-					if (
-						itemPage === currentPage ||
-						(item.dataset.page === "profile" &&
-							currentPage.includes("profile"))
-					) {
-						item.classList.add("active");
-					} else {
-						item.classList.remove("active");
-					}
+			function updatePagination(activeIndex) {
+				dots.forEach((dot, index) => {
+					dot.classList.toggle("active", index === activeIndex);
 				});
+				currentPage = activeIndex;
+				updateArrowVisibility();
 			}
 
-			// --- Removed Stats Scroller & Pagination Script ---
+			function updateArrowVisibility() {
+				if (numPages <= 1) {
+					scrollWrapper.classList.remove("show-arrows");
+					return;
+				}
+				scrollWrapper.classList.add("show-arrows");
+				scrollLeftBtn.style.display =
+					currentPage > 0 ? "block" : "none";
+				scrollRightBtn.style.display =
+					currentPage < numPages - 1 ? "block" : "none";
+			}
+
+			// Debounce function to limit scroll event handler frequency
+			function debounce(func, wait) {
+				let timeout;
+				return function executedFunction(...args) {
+					const later = () => {
+						clearTimeout(timeout);
+						func(...args);
+					};
+					clearTimeout(timeout);
+					timeout = setTimeout(later, wait);
+				};
+			}
+
+			// Update dots on scroll (debounced)
+			const handleScroll = debounce(() => {
+				const pageWidth = scroller.offsetWidth;
+				// Use Math.round for better snapping with scroll-snap-align: center
+				const activeIndex = Math.round(scroller.scrollLeft / pageWidth);
+
+				if (
+					activeIndex >= 0 &&
+					activeIndex < numPages &&
+					activeIndex !== currentPage
+				) {
+					updatePagination(activeIndex);
+				} else {
+					// Ensure arrows update even if page index doesn't change (e.g., during scroll animation)
+					updateArrowVisibility();
+				}
+			}, 50); // Adjust debounce wait time (ms) as needed
+
+			scroller.addEventListener("scroll", handleScroll);
+
+			function scrollPage(direction) {
+				const pageWidth = scroller.offsetWidth;
+				let targetPage = currentPage + direction;
+				targetPage = Math.max(0, Math.min(targetPage, numPages - 1));
+
+				scroller.scrollTo({
+					left: targetPage * pageWidth,
+					behavior: "smooth",
+				});
+				// Manually update pagination after starting scroll for faster feedback
+				// updatePagination(targetPage); // Let scroll event handle it for consistency with snapping
+			}
+
+			scrollLeftBtn.addEventListener("click", () => scrollPage(-1));
+			scrollRightBtn.addEventListener("click", () => scrollPage(1));
+
+			// Initial setup
+			updateArrowVisibility(); // Check arrow visibility on load
 		</script>
 	</body>
 </html>

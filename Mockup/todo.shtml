@@ -6,8 +6,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
-		<!-- Changed title to be more specific -->
-		<title>Health Dashboard</title>
+		<title>Modern Home Page</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -16,48 +15,32 @@
 		/>
 		<style>
 			:root {
-				/* --- Color Palette (Adjusted for Contrast) --- */
-
-				/* Primary & Accent Colors (Mostly unchanged, check usage) */
-				--primary-color: #007aff; /* Standard iOS Blue - slightly darker for better contrast */
-				--primary-light: #e6f3ff; /* Kept for light backgrounds */
-				--accent-purple: #af52de;
-				--accent-teal: #5ac8fa;
-				--accent-orange: #ff9500; /* Standard iOS Orange */
-				--accent-green: #34c759; /* Standard iOS Green */
-				--accent-red: #ff3b30; /* For alerts or negative trends */
+				/* Primary & Accent Colors */
+				--primary-color: #0a84ff; /* Updated iOS Blue */
+				--primary-light: #e6f3ff;
+				--accent-purple: #af52de; /* iOS Purple */
+				--accent-teal: #5ac8fa; /* iOS Teal */
+				--accent-orange: #ff9f0a; /* iOS Orange */
+				--accent-green: #30d15b; /* iOS Green */
 
 				/* Background & Surface Colors */
-				--background-color: #f2f2f7;
-				--surface-color: #ffffff;
-				--surface-secondary-color: #e5e5ea; /* Slightly darker for subtle hover/pressed states */
-				--bottom-nav-background: rgba(
-					248,
-					248,
-					248,
-					0.92
-				); /* Slightly adjusted alpha */
+				--background-color: #f2f2f7; /* Lighter Gray for overall background */
+				--surface-color: #ffffff; /* White for cards/surfaces */
+				--surface-secondary-color: #f8f9fa; /* Slightly off-white for subtle contrast */
 
-				/* Text Colors (Improved Contrast) */
-				--text-primary: #000000; /* Black for highest contrast */
-				--text-secondary: #3c3c43; /* Dark Gray (Opacity 95%) - WCAG AA+ on white */
-				--text-tertiary: #8e8e93; /* Medium Gray (Opacity 60%) - Use sparingly for non-essential info */
-				--text-link: var(--primary-color); /* Link color */
-				--text-on-primary: #ffffff; /* Text on dark/colored backgrounds */
+				/* Text Colors */
+				--text-primary: #1c1c1e; /* Near black */
+				--text-secondary: #636366; /* Medium gray */
+				--text-tertiary: #aeaeb2; /* Lighter gray */
 
 				/* Border & Shadow Colors */
-				--border-color: #d1d1d6; /* Slightly darker border */
-				--shadow-color: rgba(0, 0, 0, 0.05);
-				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+				--border-color: #e5e5ea;
+				--shadow-color: rgba(0, 0, 0, 0.04);
+				--shadow-strong-color: rgba(0, 0, 0, 0.08);
 
 				/* Chart Specific */
-				--chart-track-color: #ebebf0;
+				--chart-track-color: #ebebf0; /* Background track for charts */
 				--chart-sleep-color: var(--accent-purple);
-
-				/* --- Dimensions --- */
-				--nav-height: 65px;
-				--content-padding: 16px; /* Consistent padding */
-				--card-border-radius: 16px; /* Slightly smaller radius */
 			}
 
 			/* Basic Reset & Body */
@@ -68,7 +51,7 @@
 				font-family: "Inter", -apple-system, BlinkMacSystemFont,
 					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 				height: 100%;
-				background-color: #dcdce1;
+				background-color: #dcdce1; /* Background outside the phone */
 				-webkit-font-smoothing: antialiased;
 				-moz-osx-font-smoothing: grayscale;
 			}
@@ -78,64 +61,102 @@
 
 			/* Phone Container Simulation */
 			.phone-container {
-				width: 375px; /* iPhone SE/8 width */
-				height: 667px; /* iPhone SE/8 height */
+				width: 375px;
+				height: 667px;
 				border: 1px solid var(--border-color);
 				margin: 30px auto;
-				background-color: var(--background-color);
+				background-color: var(
+					--background-color
+				); /* Use the lighter gray */
 				display: flex;
 				flex-direction: column;
 				position: relative;
 				overflow: hidden;
-				border-radius: 25px;
+				border-radius: 25px; /* More pronounced rounding */
 				box-shadow: 0 12px 35px var(--shadow-strong-color);
 			}
 
 			/* Header */
 			.header {
 				display: flex;
-				justify-content: flex-end;
+				justify-content: space-between;
 				align-items: center;
-				padding: 15px var(--content-padding) 8px var(--content-padding); /* Adjusted padding */
+				padding: 18px 20px 10px 20px; /* Reduced bottom padding */
 				flex-shrink: 0;
 				position: relative;
 				z-index: 10;
-				background-color: var(--background-color);
+				background-color: var(
+					--background-color
+				); /* Match background */
 			}
+			.menu-icon,
 			.notification-icon {
 				font-size: 22px;
-				color: var(--text-secondary); /* Use secondary text color */
+				color: var(--text-primary);
 				cursor: pointer;
 				padding: 5px;
 				transition: color 0.2s ease;
-				position: relative;
 			}
+			.menu-icon:hover,
 			.notification-icon:hover {
-				color: var(--text-primary); /* Darken on hover */
+				color: var(--primary-color);
 			}
 			.notification-icon::after {
+				/* Notification dot */
 				content: "";
 				display: block;
 				width: 8px;
 				height: 8px;
-				background-color: var(
-					--accent-red
-				); /* Use red for notifications */
+				background-color: var(--primary-color);
 				border-radius: 50%;
 				position: absolute;
-				top: 5px;
-				right: 2px;
+				top: 18px;
+				right: 18px;
 				border: 1.5px solid var(--background-color);
+			}
+
+			/* Side Menu (Reused - Assuming it exists) */
+			.side-menu {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 75%;
+				max-width: 280px;
+				height: 100%;
+				background-color: var(--surface-color);
+				border-right: 1px solid var(--border-color);
+				padding: 60px 25px 30px 25px;
+				transform: translateX(-100%);
+				transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+				z-index: 100;
+				box-shadow: 5px 0 15px var(--shadow-strong-color);
+			}
+			.side-menu.open {
+				transform: translateX(0);
+			}
+			.side-menu a {
+				/* Simplified styling */
+				display: block;
+				padding: 18px 0;
+				text-decoration: none;
+				color: var(--text-primary);
+				font-size: 18px;
+				font-weight: 500;
+				border-bottom: 1px solid var(--border-color);
+				transition: color 0.2s ease;
+			}
+			.side-menu a:last-child {
+				border-bottom: none;
+			}
+			.side-menu a:hover {
+				color: var(--primary-color);
 			}
 
 			/* Main Content Area */
 			.main-content {
 				flex-grow: 1;
 				overflow-y: auto;
-				padding: 0px var(--content-padding); /* Use variable, no top padding */
-				padding-bottom: calc(
-					var(--nav-height) + var(--content-padding)
-				); /* Space for nav */
+				padding: 0px 20px 30px 20px; /* No top padding needed */
 				scrollbar-width: none;
 				-ms-overflow-style: none;
 			}
@@ -145,126 +166,108 @@
 
 			/* Greeting Message */
 			.greeting {
-				font-size: 24px; /* Slightly smaller */
-				font-weight: 700;
+				font-size: 26px; /* Larger */
+				font-weight: 700; /* Bold */
 				color: var(--text-primary);
-				margin: 10px 0 15px 0; /* Adjusted spacing */
+				margin: 10px 0 20px 0; /* Spacing */
+				padding-left: 5px; /* Slight indent */
 			}
 
 			/* Time Filters */
 			.time-filters {
 				display: flex;
-				gap: 8px; /* Slightly smaller gap */
-				margin-bottom: 20px; /* Adjusted spacing */
+				gap: 10px; /* Space between buttons */
+				margin-bottom: 25px; /* Space below filters */
+				padding-left: 5px; /* Match greeting indent */
 			}
 			.filter-btn {
-				padding: 7px 14px; /* Slightly smaller */
+				padding: 8px 16px; /* Button size */
 				border: none;
-				border-radius: 20px;
-				font-size: 13px; /* Smaller font */
-				font-weight: 600;
-				color: var(--text-link); /* Use link color for inactive */
-				background-color: var(--surface-color);
+				border-radius: 20px; /* Pill shape */
+				font-size: 14px;
+				font-weight: 600; /* Semibold */
+				color: var(--text-secondary);
+				background-color: var(--surface-color); /* Use surface color */
 				cursor: pointer;
 				transition: all 0.2s ease;
-				box-shadow: 0 1px 3px var(--shadow-color);
+				box-shadow: 0 2px 5px var(--shadow-color);
 			}
 			.filter-btn:hover {
 				background-color: var(--surface-secondary-color);
+				color: var(--text-primary);
 			}
 			.filter-btn.active {
 				background-color: var(--primary-color);
-				color: var(--text-on-primary); /* White text on active */
-				box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
+				color: #ffffff; /* White text on active */
+				box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3); /* Blue shadow */
 			}
 
-			/* --- Card Styles (More Compact & Interactive) --- */
+			/* --- Card Styles --- */
 			.card {
 				background-color: var(--surface-color);
-				border-radius: var(--card-border-radius);
-				margin-bottom: 15px; /* Slightly less space between cards */
-				padding: 16px; /* Use variable padding */
-				box-shadow: 0 4px 12px var(--shadow-color);
-				overflow: hidden;
+				border-radius: 18px; /* Consistent rounding */
+				margin-bottom: 20px; /* Space between cards */
+				padding: 20px;
+				box-shadow: 0 5px 15px var(--shadow-color);
+				overflow: hidden; /* Ensure content respects border-radius */
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				/* Add cursor pointer to indicate clickability */
-				cursor: pointer;
-				position: relative; /* For positioning pseudo-elements or links */
 			}
 			.card:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 6px 16px var(--shadow-strong-color);
+				transform: translateY(-3px);
+				box-shadow: 0 8px 20px var(--shadow-strong-color);
 			}
-
-			/* Card Header - More subtle */
 			.card-header {
 				display: flex;
 				align-items: center;
-				justify-content: space-between; /* Allow space for potential actions/icons */
-				margin-bottom: 12px; /* Adjusted spacing */
-				font-size: 12px; /* Smaller header */
-				font-weight: 600;
-				color: var(--text-secondary); /* Use improved secondary color */
-				text-transform: uppercase;
+				margin-bottom: 15px; /* Space below header */
+				font-size: 13px;
+				font-weight: 600; /* Semibold */
+				color: var(--text-secondary);
+				text-transform: uppercase; /* Match sketch */
 				letter-spacing: 0.5px;
 			}
-			.card-header-title {
-				display: flex;
-				align-items: center;
-			}
 			.card-header-icon {
-				font-size: 16px; /* Slightly smaller icon */
-				margin-right: 6px;
-				/* Color defined per card type below */
+				font-size: 18px;
+				margin-right: 8px;
+				color: var(--text-tertiary); /* Subtle icon color */
 			}
-			/* Subtle indicator that card leads somewhere */
-			.card::after {
-				content: ">";
-				position: absolute;
-				top: 16px; /* Align with padding */
-				right: 16px; /* Align with padding */
-				color: var(--text-tertiary);
-				font-weight: 600;
-				font-size: 16px;
-				opacity: 0.7;
-				transition: opacity 0.2s ease;
-			}
-			.card:hover::after {
-				opacity: 1;
-				color: var(--text-secondary);
-			}
-
 			.card-body {
-				/* Keep display: flex, but alignment might change per card */
 				display: flex;
-				align-items: center;
+				align-items: center; /* Default alignment */
 			}
 
-			/* Sleep Analysis Card (Slightly more compact) */
+			/* Sleep Analysis Card */
 			.sleep-card .card-header-icon {
 				color: var(--chart-sleep-color);
-			}
+			} /* Specific icon color */
 			.sleep-card .card-body {
-				justify-content: space-between;
+				justify-content: space-between; /* Space chart and text */
 				align-items: center;
-				gap: 15px; /* Add gap */
 			}
 			.sleep-chart-container {
-				width: 90px; /* Slightly smaller chart */
-				height: 90px;
-				position: relative;
-				flex-shrink: 0; /* Prevent shrinking */
+				width: 100px; /* Chart size */
+				height: 100px;
+				position: relative; /* For positioning text inside */
+				margin-right: 20px; /* Space between chart and text */
 			}
+			/* CSS Conic Gradient Chart */
 			.sleep-chart {
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
 				background: conic-gradient(
 					var(--chart-sleep-color) 0% 80.4%,
-					var(--chart-track-color) 80.4% 100%
+					/* Value from sketch */ var(--chart-track-color) 80.4% 100%
 				);
-				mask-image: radial-gradient(transparent 58%, black 59%);
-				-webkit-mask-image: radial-gradient(transparent 58%, black 59%);
+				/* Create the donut hole */
+				mask-image: radial-gradient(
+					transparent 55%,
+					/* Adjust inner hole size */ black 56%
+				);
+				-webkit-mask-image: radial-gradient(
+					/* Safari */ transparent 55%,
+					black 56%
+				);
 			}
 			.sleep-chart-text {
 				position: absolute;
@@ -275,174 +278,69 @@
 				font-weight: 600;
 			}
 			.sleep-chart-percentage {
-				font-size: 16px; /* Smaller */
+				font-size: 18px;
 				color: var(--text-primary);
-				line-height: 1.1;
+				line-height: 1.2;
 			}
 			.sleep-chart-label {
-				font-size: 10px; /* Smaller */
+				font-size: 11px;
 				color: var(--text-secondary);
 			}
 			.sleep-details {
 				text-align: right;
 			}
 			.sleep-duration {
-				font-size: 22px; /* Smaller */
+				font-size: 24px;
 				font-weight: 600;
 				color: var(--text-primary);
-				margin-bottom: 3px;
+				margin-bottom: 4px;
 			}
 			.sleep-duration-label {
-				font-size: 12px; /* Smaller */
+				font-size: 13px;
 				color: var(--text-secondary);
 				font-weight: 500;
 			}
 
-			/* Stats Grid (More Data-Dense) */
+			/* Stats Grid (for smaller cards) */
 			.stats-grid {
 				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				gap: 12px; /* Slightly smaller gap */
+				grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+				gap: 15px; /* Space between grid items */
 			}
 			.stat-card {
-				padding: 12px; /* Smaller padding */
-				margin-bottom: 0;
+				padding: 15px; /* Slightly less padding for smaller cards */
+				margin-bottom: 0; /* Grid gap handles spacing */
 				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-				min-height: 120px; /* Reduced height */
+				flex-direction: column; /* Stack header and icon */
+				align-items: flex-start; /* Align header left */
+				min-height: 140px; /* Ensure consistent height */
 			}
 			.stat-card .card-header {
-				margin-bottom: 8px;
-			} /* Less space */
-			/* Remove the chevron from stat cards if data fills the space */
-			.stat-card::after {
-				content: none;
+				margin-bottom: 10px; /* Less space below header */
 			}
-
 			.stat-card .card-body {
-				flex-grow: 1;
+				flex-grow: 1; /* Allow body to fill space */
 				width: 100%;
-				display: flex;
-				flex-direction: column; /* Stack data vertically */
-				justify-content: center; /* Center content vertically */
-				align-items: flex-start; /* Align text left */
-				padding-top: 5px; /* Add some space from header */
+				justify-content: center; /* Center the icon */
+				align-items: center; /* Center the icon */
 			}
-
-			.stat-value {
-				font-size: 20px; /* Prominent value */
-				font-weight: 600;
-				color: var(--text-primary);
-				line-height: 1.2;
-			}
-			.stat-unit,
-			.stat-label {
-				font-size: 11px;
-				color: var(--text-secondary);
-				font-weight: 500;
-				line-height: 1.3;
-			}
-			.stat-unit {
-				margin-left: 2px;
-			}
-			.stat-label {
-				margin-top: 2px;
-			}
-
-			/* Example: Progress Bar (Optional visual for goals) */
-			.stat-progress-bar {
-				width: 100%;
-				height: 6px;
-				background-color: var(--chart-track-color);
-				border-radius: 3px;
-				overflow: hidden;
-				margin-top: 8px; /* Space above progress bar */
-			}
-			.stat-progress-bar-fill {
-				height: 100%;
-				background-color: var(--primary-color); /* Default to primary */
-				border-radius: 3px;
-				width: 0%; /* Set dynamically */
-				transition: width 0.5s ease;
-			}
-
-			/* --- Specific Stat Card Styling --- */
-			.goals-card .card-header-icon {
-				color: var(--accent-green);
-			}
-			.goals-card .stat-progress-bar-fill {
-				background-color: var(--accent-green);
-			}
-
-			.kcal-card .card-header-icon {
-				color: var(--accent-orange);
-			}
-			.kcal-card .stat-progress-bar-fill {
-				background-color: var(--accent-orange);
-			}
-
-			.water-card .card-header-icon {
-				color: var(--accent-teal);
-			}
-			.water-card .stat-progress-bar-fill {
-				background-color: var(--accent-teal);
-			}
-
-			.exercise-card .card-header-icon {
-				color: var(--primary-color);
-			}
-			.exercise-card .stat-progress-bar-fill {
-				background-color: var(--primary-color);
-			}
-
-			/* --- Bottom Navigation Bar --- */
-			.bottom-nav {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				height: var(--nav-height);
-				background-color: var(--bottom-nav-background);
-				backdrop-filter: blur(12px);
-				-webkit-backdrop-filter: blur(12px);
-				border-top: 0.5px solid var(--border-color);
-				display: flex;
-				justify-content: space-around;
-				align-items: stretch; /* Stretch items to fill height */
-				z-index: 100;
-				padding: 0 5px; /* Reduced horizontal padding */
-			}
-
-			.nav-item {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				text-decoration: none;
-				color: var(--text-tertiary); /* Use tertiary for inactive */
-				font-size: 10px;
-				font-weight: 500;
-				flex-grow: 1;
-				text-align: center;
-				transition: color 0.2s ease;
-				padding: 6px 0 4px 0; /* Adjust padding */
-				position: relative;
-				cursor: pointer;
-			}
-
-			.nav-icon {
-				font-size: 22px; /* Slightly smaller */
-				margin-bottom: 3px;
+			.stat-card-icon {
+				font-size: 48px; /* Larger icons for visual emphasis */
 				line-height: 1;
 			}
 
-			.nav-item:hover {
-				color: var(--text-secondary); /* Use secondary on hover */
+			/* Specific Icon Colors (optional, adds personality) */
+			.goals-card .card-header {
+				color: var(--accent-green);
 			}
-
-			.nav-item.active {
-				color: var(--primary-color); /* Active color */
+			.kcal-card .card-header {
+				color: var(--accent-orange);
+			}
+			.water-card .card-header {
+				color: var(--accent-teal);
+			}
+			.exercise-card .card-header {
+				color: var(--primary-color);
 			}
 		</style>
 	</head>
@@ -450,8 +348,16 @@
 		<div class="phone-container">
 			<!-- Header -->
 			<div class="header">
-				<div class="notification-icon" title="Notifications">🔔</div>
-				<!-- Changed icon -->
+				<div class="menu-icon" id="menu-toggle" title="Menu">☰</div>
+				<div class="notification-icon" title="Notifications">?</div>
+			</div>
+
+			<!-- Side Menu (Initially Hidden - reuse from previous example) -->
+			<div class="side-menu" id="sideMenu">
+				<a href="#" class="active">Home</a>
+				<a href="#">Profile</a>
+				<a href="#">Activity Feed</a>
+				<a href="#">Settings</a>
 			</div>
 
 			<!-- Main Scrollable Content Area -->
@@ -472,18 +378,10 @@
 					</button>
 				</div>
 
-				<!-- Sleep Analysis Card (Clickable to view details/trends) -->
-				<div
-					class="card sleep-card"
-					onclick="navigateTo('sleep-details')"
-				>
-					<!-- Example onClick -->
+				<!-- Sleep Analysis Card -->
+				<div class="card sleep-card">
 					<div class="card-header">
-						<div class="card-header-title">
-							<span class="card-header-icon">🌙</span> Sleep
-							Analysis
-						</div>
-						<!-- Chevron > added via ::after pseudo-element -->
+						<span class="card-header-icon">🌙</span> Sleep Analysis
 					</div>
 					<div class="card-body">
 						<div class="sleep-chart-container">
@@ -502,203 +400,91 @@
 					</div>
 				</div>
 
-				<!-- Stats Grid - Cards now show data & imply deeper interaction -->
+				<!-- Stats Grid -->
 				<div class="stats-grid">
 					<!-- Goals Card -->
-					<div
-						class="card stat-card goals-card"
-						onclick="navigateTo('goals')"
-					>
-						<div class="card-header">
-							<div class="card-header-title">
-								<span class="card-header-icon">🎯</span> Goals
-							</div>
-						</div>
+					<div class="card stat-card goals-card">
+						<div class="card-header">Goals</div>
 						<div class="card-body">
-							<div class="stat-value">3 / 5</div>
-							<div class="stat-label">Active Goals Met</div>
-							<div class="stat-progress-bar">
-								<div
-									class="stat-progress-bar-fill"
-									style="width: 60%"
-								></div>
-							</div>
+							<span class="stat-card-icon">🌈</span>
 						</div>
 					</div>
 
 					<!-- Kcal Consumed Card -->
-					<div
-						class="card stat-card kcal-card"
-						onclick="navigateTo('nutrition')"
-					>
-						<div class="card-header">
-							<div class="card-header-title">
-								<span class="card-header-icon">🔥</span> Kcal
-								Consumed
-							</div>
-						</div>
+					<div class="card stat-card kcal-card">
+						<div class="card-header">Kcal Consumed</div>
 						<div class="card-body">
-							<div class="stat-value">
-								1580<span class="stat-unit">kcal</span>
-							</div>
-							<div class="stat-label">Goal: 2000 kcal</div>
-							<div class="stat-progress-bar">
-								<div
-									class="stat-progress-bar-fill"
-									style="width: 79%"
-								></div>
-								<!-- Example value -->
-							</div>
+							<span class="stat-card-icon">🍔</span>
 						</div>
 					</div>
 
 					<!-- Water Consumed Card -->
-					<div
-						class="card stat-card water-card"
-						onclick="navigateTo('hydration')"
-					>
-						<div class="card-header">
-							<div class="card-header-title">
-								<span class="card-header-icon">💧</span> Water
-								Intake
-							</div>
-						</div>
+					<div class="card stat-card water-card">
+						<div class="card-header">Water Consumed</div>
 						<div class="card-body">
-							<div class="stat-value">
-								1.2<span class="stat-unit">L</span>
-							</div>
-							<div class="stat-label">Goal: 2.0 L</div>
-							<div class="stat-progress-bar">
-								<div
-									class="stat-progress-bar-fill"
-									style="width: 60%"
-								></div>
-								<!-- Example value -->
-							</div>
+							<span class="stat-card-icon">💧</span>
+							<!-- Droplet emoji looks cleaner -->
 						</div>
 					</div>
 
 					<!-- Exercise Tracker Card -->
-					<div
-						class="card stat-card exercise-card"
-						onclick="navigateTo('exercise')"
-					>
-						<div class="card-header">
-							<div class="card-header-title">
-								<span class="card-header-icon">🏃</span>
-								Exercise
-							</div>
-						</div>
+					<div class="card stat-card exercise-card">
+						<div class="card-header">Exercise Tracker</div>
 						<div class="card-body">
-							<div class="stat-value">
-								45<span class="stat-unit">min</span>
-							</div>
-							<div class="stat-label">Goal: 60 min</div>
-							<div class="stat-progress-bar">
-								<div
-									class="stat-progress-bar-fill"
-									style="width: 75%"
-								></div>
-								<!-- Example value -->
-							</div>
+							<span class="stat-card-icon">🏋️</span>
+							<!-- Weight lifter emoji -->
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- End Main Content -->
-
-			<!-- Bottom Navigation Bar -->
-			<nav class="bottom-nav" id="bottomNav">
-				<a href="#" class="nav-item active" data-page="home">
-					<span class="nav-icon">🏠</span>
-					<span class="nav-label">Home</span>
-				</a>
-				<a href="#" class="nav-item" data-page="stats">
-					<!-- Changed label -->
-					<span class="nav-icon">📊</span>
-					<span class="nav-label">Stats</span>
-				</a>
-				<a href="#" class="nav-item" data-page="log">
-					<!-- Added Log/Input Page -->
-					<span class="nav-icon">➕</span>
-					<span class="nav-label">Log</span>
-				</a>
-				<a href="#" class="nav-item" data-page="profile">
-					<span class="nav-icon">👤</span>
-					<span class="nav-label">Profile</span>
-				</a>
-				<!-- Removed Settings, Profile implies settings access -->
-			</nav>
-			<!-- End Bottom Navigation Bar -->
 		</div>
 		<!-- End Phone Container -->
 
 		<script>
+			// --- Hamburger Menu Toggle (Reused) ---
+			const menuToggle = document.getElementById("menu-toggle");
+			const sideMenu = document.getElementById("sideMenu");
+
+			if (menuToggle && sideMenu) {
+				menuToggle.addEventListener("click", (event) => {
+					event.stopPropagation();
+					sideMenu.classList.toggle("open");
+				});
+
+				document.addEventListener("click", (event) => {
+					if (
+						sideMenu.classList.contains("open") &&
+						!sideMenu.contains(event.target) &&
+						event.target !== menuToggle
+					) {
+						sideMenu.classList.remove("open");
+					}
+				});
+			}
+
 			// --- Time Filter Button Handler ---
 			const timeFiltersContainer = document.getElementById("timeFilters");
 			if (timeFiltersContainer) {
 				const filterButtons =
 					timeFiltersContainer.querySelectorAll(".filter-btn");
+
 				timeFiltersContainer.addEventListener("click", (event) => {
 					if (event.target.classList.contains("filter-btn")) {
+						// Remove active class from all buttons
 						filterButtons.forEach((btn) =>
 							btn.classList.remove("active")
 						);
+						// Add active class to the clicked button
 						event.target.classList.add("active");
+
+						// Optional: Get the selected filter value
 						const selectedFilter = event.target.dataset.filter;
 						console.log("Selected Filter:", selectedFilter);
-						// Add logic to update card data based on filter
+						// Here you would typically trigger data updates based on the filter
 					}
 				});
 			}
-
-			// --- Bottom Navigation Active State Handler ---
-			const bottomNavContainer = document.getElementById("bottomNav");
-			if (bottomNavContainer) {
-				const navItems =
-					bottomNavContainer.querySelectorAll(".nav-item");
-				bottomNavContainer.addEventListener("click", (event) => {
-					const clickedItem = event.target.closest(".nav-item");
-					if (clickedItem) {
-						event.preventDefault();
-						navItems.forEach((item) =>
-							item.classList.remove("active")
-						);
-						clickedItem.classList.add("active");
-						const targetPage = clickedItem.dataset.page;
-						console.log("Navigating to (Bottom Nav):", targetPage);
-						// Add real navigation logic here
-						navigateTo(targetPage); // Example call
-					}
-				});
-			}
-
-			// --- Mock Navigation Function (for card clicks) ---
-			function navigateTo(pageId) {
-				console.log("Navigating to (Card Click):", pageId);
-				// In a real app, this would load the relevant view/screen
-				// For example, showing a detailed sleep analysis page,
-				// or opening a modal to log nutrition/water/exercise,
-				// or showing the user profile for editing.
-				if (pageId === "profile") {
-					window.location.href = "profile.shtml";
-				} else {
-					alert(
-						`Navigating to ${pageId} section (implementation needed)`
-					);
-				}
-			}
-
-			// --- Example: Dynamically update progress bars (Run once on load for demo) ---
-			document.addEventListener("DOMContentLoaded", () => {
-				document
-					.querySelectorAll(".stat-progress-bar-fill")
-					.forEach((bar) => {
-						// In a real app, get the actual percentage value
-						const width = bar.style.width; // Already set inline for demo
-						// bar.style.width = calculatedPercentage + '%'; // If calculating
-					});
-			});
 		</script>
 	</body>
 </html>
