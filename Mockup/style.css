@@ -1,443 +1,96 @@
-:root {
-    --primary-color: #007aff;
-    --primary-light: #e6f2ff;
-    --accent-color: #007aff;
-    --accent-text-color: #ffffff;
-
-    --background-color: #ffffff;
-    --app-shell-background: #f0f0f5;
-    --card-background: #ffffff;
-    --secondary-card-background: #f8f9fa;
-
-    --text-primary: #1c1c1e;
-    --text-secondary: #6c757d;
-    --text-disabled: #adb5bd;
-
-    --border-color: #e5e5ea;
-    --shadow-color: rgba(0, 0, 0, 0.06);
-    --shadow-strong-color: rgba(0, 0, 0, 0.1);
-
-    --success-color: #34c759;
-    --warning-color: #ffcc00;
-    --danger-color: #ff3b30;
-    --protein-color: #ff9500;
-    --carbs-color: #5ac8fa;
-
-    --base-font-size: 16px;
+html {
+	font-size: 14px;
 }
 
-/* Basic Reset & Body */
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    height: 100%;
-    background-color: var(--app-shell-background);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: var(--base-font-size);
-}
-* { box-sizing: border-box; }
-
-/* --- App Structure (TABLET SIZE) --- */
-.app-container {
-    width: 768px;
-    height: 1024px;
-    border: 1px solid var(--border-color);
-    margin: 40px auto;
-    background-color: var(--background-color);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    box-shadow: 0 15px 40px var(--shadow-strong-color);
+body {
+	background-color: black;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
 }
 
-.content-area {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding-bottom: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-.content-area::-webkit-scrollbar { width: 6px; }
-.content-area::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 3px;
-}
-.content-area::-webkit-scrollbar-track { background: transparent; }
-
-
-/* --- Screen Management & Titles (TABLET SIZE) --- */
-.screen {
-    display: none;
-    padding: 30px 40px; /* Increased padding */
-    animation: fadeIn 0.3s ease-in-out;
-}
-.screen.active { display: block; }
-
-.screen-title {
-    font-size: 32px; /* Larger title */
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 30px; /* More space below title */
+.container {
+	background-color: black;
+	width: 29rem;
+	height: 2rem;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1rem;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); } /* Slightly more movement */
-    to { opacity: 1; transform: translateY(0); }
+.container2 {
+	background-color: yellow;
+	width: 29rem;
+	height: 2rem;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-/* --- Bottom Navigation Bar (TABLET SIZE) --- */
-.bottom-nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px; /* Taller */
-    background-color: rgba(255, 255, 255, 0.97); /* Slightly less transparent */
-    backdrop-filter: blur(15px);
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -5px 15px var(--shadow-color);
-    z-index: 100;
+.hello {
+	color: yellow;
+	font-size: 1.4rem;
+	font-weight: bold;
 }
 
-.nav-button {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 13px; /* Larger label */
-    font-weight: 500;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    cursor: pointer;
-    transition: color 0.2s ease;
-    flex: 1;
-    height: 100%;
-    gap: 4px; /* More space between icon and label */
-}
-.nav-button .icon {
-    font-size: 28px; /* Larger icon */
-    line-height: 1;
-}
-.nav-button .nav-label { display: block; }
-.nav-button.active { color: var(--accent-color); }
-.nav-button:hover { color: var(--accent-color); }
-
-.card {
-    background-color: var(--card-background);
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 6px 15px var(--shadow-color);
-    border: 1px solid var(--border-color);
-}
-.card h3 {
-    font-size: 22px; /* Larger heading */
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.card p {
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-    line-height: 1.6;
-    font-size: 1.05em; /* Slightly larger paragraph text */
-}
-.card p:last-child { margin-bottom: 0; }
-
-/* --- Multi-Column Layouts for Tablet --- */
-.grid-layout-2col {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-    gap: 30px; /* Gap between columns/rows */
+.hi {
+	color: purple;
+	font-size: 1.4rem;
+	font-weight: bold;
 }
 
-
-.grid-layout-2col > .card {
-    margin-bottom: 0;
+.back {
+	background-color: lightpink;
+	background-position: center;
+	width: 30rem;
+	height: 47rem;
+	margin: auto;
+	margin-top: 6rem;
+	position: relative;
 }
 
-/* --- Buttons (TABLET SIZE) --- */
-.action-button {
-    /* ADDED background-color and color explicitly */
-    background-color: var(--accent-color);
-    color: var(--accent-text-color);
-    border: none; /* Ensure no border */
-    padding: 15px 25px; /* Larger padding */
-    border-radius: 10px;
-    font-size: 16px; /* Larger font */
-    font-weight: 600;
-    margin-top: 15px;
-    cursor: pointer; /* Ensure cursor indicates clickable */
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-.action-button:hover {
-    background-color: darken(var(--accent-color), 10%); /* Define darken if not using SASS/LESS */
-    /* Simple darken simulation if no preprocessor: */
-    /* filter: brightness(90%); */
-}
-.action-button:active {
-     transform: scale(0.98);
+.footer {
+	background-color: blue;
+	width: 30rem;
+	height: 5rem;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: center; 
+	align-items: center;
+	z-index: 10; 
 }
 
-
-.edit-button, .view-all-button {
-    /* ADDED background and border explicitly */
-    background: none;
-    border: none;
-    color: var(--accent-color); /* Make sure color uses variable */
-    font-size: 15px; /* Slightly larger */
-    font-weight: 500; /* Ensure weight is set */
-    padding: 8px;
-    cursor: pointer; /* Ensure cursor indicates clickable */
-    transition: color 0.2s ease;
-}
-.edit-button:hover, .view-all-button:hover {
-    color: darken(var(--accent-color), 20%); /* Example hover */
-     /* filter: brightness(80%); */
+.selected {
+	background-color: rgba(255, 255, 0, 0.5);
 }
 
-/* --- Forms (TABLET SIZE) --- */
-.form-group { margin-bottom: 20px; }
-.form-group label {
-    margin-bottom: 8px;
-    font-size: 15px;
-    color: var(--text-primary); /* Ensure label color */
-}
-.form-group input, .form-group select {
-    padding: 15px; /* More padding */
-    border: 1px solid var(--border-color); /* Ensure border */
-    border-radius: 10px;
-    font-size: 16px;
-    background-color: var(--background-color); /* Ensure background */
-    color: var(--text-primary); /* Ensure text color */
-}
-/* Consider max-width for forms on tablet if needed */
-#exercise form, #nutrition form {
-    max-width: 500px; /* Prevent form becoming too wide */
-   /* margin-left: auto; */ /* Optional: Center form */
-   /* margin-right: auto; */
+.des {
+	height: 100%;
+	display: grid;
+	place-items: center;
+	color: white;
+	margin: 0 0.5rem;
+	position: relative;
+	text-decoration: none;
+	text-align: center;
 }
 
-
-/* --- Progress Bars (TABLET SIZE) --- */
-.progress-bar-container {
-    background-color: var(--app-shell-background); /* Ensure container bg */
-    border-radius: 10px;
-    height: 12px; /* Slightly thicker */
-    margin: 10px 0;
-    overflow: hidden; /* Ensure inner bar is clipped */
-}
-.progress-bar-container.simple { height: 8px; }
-
-.progress-bar {
-    background-color: var(--accent-color); /* Default color */
-    height: 100%;
-    width: 0%; /* Set dynamically via inline style or JS */
-    border-radius: 10px; /* Match container radius */
-    transition: width 0.5s ease-in-out;
-    display: block; /* Ensure it's a block element */
-}
-/* Specific progress bar colors */
-.progress-bar.protein { background-color: var(--protein-color); }
-.progress-bar.carbs { background-color: var(--carbs-color); }
-
-
-/* --- Placeholders & Notes (TABLET SIZE) --- */
-.chart-placeholder,
-.trends-placeholder,
-.search-results-placeholder {
-    min-height: 180px; /* Taller placeholders */
-    padding: 30px;
-    border-radius: 16px;
-    font-size: 1.1em;
-    background-color: var(--secondary-card-background); /* Ensure placeholder bg */
-    border: 1px dashed var(--border-color); /* Ensure border */
-    color: var(--text-secondary); /* Ensure text color */
-    display: flex; /* Added for centering */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-.design-note {
-    font-size: 13px;
-    color: var(--text-disabled); /* Ensure note color */
-    font-style: italic;
-    margin-top: 10px;
- }
-.mockup-placeholder {
-    padding: 30px;
-    margin-top: 30px;
-    border-radius: 12px;
-    border: 2px dashed var(--accent-color); /* Ensure border style */
-    background-color: var(--primary-light); /* Ensure bg */
-    color: var(--accent-color); /* Ensure text color */
-    font-weight: bold;
-    text-align: center;
+.des img {
+	width: 3rem;
+	height: auto;
+	margin: 0 0.5rem;
+	position: relative;
+	z-index: 11;
 }
 
-/* --- Profile Screen Specifics (TABLET SIZE) --- */
-.profile-header {
-    display: flex; /* Ensure flex layout */
-    align-items: center; /* Ensure vertical alignment */
-    gap: 25px; /* More space */
-    padding: 25px; /* Match card padding */
-    /* Removed card class styles - apply directly if needed */
-}
-.avatar {
-    width: 100px; /* Larger avatar */
-    height: 100px;
-    border-radius: 50%; /* Ensure circle */
-    border: 2px solid var(--border-color); /* Ensure border */
-    object-fit: cover;
-    background-color: var(--app-shell-background); /* Placeholder bg */
-}
-.user-info h3 { font-size: 24px; gap: 10px; color: var(--text-primary); margin: 0 0 4px 0; }
-.user-info p { font-size: 16px; gap: 10px; color: var(--text-secondary); margin: 0; }
-.edit-icon {
-    font-size: 16px;
-    color: var(--text-secondary); /* Ensure initial color */
-    cursor: pointer;
-    transition: color 0.2s ease;
- }
-.edit-icon:hover { color: var(--accent-color); }
-
-
-.profile-content .card li {
-    margin-bottom: 15px;
-    display: flex; /* Ensure flex for icon alignment */
-    align-items: center;
-    gap: 15px;
-    font-size: 16px;
-    color: var(--text-primary); /* Ensure list item color */
-}
-.goal-icon { font-size: 22px; }
-
-.achievements-preview {
-    display: flex; /* Ensure flex for badges */
-    flex-wrap: wrap;
-    gap: 18px;
-    margin-top: 10px;
-}
-.achievement-badge {
-    font-size: 40px; /* Larger badges */
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-.achievement-badge:hover { transform: scale(1.1); }
-.achievement-badge.disabled {
-    opacity: 0.4;
-    cursor: default;
-    filter: grayscale(80%);
-}
-.achievement-badge.disabled:hover { transform: none; }
-
-
-/* --- Sleep Analysis Chart (TABLET SIZE) --- */
-.sleep-chart-container {
-    display: flex; /* Ensure flex */
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-.donut-chart {
-    position: relative;
-    width: 180px; /* Larger chart */
-    height: 180px;
-    border-radius: 50%;
-    /* Ensure background applies variables correctly */
-    background: conic-gradient(var(--accent-color) calc(var(--progress, 0) * 1%), var(--app-shell-background) 0);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.donut-chart::before {
-    content: '';
-    position: absolute;
-    /* Ensure background uses variable or correct color */
-    background: var(--card-background); /* Match card background */
-    width: 120px; /* Larger hole */
-    height: 120px;
-    border-radius: 50%;
-}
-.chart-value {
-    position: relative;
-    z-index: 1;
-    font-size: 34px; /* Larger value */
-    font-weight: 600;
-    color: var(--text-primary); /* Ensure color */
-    line-height: 1.1;
-}
-.chart-label {
-    position: relative;
-    z-index: 1;
-    font-size: 14px;
-    color: var(--text-secondary); /* Ensure color */
-    text-align: center;
-    max-width: 100px;
-    line-height: 1.3;
-}
-.sleep-quality {
-    font-size: 1.1em;
-    font-weight: 500; /* Added weight */
-    color: var(--text-primary); /* Ensure color */
-}
-
-.step-log-group {
-    display: flex;
-    align-items: center; /* Align items vertically */
-    gap: 10px; /* Space between input and button */
-    margin-top: 10px; /* Space above the group */
-    margin-bottom: 15px; /* Space below the group */
-}
-
-.step-log-group input[type="number"] {
-    flex-grow: 1;
-
-     padding: 12px 15px;
-}
-
-.step-log-group .action-button {
-    margin-top: 0;
-    padding: 12px 18px;
-    white-space: nowrap;
-}
-
-/* --- Utility Classes --- */
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap; /* added line */
-    border: 0;
-}
-
-/* --- Progress Bars (TABLET SIZE) --- */
-/* ... existing progress bar styles ... */
-
-.progress-bar.steps {
-    background-color: var(--success-color);
-}
-
-#stepsProgressBar {
-    background-color: var(--success-color); /* Example: default to green */
+.header {
+	font-size: 2.5rem;
+	margin-top: 2rem;
+	margin-left: 1rem;
 }
