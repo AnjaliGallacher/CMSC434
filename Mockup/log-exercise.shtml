@@ -320,8 +320,10 @@
 							<label for="ex-date" class="form-label">
 								<span class="form-label-icon">📅</span>Date
 							</label>
-							<input type="date" id="ex-date" name="ex-date"
-							class="form-input" value="<!--#echo var="DATE_LOCAL" -->"
+							<input type="date" id="meal-date" name="meal-date"
+							class="form-input" value="<!--#echo var="DATE_LOCAL" -->">
+							<input type="time" id="meal-time" name="meal-time"
+							class="form-input" value="<!--#echo var="TIME_LOCAL" -->">
 							/>
 						</div>
 						<div>
@@ -329,8 +331,10 @@
 								<span class="form-label-icon">⏰</span>Start
 								Time
 							</label>
-							<input type="time" id="ex-time" name="ex-time"
-							class="form-input" value="<!--#echo var="TIME_LOCAL" -->"
+							<input type="date" id="meal-date" name="meal-date"
+							class="form-input" value="<!--#echo var="DATE_LOCAL" -->">
+							<input type="time" id="meal-time" name="meal-time"
+							class="form-input" value="<!--#echo var="TIME_LOCAL" -->">
 							/>
 						</div>
 					</div>
