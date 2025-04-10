@@ -1,219 +1,609 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Fitness App - Phase 2 (Tablet)</title> <!-- Updated title -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
-</head>
-<body>
-    <!-- App Container Simulation (using tablet styles from style.css) -->
-    <div class="app-container">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
+		<title>Modern Profile</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			:root {
+				--primary-color: #007aff; /* iOS Blue - vibrant and modern */
+				--primary-light: #e6f2ff;
+				--background-color: #f2f2f7;
+				--card-background: #f8f9fa; /* Slightly off-white for cards */
+				--text-primary: #1c1c1e; /* Near black */
+				--text-secondary: #8a8a8e; /* Medium gray */
+				--text-tertiary: #c7c7cc; /* Lighter gray */
+				--border-color: #e5e5ea;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+			}
 
-        <!-- Main Content Area - Screens will be swapped here -->
-        <main class="content-area">
+			/* Basic Reset & Body */
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				height: 100%;
+				background-color: #e9e9ef; /* Background outside the phone */
+				-webkit-font-smoothing: antialiased; /* Smoother fonts on Mac/iOS */
+				-moz-osx-font-smoothing: grayscale;
+			}
+			* {
+				box-sizing: border-box;
+			}
 
-            <!-- Home Screen (Visible by default) -->
-            <section id="home" class="screen active">
-                <h2 class="screen-title">Home</h2>
-                <!-- ADDED: Grid Layout Wrapper for Home Cards -->
-                <div class="grid-layout-2col">
-                    <div class="card">
-                        <h3>Today's Workout</h3>
-                        <p>Status: Ready to Go!</p>
-                        <button class="action-button">Start Workout</button>
-                    </div>
-                    <div class="card">
-                        <h3>Sleep Last Night</h3>
-                        <p>Duration: 7h 15m / 8h Goal</p>
-                        <p>Quality: Good</p>
-                         <div class="progress-bar-container simple">
-                             <div class="progress-bar" style="width: 90.6%;"></div> <!-- 7.25/8 -->
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Calories Consumed</h3>
-                        <p>Current: 850 / 2000 kcal</p>
-                        <div class="progress-bar-container">
-                             <div class="progress-bar" style="width: 42.5%;"></div>
-                        </div>
-                    </div>
-                    <!-- Add another card here if you want 4 items in the grid -->
-                     <div class="card">
-                        <h3>Steps Today</h3>
-                        <p>12,830 / 10,000 Goal</p>
-                         <div class="progress-bar-container simple">
-                             <div class="progress-bar" style="width: 100%;"></div> <!-- Example: Goal met -->
-                        </div>
-                    </div>
-                </div> <!-- END: Grid Layout Wrapper -->
+			/* Phone Container Simulation */
+			.phone-container {
+				width: 375px;
+				height: 667px;
+				border: 1px solid var(--border-color);
+				margin: 30px auto; /* More space around */
+				background-color: var(--background-color);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px; /* Rounded corners for modern feel */
+				box-shadow: 0 10px 30px var(--shadow-strong-color);
+			}
 
-                <!-- Placeholder for your specific Home screen mockup -->
-                <div class="mockup-placeholder">[Home Screen Mockup Area]</div>
-            </section>
+			/* Header */
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 18px 20px; /* Slightly more padding */
+				/* border-bottom: 1px solid var(--border-color); removed for cleaner look */
+				flex-shrink: 0;
+				position: relative; /* For potential absolute positioning within */
+				z-index: 10; /* Above main content */
+			}
+			.menu-icon,
+			.notification-icon {
+				font-size: 22px; /* Slightly smaller/refined */
+				color: var(--text-primary);
+				cursor: pointer;
+				padding: 5px; /* Easier touch target */
+				transition: color 0.2s ease;
+			}
+			.menu-icon:hover,
+			.notification-icon:hover {
+				color: var(--primary-color);
+			}
+			/* Notification dot (optional) */
+			.notification-icon::after {
+				content: "";
+				display: block;
+				width: 8px;
+				height: 8px;
+				background-color: var(--primary-color);
+				border-radius: 50%;
+				position: absolute;
+				top: 18px;
+				right: 18px;
+				border: 1px solid var(--background-color);
+			}
 
-            <!-- Exercise Screen (Single column layout typically best for forms) -->
-            <section id="exercise" class="screen">
-                <h2 class="screen-title">Log Exercise</h2>
-                <form class="card">
-                     <div class="form-group">
-                        <label for="exercise-type">Type:</label>
-                        <select id="exercise-type" name="exercise-type">
-                            <option value="strength">Strength</option>
-                            <option value="cardio">Cardio</option>
-                            <option value="flexibility">Flexibility</option>
-                        </select>
-                    </div>
-                     <div class="form-group">
-                        <label for="duration">Duration (minutes):</label>
-                        <input type="number" id="duration" name="duration" placeholder="e.g., 30">
-                     </div>
-                     <div class="form-group">
-                        <label for="sets">Sets:</label>
-                        <input type="number" id="sets" name="sets" placeholder="e.g., 3">
-                     </div>
-                     <div class="form-group">
-                        <label for="reps">Reps:</label>
-                        <input type="number" id="reps" name="reps" placeholder="e.g., 10">
-                     </div>
-                     <button type="submit" class="action-button">Log Workout</button>
-                </form>
-                <div class="card trends-placeholder">
-                    <h3>Workout Trends</h3>
-                    <p>(Graph showing weekly workout time will appear here)</p>
-                </div>
-            </section>
+			/* Side Menu (Hamburger) */
+			.side-menu {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 75%; /* Slightly wider */
+				max-width: 280px;
+				height: 100%;
+				background-color: #ffffff; /* Use white for clean overlay */
+				border-right: 1px solid var(--border-color);
+				padding: 60px 25px 30px 25px;
+				transform: translateX(-100%);
+				transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother ease */
+				z-index: 100;
+				box-shadow: 5px 0 15px var(--shadow-strong-color);
+			}
+			.side-menu.open {
+				transform: translateX(0);
+			}
+			.side-menu a {
+				display: block;
+				padding: 18px 0; /* More vertical space */
+				text-decoration: none;
+				color: var(--text-primary);
+				font-size: 18px;
+				font-weight: 500; /* Medium weight */
+				border-bottom: 1px solid var(--border-color);
+				transition: color 0.2s ease;
+			}
+			.side-menu a:last-child {
+				border-bottom: none;
+			}
+			.side-menu a:hover,
+			.side-menu a.active {
+				/* Add active class possibility */
+				color: var(--primary-color);
+			}
 
-            <!-- Nutrition Screen (Single column layout typically best for forms) -->
-            <section id="nutrition" class="screen">
-                 <h2 class="screen-title">Log Nutrition</h2>
-                 <form class="card">
-                    <div class="form-group">
-                        <label for="food-search">Search Food:</label>
-                        <input type="search" id="food-search" name="food-search" placeholder="e.g., Grilled Chicken Breast">
-                        <div class="search-results-placeholder">
-                            <p>(Search results and auto-fill data will appear here)</p>
-                        </div>
-                    </div>
-                    <button type="button" class="action-button">Add Food Item</button>
-                    <p class="design-note">Logging a full meal is a deep task involving multiple fields/screens (to be developed).</p>
-                </form>
-                <div class="card">
-                    <h3>Today's Nutrition Goals</h3>
-                     <p>Calories: 1200 / 2200 kcal</p>
-                     <div class="progress-bar-container">
-                         <div class="progress-bar" style="width: 54.5%;"></div>
-                     </div>
-                     <p>Protein: 60 / 120 g</p>
-                      <div class="progress-bar-container">
-                         <div class="progress-bar protein" style="width: 50%;"></div> <!-- Example class for different color -->
-                     </div>
-                     <p>Carbs: 150 / 250 g</p>
-                      <div class="progress-bar-container">
-                         <div class="progress-bar carbs" style="width: 60%;"></div> <!-- Example class -->
-                     </div>
-                 </div>
-            </section>
+			/* Main Content Area (Profile + Space) */
+			.main-content {
+				flex-grow: 1;
+				overflow-y: auto;
+				padding: 0 20px 30px 20px; /* Add side padding too */
+				/* Hide scrollbar visual */
+				scrollbar-width: none; /* Firefox */
+				-ms-overflow-style: none; /* IE and Edge */
+			}
+			.main-content::-webkit-scrollbar {
+				display: none; /* Chrome, Safari, Opera */
+			}
 
-            <!-- Progress Screen -->
-            <section id="progress" class="screen">
-                 <h2 class="screen-title">Your Progress</h2>
-                 <!-- ADDED: Grid Layout Wrapper for Progress Cards -->
-                 <div class="grid-layout-2col">
-                    <div class="card chart-placeholder">
-                        <h3>Exercise Trends</h3>
-                        <p>(Graph showing workout frequency/duration over time)</p>
-                        <p class="design-note">Designed for interpretability.</p>
-                    </div>
-                     <div class="card chart-placeholder">
-                        <h3>Nutrition Summary</h3>
-                        <p>(Charts showing calorie/macro intake vs goals)</p>
-                    </div>
-                     <div class="card chart-placeholder">
-                        <h3>Weight Change</h3>
-                        <p>(Graph showing weight over time)</p>
-                    </div>
-                    <div class="card">
-                         <h3>Sleep Analysis</h3>
-                         <div class="sleep-chart-container">
-                             <div class="donut-chart" data-progress="81.25" data-goal="8.0"> <!-- 6.5 / 8.0 = 81.25% -->
-                                <span class="chart-value">6.5</span>
-                                <span class="chart-label">hrs / 8.0 goal</span>
-                             </div>
-                             <p class="sleep-quality">Quality: Good</p>
-                         </div>
-                          <!-- Placeholder for your specific Sleep Analysis mockup -->
-                         <div class="mockup-placeholder">[Sleep Analysis Mockup Area]</div>
-                     </div>
-                </div> <!-- END: Grid Layout Wrapper -->
-            </section>
+			/* Profile Section */
+			.profile-section {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding-top: 20px; /* Adjusted from header padding */
+				padding-bottom: 50px; /* Even more spacing */
+				text-align: center;
+			}
+			.profile-picture {
+				width: 140px; /* Slightly smaller */
+				height: 140px;
+				border-radius: 50%;
+				/* Subtle gradient background */
+				background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 100%);
+				margin-bottom: 20px; /* More space */
+				position: relative;
+				box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2); /* Subtle blue shadow */
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			/* Simple Placeholder Icon instead of drawn face */
+			.profile-picture::before {
+				content: "?"; /* User icon */
+				font-size: 60px;
+				opacity: 0.8;
+			}
+			.username {
+				font-size: 24px; /* Larger */
+				font-weight: 600; /* Semibold */
+				color: var(--text-primary);
+				margin-top: 5px; /* Add some space if needed */
+			}
 
-            <!-- Profile Screen -->
-            <section id="profile" class="screen">
-                <h2 class="screen-title">Profile</h2>
-                <!-- Top Half: Profile Header (Remains single column) -->
-                <div class="profile-header card">
-                    <img src="placeholder-avatar.png" alt="User Avatar" class="avatar">
-                    <div class="user-info">
-                        <h3>Alex Johnson <span class="edit-icon" title="Edit Name">✏️</span></h3>
-                        <p>Status: Active <span class="edit-icon" title="Edit Status">✏️</span></p>
-                    </div>
-                </div>
+			/* Fixed Bottom Section */
+			.bottom-fixed-section {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: var(--background-color);
+				/* Subtle top shadow to indicate layering */
+				padding-top: 20px; /* Space above the badges */
+				border-top-left-radius: 20px; /* Match container rounding */
+				border-top-right-radius: 20px;
+				flex-shrink: 0;
+			}
 
-                <!-- Bottom Half: Goals and Achievements -->
-                <div class="profile-content">
-                    <!-- ADDED: Grid Layout Wrapper for Profile Content Cards -->
-                    <div class="grid-layout-2col profile-split"> <!-- Added profile-split class for potential specific styling -->
-                        <div class="card">
-                            <h3>Your Goals <button class="edit-button" title="Edit Goals">Edit</button></h3>
-                            <ul>
-                                <li><span class="goal-icon">🏁</span> Run 5k by end of month</li>
-                                <li><span class="goal-icon">🍎</span> Average 2000 kcal daily</li>
-                                <li><span class="goal-icon">😴</span> Sleep 7.5+ hours consistently</li>
-                            </ul>
-                        </div>
-                        <div class="card">
-                            <h3>Achievements <button class="view-all-button" title="View All Achievements">View All</button></h3>
-                            <div class="achievements-preview">
-                                 <span class="achievement-badge" title="First Workout">🏅</span>
-                                 <span class="achievement-badge" title="7-Day Streak">🔥</span>
-                                 <span class="achievement-badge" title="10k Steps">👣</span>
-                                 <span class="achievement-badge disabled" title="Locked: 5k Run">🔒</span>
-                                 <!-- Add more badges -->
-                            </div>
-                        </div>
-                    </div> <!-- END: Grid Layout Wrapper -->
-                </div>
-                 <!-- Placeholder for your specific Profile screen mockup -->
-                 <div class="mockup-placeholder">[Profile Screen Mockup Area]</div>
-            </section>
+			/* Stats Scroller Wrapper */
+			.stats-scroller-wrapper {
+				position: relative;
+				margin: 0 20px; /* Consistent side margins */
+			}
 
-        </main> <!-- End Content Area -->
+			/* Arrows for Scrolling */
+			.scroll-arrow {
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				background-color: rgba(
+					255,
+					255,
+					255,
+					0.8
+				); /* Semi-transparent white */
+				backdrop-filter: blur(5px); /* Glass effect */
+				color: var(--text-secondary);
+				border: 1px solid var(--border-color);
+				border-radius: 50%;
+				width: 32px;
+				height: 32px;
+				font-size: 16px;
+				font-weight: bold;
+				line-height: 30px; /* Center arrow */
+				text-align: center;
+				cursor: pointer;
+				z-index: 10;
+				display: none; /* Hidden by default, shown via JS */
+				transition: all 0.2s ease;
+				box-shadow: 0 2px 5px var(--shadow-color);
+			}
+			.scroll-arrow:hover {
+				background-color: rgba(255, 255, 255, 1);
+				color: var(--primary-color);
+				border-color: var(--primary-light);
+			}
+			.scroll-arrow.left {
+				left: -16px; /* Overlap slightly */
+			}
+			.scroll-arrow.right {
+				right: -16px; /* Overlap slightly */
+			}
+			.stats-scroller-wrapper.show-arrows .scroll-arrow {
+				display: block;
+			}
 
-        <!-- Bottom Navigation Bar -->
-        <nav class="bottom-nav">
-            <button class="nav-button active" data-target="home" title="Home">
-                <span class="icon">🏠</span><span class="nav-label">Home</span>
-            </button>
-            <button class="nav-button" data-target="exercise" title="Log Exercise">
-                 <span class="icon">🏋️</span><span class="nav-label">Exercise</span>
-            </button>
-            <button class="nav-button" data-target="nutrition" title="Log Nutrition">
-                 <span class="icon">🍎</span><span class="nav-label">Nutrition</span>
-            </button>
-            <button class="nav-button" data-target="progress" title="View Progress">
-                 <span class="icon">📊</span><span class="nav-label">Progress</span>
-            </button>
-            <button class="nav-button" data-target="profile" title="Profile">
-                 <span class="icon">👤</span><span class="nav-label">Profile</span>
-            </button>
-        </nav>
+			/* Actual Scrolling Container */
+			.stats-scroller {
+				display: flex;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				padding-bottom: 15px; /* Space below cards */
+				margin-bottom: 15px; /* Space between scroller and dots */
+				/* Hide scrollbar visual */
+				scrollbar-width: none;
+				-ms-overflow-style: none;
+			}
+			.stats-scroller::-webkit-scrollbar {
+				display: none;
+			}
 
-    </div> <!-- End App Container -->
+			/* Individual Page/Screen within the Scroller */
+			.stats-page {
+				width: 100%;
+				flex-shrink: 0;
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 15px; /* Space between grid items */
+				padding: 0 2px; /* Tiny padding to prevent edge clipping */
+				scroll-snap-align: center; /* Center snap */
+			}
 
-    <script src="script.js"></script> <!-- Link to the JS file -->
-</body>
+			/* Stat Box Styling */
+			.stat-box {
+				height: 110px; /* Slightly taller */
+				border: none; /* Remove border */
+				border-radius: 12px; /* More rounded */
+				display: flex;
+				flex-direction: column;
+				justify-content: center; /* Vertically center content */
+				align-items: center;
+				text-align: center;
+				padding: 15px 10px; /* Adjusted padding */
+				background-color: var(--card-background);
+				box-shadow: 0 3px 8px var(--shadow-color); /* Subtle shadow */
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			.stat-box:hover {
+				transform: translateY(-3px); /* Slight lift on hover */
+				box-shadow: 0 6px 12px var(--shadow-strong-color);
+			}
+
+			.stat-value {
+				font-size: 18px;
+				font-weight: 600; /* Semibold */
+				color: var(--text-primary);
+				margin-bottom: 4px; /* Space between value and icon */
+			}
+			.stat-icon {
+				font-size: 26px; /* Larger icons */
+				margin-bottom: 6px; /* Space between icon and label */
+				color: var(--primary-color); /* Use accent color */
+				line-height: 1; /* Ensure icon alignment */
+			}
+			.stat-label {
+				font-size: 13px; /* Slightly smaller */
+				color: var(--text-secondary);
+				font-weight: 500; /* Medium weight */
+			}
+
+			/* Pagination Dots */
+			.pagination-dots {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding-bottom: 20px; /* Bottom padding for the whole section */
+			}
+			.dot {
+				width: 7px; /* Slightly smaller */
+				height: 7px;
+				background-color: var(
+					--text-tertiary
+				); /* Lighter inactive color */
+				border-radius: 50%;
+				margin: 0 5px; /* More space between dots */
+				transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+			}
+			.dot.active {
+				background-color: var(--primary-color); /* Active color */
+				transform: scale(1.2); /* Slightly larger active dot */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone-container">
+			<!-- Header -->
+			<div class="header">
+				<div class="menu-icon" id="menu-toggle">☰</div>
+				<div class="notification-icon" title="Notifications">?</div>
+			</div>
+
+			<!-- Side Menu (Initially Hidden) -->
+			<div class="side-menu" id="sideMenu">
+				<a href="#" class="active">Home</a>
+				<!-- Example active link -->
+				<a href="#">Profile</a>
+				<a href="#">Activity Feed</a>
+				<a href="#">Friends</a>
+				<a href="#">Settings</a>
+				<a href="#">Logout</a>
+			</div>
+
+			<!-- Main Scrollable Content Area -->
+			<div class="main-content">
+				<!-- Profile Section -->
+				<div class="profile-section">
+					<div class="profile-picture">
+						<!-- Placeholder via ::before pseudo-element -->
+					</div>
+					<div class="username">Alex Johnson</div>
+				</div>
+				<!-- Add more content here if needed -->
+				<!-- Example: Add a small bio -->
+				<p
+					style="
+						text-align: center;
+						color: var(--text-secondary);
+						margin-top: -30px;
+						margin-bottom: 30px;
+						padding: 0 20px;
+					"
+				>
+					Fitness enthusiast | Daily goals tracker | Lover of hiking
+				</p>
+			</div>
+
+			<!-- Fixed Bottom Section -->
+			<div class="bottom-fixed-section">
+				<div class="stats-scroller-wrapper" id="scrollerWrapper">
+					<!-- Arrows -->
+					<button
+						class="scroll-arrow left"
+						id="scrollLeftBtn"
+						title="Previous Stats"
+					>
+						<
+					</button>
+
+					<!-- Stats Scroller -->
+					<div class="stats-scroller" id="statsScroller">
+						<!-- Page 1: Primary -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">4 / 5</div>
+								<div class="stat-icon">?</div>
+								<!-- Trophy -->
+								<div class="stat-label">Goals Today</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">2150</div>
+								<div class="stat-icon">?</div>
+								<!-- Fire -->
+								<div class="stat-label">Calories Burned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7h 45m</div>
+								<div class="stat-icon">?</div>
+								<!-- Bed -->
+								<div class="stat-label">Sleep</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">4.5 Miles</div>
+								<div class="stat-icon">?</div>
+								<!-- Running -->
+								<div class="stat-label">Run Distance</div>
+							</div>
+						</div>
+
+						<!-- Page 2: Activity -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">12,830</div>
+								<div class="stat-icon">?</div>
+								<!-- Footprints -->
+								<div class="stat-label">Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">7 / 8</div>
+								<div class="stat-icon">?</div>
+								<!-- Droplet -->
+								<div class="stat-label">Water Intake</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">68 bpm</div>
+								<div class="stat-icon">❤️</div>
+								<!-- Heart -->
+								<div class="stat-label">Resting HR</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">75 Min</div>
+								<div class="stat-icon">?</div>
+								<!-- Flexed Biceps -->
+								<div class="stat-label">Strength Training</div>
+							</div>
+						</div>
+
+						<!-- Page 3: Achievements -->
+						<div class="stats-page">
+							<div class="stat-box">
+								<div class="stat-value">15</div>
+								<div class="stat-icon">?</div>
+								<!-- Medal -->
+								<div class="stat-label">Badges Earned</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">21 Days</div>
+								<div class="stat-icon">?</div>
+								<!-- Calendar -->
+								<div class="stat-label">Activity Streak</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">Top 10%</div>
+								<div class="stat-icon">🏆</div>
+								<!-- Trophy Cup -->
+								<div class="stat-label">Weekly Steps</div>
+							</div>
+							<div class="stat-box">
+								<div class="stat-value">5K PR</div>
+								<div class="stat-icon">⏱️</div>
+								<!-- Stopwatch -->
+								<div class="stat-label">24:15</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Stats Scroller -->
+
+					<button
+						class="scroll-arrow right"
+						id="scrollRightBtn"
+						title="Next Stats"
+					>
+						>
+					</button>
+				</div>
+				<!-- End Scroller Wrapper -->
+
+				<!-- Pagination Dots -->
+				<div class="pagination-dots" id="paginationDots">
+					<!-- Dots generated by JS -->
+				</div>
+			</div>
+			<!-- End Fixed Bottom Section -->
+		</div>
+		<!-- End Phone Container -->
+
+		<script>
+			// --- Hamburger Menu Toggle ---
+			const menuToggle = document.getElementById("menu-toggle");
+			const sideMenu = document.getElementById("sideMenu");
+
+			menuToggle.addEventListener("click", (event) => {
+				event.stopPropagation();
+				sideMenu.classList.toggle("open");
+			});
+
+			document.addEventListener("click", (event) => {
+				if (
+					sideMenu.classList.contains("open") &&
+					!sideMenu.contains(event.target) &&
+					event.target !== menuToggle
+				) {
+					sideMenu.classList.remove("open");
+				}
+			});
+
+			// --- Stats Scroller & Pagination ---
+			const scroller = document.getElementById("statsScroller");
+			const paginationDotsContainer =
+				document.getElementById("paginationDots");
+			const pages = scroller.querySelectorAll(".stats-page");
+			const scrollWrapper = document.getElementById("scrollerWrapper");
+			const scrollLeftBtn = document.getElementById("scrollLeftBtn");
+			const scrollRightBtn = document.getElementById("scrollRightBtn");
+			const numPages = pages.length;
+			let currentPage = 0;
+
+			// Generate Pagination Dots
+			for (let i = 0; i < numPages; i++) {
+				const dot = document.createElement("span");
+				dot.classList.add("dot");
+				if (i === 0) dot.classList.add("active");
+				dot.dataset.index = i;
+				paginationDotsContainer.appendChild(dot);
+			}
+			const dots = paginationDotsContainer.querySelectorAll(".dot");
+
+			function updatePagination(activeIndex) {
+				dots.forEach((dot, index) => {
+					dot.classList.toggle("active", index === activeIndex);
+				});
+				currentPage = activeIndex;
+				updateArrowVisibility();
+			}
+
+			function updateArrowVisibility() {
+				if (numPages <= 1) {
+					scrollWrapper.classList.remove("show-arrows");
+					return;
+				}
+				scrollWrapper.classList.add("show-arrows");
+				scrollLeftBtn.style.display =
+					currentPage > 0 ? "block" : "none";
+				scrollRightBtn.style.display =
+					currentPage < numPages - 1 ? "block" : "none";
+			}
+
+			// Debounce function to limit scroll event handler frequency
+			function debounce(func, wait) {
+				let timeout;
+				return function executedFunction(...args) {
+					const later = () => {
+						clearTimeout(timeout);
+						func(...args);
+					};
+					clearTimeout(timeout);
+					timeout = setTimeout(later, wait);
+				};
+			}
+
+			// Update dots on scroll (debounced)
+			const handleScroll = debounce(() => {
+				const pageWidth = scroller.offsetWidth;
+				// Use Math.round for better snapping with scroll-snap-align: center
+				const activeIndex = Math.round(scroller.scrollLeft / pageWidth);
+
+				if (
+					activeIndex >= 0 &&
+					activeIndex < numPages &&
+					activeIndex !== currentPage
+				) {
+					updatePagination(activeIndex);
+				} else {
+					// Ensure arrows update even if page index doesn't change (e.g., during scroll animation)
+					updateArrowVisibility();
+				}
+			}, 50); // Adjust debounce wait time (ms) as needed
+
+			scroller.addEventListener("scroll", handleScroll);
+
+			function scrollPage(direction) {
+				const pageWidth = scroller.offsetWidth;
+				let targetPage = currentPage + direction;
+				targetPage = Math.max(0, Math.min(targetPage, numPages - 1));
+
+				scroller.scrollTo({
+					left: targetPage * pageWidth,
+					behavior: "smooth",
+				});
+				// Manually update pagination after starting scroll for faster feedback
+				// updatePagination(targetPage); // Let scroll event handle it for consistency with snapping
+			}
+
+			scrollLeftBtn.addEventListener("click", () => scrollPage(-1));
+			scrollRightBtn.addEventListener("click", () => scrollPage(1));
+
+			// Initial setup
+			updateArrowVisibility(); // Check arrow visibility on load
+		</script>
+	</body>
 </html>
