@@ -1,51 +1,54 @@
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const navButtons = document.querySelectorAll('.nav-button');
+  const screens = document.querySelectorAll('.screen');
 
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.classList.toggle("crossed-out");
-    }
-}
+  // --- Navigation Logic ---
+  function setActiveScreen(targetScreenId) {
+      // 1. Update Active Button State
+      navButtons.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.target === targetScreenId);
+      });
 
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
+      // 2. Hide all screens and show the target screen
+      screens.forEach(screen => {
+          screen.classList.toggle('active', screen.id === targetScreenId);
+      });
+
+      // Optional: Scroll to top when changing screens
+      const contentArea = document.querySelector('.content-area');
+      if (contentArea) {
+          contentArea.scrollTop = 0;
+      }
   }
-}, false);
 
-function addTask() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    document.getElementById("myUL").appendChild(li);
+  // Add click listeners to nav buttons
+  navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+          const targetScreenId = button.dataset.target;
+          setActiveScreen(targetScreenId);
+      });
+  });
+
+  // --- Initialize (Set default active screen) ---
+  // Find the initially active button (or default to 'home')
+  const initialActiveButton = document.querySelector('.nav-button.active') || document.querySelector('.nav-button[data-target="home"]');
+  if (initialActiveButton) {
+      setActiveScreen(initialActiveButton.dataset.target);
   }
-  document.getElementById("myInput").value = "";
 
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
 
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
+  // --- Dynamic Elements (Example: Sleep Chart Initialization) ---
+  const sleepChart = document.querySelector('.donut-chart');
+  if (sleepChart) {
+      const progress = sleepChart.dataset.progress || 0;
+      // Set CSS variable for the conic-gradient
+      sleepChart.style.setProperty('--progress', progress);
   }
-}
+
+  // Add more JS logic here as needed for:
+  // - Form submissions (Exercise, Nutrition)
+  // - Fetching data for charts/trends
+  // - Handling dynamic content updates
+  // - Implementing "Edit" functionalities on Profile
+  console.log("Fitness App Phase 2 Initialized");
+});
