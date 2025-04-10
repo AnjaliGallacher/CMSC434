@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
+		<title>Log Exercise - iPad View</title>
+		<!-- Updated Title -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			/* --- Root Variables (Consistent) --- */
+			:root {
+				--primary-color: #007aff;
+				--primary-light: #e6f2ff;
+				--accent-purple: #af52de;
+				--accent-teal: #5ac8fa;
+				--accent-orange: #ff9500;
+				--accent-green: #34c759;
+				--accent-red: #ff3b30;
+				--background-color: #f2f2f7;
+				--surface-color: #ffffff;
+				--surface-secondary-color: #e5e5ea;
+				--bottom-nav-background: rgba(248, 248, 248, 0.92);
+				--text-primary: #000000;
+				--text-secondary: #3c3c43;
+				--text-tertiary: #8e8e93;
+				--text-link: var(--primary-color);
+				--text-on-primary: #ffffff;
+				--border-color: #d1d1d6;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+				--nav-height: 70px; /* Slightly taller nav for larger screen */
+				--content-padding: 24px; /* More padding for larger screen */
+				--card-border-radius: 16px; /* Consistent larger radius */
+			}
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				font-family: "Inter", sans-serif;
+				height: 100%;
+				background-color: #dcdce1; /* Background outside container */
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			/* --- iPad Container Simulation --- */
+			.ipad-container {
+				width: 768px; /* iPad Portrait Width */
+				height: 1024px; /* iPad Portrait Height */
+				border: 1px solid var(--border-color);
+				margin: 40px auto; /* Center on page */
+				background-color: var(--background-color);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px; /* Slightly less rounded corners for tablet */
+				box-shadow: 0 15px 40px var(--shadow-strong-color);
+			}
+
+			/* --- Header (Consistent) --- */
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 20px var(--content-padding) 15px var(--content-padding); /* Increased padding */
+				flex-shrink: 0;
+				position: relative;
+				z-index: 10;
+				background-color: var(--surface-color);
+				border-bottom: 1px solid var(--border-color);
+			}
+			.header-title {
+				font-size: 20px; /* Larger title */
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+			.action-button {
+				font-size: 17px; /* Larger button text */
+				font-weight: 600;
+				color: var(--text-link);
+				cursor: pointer;
+				background: none;
+				border: none;
+				padding: 8px 10px; /* Larger padding */
+			}
+			.action-button:disabled {
+				color: var(--text-tertiary);
+				cursor: default;
+			}
+
+			/* --- Main Content (Adjusted Padding) --- */
+			.main-content {
+				flex-grow: 1;
+				overflow-y: auto;
+				padding: var(--content-padding);
+				padding-top: 30px; /* More space at top */
+				padding-bottom: calc(
+					var(--nav-height) + var(--content-padding)
+				);
+				scrollbar-width: thin; /* Show scrollbar on non-touch */
+				scrollbar-color: var(--border-color) transparent;
+			}
+			.main-content::-webkit-scrollbar {
+				width: 6px;
+			}
+			.main-content::-webkit-scrollbar-thumb {
+				background-color: var(--border-color);
+				border-radius: 3px;
+			}
+			.main-content::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			/* --- Form Styling (Modernized & Spaced) --- */
+			.input-group {
+				margin-bottom: 30px; /* Increased spacing */
+			}
+			.input-row {
+				display: grid; /* Use grid for better control on larger screens */
+				grid-template-columns: repeat(
+					auto-fit,
+					minmax(200px, 1fr)
+				); /* Responsive columns */
+				gap: 20px; /* Increased gap */
+				margin-bottom: 20px;
+			}
+			.input-row > div {
+				/* No flex: 1 needed with grid */
+			}
+
+			.form-label {
+				display: flex;
+				align-items: center;
+				font-size: 15px; /* Slightly larger */
+				font-weight: 500;
+				color: var(--text-secondary);
+				margin-bottom: 10px; /* Increased margin */
+			}
+			.form-label-icon {
+				font-size: 18px; /* Larger icon */
+				margin-right: 8px;
+				color: var(--text-tertiary);
+			}
+
+			.form-input,
+			.form-select,
+			.form-textarea {
+				width: 100%;
+				padding: 14px 16px; /* More padding */
+				border: 1px solid var(--border-color);
+				border-radius: var(--card-border-radius);
+				font-size: 17px; /* Larger font */
+				color: var(--text-primary);
+				background-color: var(--surface-color);
+				transition: border-color 0.2s ease, box-shadow 0.2s ease;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+			}
+			.form-input:focus,
+			.form-select:focus,
+			.form-textarea:focus {
+				outline: none;
+				border-color: var(--primary-color);
+				box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2); /* Adjusted focus ring */
+			}
+			.form-textarea {
+				min-height: 100px; /* Taller textarea */
+				resize: vertical;
+			}
+
+			/* Input with Unit Styling */
+			.input-with-unit {
+				display: flex;
+				align-items: stretch; /* Align items vertically */
+			}
+			.input-with-unit .form-input {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+				border-right: none;
+				flex-grow: 1; /* Allow input to grow */
+			}
+			.input-unit {
+				padding: 0 16px; /* Adjust padding */
+				background-color: var(
+					--surface-secondary-color
+				); /* Slightly different background */
+				border: 1px solid var(--border-color);
+				border-left: none;
+				border-top-right-radius: var(--card-border-radius);
+				border-bottom-right-radius: var(--card-border-radius);
+				font-size: 15px; /* Slightly larger unit text */
+				color: var(--text-secondary);
+				font-weight: 500;
+				display: flex; /* Center text vertically */
+				align-items: center;
+				white-space: nowrap; /* Prevent wrapping */
+			}
+			.input-with-unit select.input-unit {
+				/* Specific style for select unit */
+				padding-right: 30px; /* Space for dropdown arrow */
+				appearance: none; /* Remove default arrow */
+				-webkit-appearance: none;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%233C3C43'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
+				background-repeat: no-repeat;
+				background-position: right 8px center;
+				background-size: 16px 16px;
+				border-left: 1px solid var(--border-color); /* Add left border back for select */
+				cursor: pointer;
+			}
+
+			/* Optional Fields Separator */
+			.optional-fields-separator {
+				border: none;
+				border-top: 1px dashed var(--border-color);
+				margin: 30px 0; /* Increased margin */
+			}
+
+			/* --- Bottom Navigation Bar (iPad Adjusted) --- */
+			.bottom-nav {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: var(--nav-height);
+				background-color: var(--bottom-nav-background);
+				backdrop-filter: blur(15px);
+				-webkit-backdrop-filter: blur(15px);
+				border-top: 0.5px solid var(--border-color);
+				display: flex;
+				justify-content: space-around;
+				align-items: stretch;
+				z-index: 100;
+				padding: 0 15px; /* More horizontal padding */
+			}
+			.nav-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				color: var(--text-tertiary);
+				font-size: 11px; /* Slightly larger text */
+				font-weight: 500;
+				flex-grow: 1;
+				text-align: center;
+				transition: color 0.2s ease;
+				padding: 8px 0 6px 0; /* Adjust vertical padding */
+				position: relative;
+				cursor: pointer;
+			}
+			.nav-icon {
+				font-size: 26px; /* Larger icons */
+				margin-bottom: 4px;
+				line-height: 1;
+			}
+			.nav-item:hover {
+				color: var(--text-secondary);
+			}
+			.nav-item.active {
+				color: var(--primary-color);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ipad-container">
+			<!-- Changed class name -->
+			<!-- Header -->
+			<div class="header">
+				<span class="header-title">Log Exercise</span>
+				<button class="action-button" onclick="saveExercise()">
+					Save
+				</button>
+			</div>
+
+			<!-- Main Scrollable Content Area -->
+			<div class="main-content">
+				<!-- Exercise Type -->
+				<div class="input-group">
+					<div>
+						<label for="ex-type" class="form-label">
+							<span class="form-label-icon">🏃</span>Exercise Type
+						</label>
+						<input
+							type="text"
+							id="ex-type"
+							name="ex-type"
+							class="form-input"
+							placeholder="e.g., Running, Weightlifting, Cycling"
+							list="exercise-suggestions"
+						/>
+						<datalist id="exercise-suggestions">
+							<option value="Running"></option>
+							<option value="Walking"></option>
+							<option value="Cycling"></option>
+							<option value="Weightlifting"></option>
+							<option value="Yoga"></option>
+							<option value="Swimming"></option>
+							<option value="Hiking"></option>
+							<option value="Rowing"></option>
+							<option value="Pilates"></option>
+							<option value="Strength Training"></option>
+						</datalist>
+					</div>
+				</div>
+
+				<!-- Date & Time Row -->
+				<div class="input-group">
+					<div class="input-row">
+						<div>
+							<label for="ex-date" class="form-label">
+								<span class="form-label-icon">📅</span>Date
+							</label>
+							<input type="date" id="ex-date" name="ex-date"
+							class="form-input" value="<!--#echo var="DATE_LOCAL" -->"
+							/>
+						</div>
+						<div>
+							<label for="ex-time" class="form-label">
+								<span class="form-label-icon">⏰</span>Start
+								Time
+							</label>
+							<input type="time" id="ex-time" name="ex-time"
+							class="form-input" value="<!--#echo var="TIME_LOCAL" -->"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<!-- Duration & Calories Row -->
+				<div class="input-group">
+					<div class="input-row">
+						<div>
+							<label for="ex-duration" class="form-label">
+								<span class="form-label-icon">⏱️</span>Duration
+							</label>
+							<div class="input-with-unit">
+								<input
+									type="number"
+									id="ex-duration"
+									name="ex-duration"
+									class="form-input"
+									placeholder="e.g., 45"
+									min="0"
+									step="1"
+								/>
+								<span class="input-unit">min</span>
+							</div>
+						</div>
+						<div>
+							<label for="ex-calories" class="form-label">
+								<span class="form-label-icon">🔥</span>Calories
+								Burned
+							</label>
+							<div class="input-with-unit">
+								<input
+									type="number"
+									id="ex-calories"
+									name="ex-calories"
+									class="form-input"
+									placeholder="Estimate (e.g., 350)"
+									min="0"
+									step="1"
+								/>
+								<span class="input-unit">kcal</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Optional Fields Separator -->
+				<hr class="optional-fields-separator" />
+
+				<!-- Distance Row -->
+				<div class="input-group">
+					<div class="input-row">
+						<!-- Keep distance and unit together -->
+						<div>
+							<label for="ex-distance" class="form-label">
+								<span class="form-label-icon">📏</span>Distance
+								(Optional)
+							</label>
+							<div class="input-with-unit">
+								<input
+									type="number"
+									id="ex-distance"
+									name="ex-distance"
+									class="form-input"
+									placeholder="e.g., 5"
+									min="0"
+									step="0.1"
+								/>
+								<select
+									id="distance-unit"
+									name="distance-unit"
+									class="input-unit"
+								>
+									<option value="km">km</option>
+									<option value="miles">miles</option>
+									<option value="meters">meters</option>
+									<option value="yards">yards</option>
+								</select>
+							</div>
+						</div>
+						<div>
+							<!-- Placeholder for potential second column item -->
+						</div>
+					</div>
+				</div>
+
+				<!-- Notes -->
+				<div class="input-group">
+					<div>
+						<label for="ex-notes" class="form-label">
+							<span class="form-label-icon">📝</span>Notes
+							(Optional)
+						</label>
+						<textarea
+							id="ex-notes"
+							name="ex-notes"
+							class="form-textarea"
+							rows="4"
+							placeholder="e.g., Felt strong, new PR, specific sets/reps, location, weather..."
+						></textarea>
+					</div>
+				</div>
+			</div>
+			<!-- End Main Content -->
+
+			<!-- Bottom Navigation Bar (UPDATED) -->
+			<nav class="bottom-nav" id="bottomNav">
+				<a href="todo.shtml" class="nav-item" data-page="home">
+					<span class="nav-icon">🏠</span>
+					<span class="nav-label">Home</span>
+				</a>
+				<a href="progress.shtml" class="nav-item" data-page="progress">
+					<!-- Link to Progress -->
+					<span class="nav-icon">📊</span>
+					<span class="nav-label">Progress</span>
+				</a>
+				<a href="log-meal.shtml" class="nav-item" data-page="log-meal">
+					<!-- Link to Log Meal -->
+					<span class="nav-icon">🍔</span>
+					<!-- Changed Icon -->
+					<span class="nav-label">Log Meal</span>
+				</a>
+				<a
+					href="log-exercise.shtml"
+					class="nav-item active"
+					data-page="log-exercise"
+				>
+					<!-- Active & Link to Log Exercise -->
+					<span class="nav-icon">🏃</span>
+					<!-- Changed Icon -->
+					<span class="nav-label">Log Exercise</span>
+				</a>
+				<a href="profile.shtml" class="nav-item" data-page="profile">
+					<span class="nav-icon">👤</span>
+					<span class="nav-label">Profile</span>
+				</a>
+			</nav>
+		</div>
+		<!-- End ipad Container -->
+
+		<script>
+			function saveExercise() {
+				// Basic validation example
+				const exType = document.getElementById("ex-type").value;
+				const exDuration = document.getElementById("ex-duration").value;
+				if (!exType || !exDuration) {
+					alert("Please enter at least Exercise Type and Duration.");
+					return;
+				}
+				alert("Exercise Saved! (Implementation Needed)");
+				// Add actual data saving logic here (e.g., AJAX call, local storage)
+			}
+
+			// Fallback for date/time if needed (SSI might handle it)
+			document.addEventListener("DOMContentLoaded", () => {
+				const dateInput = document.getElementById("ex-date");
+				const timeInput = document.getElementById("ex-time");
+
+				// Set default date if SSI failed or value is empty
+				if (!dateInput.value) {
+					const today = new Date();
+					const yyyy = today.getFullYear();
+					const mm = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+					const dd = String(today.getDate()).padStart(2, "0");
+					dateInput.value = `${yyyy}-${mm}-${dd}`;
+				}
+
+				// Set default time if SSI failed or value is empty
+				if (!timeInput.value) {
+					const now = new Date();
+					const hh = String(now.getHours()).padStart(2, "0");
+					const mm = String(now.getMinutes()).padStart(2, "0");
+					timeInput.value = `${hh}:${mm}`;
+				}
+			});
+		</script>
+	</body>
+</html>

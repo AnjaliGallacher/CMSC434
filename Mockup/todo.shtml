@@ -6,7 +6,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
-		<title>Modern Home Page</title>
+		<title>Health Dashboard - iPad View</title> <!-- Updated Title -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -14,36 +14,34 @@
 			rel="stylesheet"
 		/>
 		<style>
+			/* --- Root Variables (Consistent - Copied from log-exercise) --- */
 			:root {
-				/* Primary & Accent Colors */
-				--primary-color: #0a84ff; /* Updated iOS Blue */
-				--primary-light: #e6f3ff;
-				--accent-purple: #af52de; /* iOS Purple */
-				--accent-teal: #5ac8fa; /* iOS Teal */
-				--accent-orange: #ff9f0a; /* iOS Orange */
-				--accent-green: #30d15b; /* iOS Green */
-
-				/* Background & Surface Colors */
-				--background-color: #f2f2f7; /* Lighter Gray for overall background */
-				--surface-color: #ffffff; /* White for cards/surfaces */
-				--surface-secondary-color: #f8f9fa; /* Slightly off-white for subtle contrast */
-
-				/* Text Colors */
-				--text-primary: #1c1c1e; /* Near black */
-				--text-secondary: #636366; /* Medium gray */
-				--text-tertiary: #aeaeb2; /* Lighter gray */
-
-				/* Border & Shadow Colors */
-				--border-color: #e5e5ea;
-				--shadow-color: rgba(0, 0, 0, 0.04);
-				--shadow-strong-color: rgba(0, 0, 0, 0.08);
-
-				/* Chart Specific */
-				--chart-track-color: #ebebf0; /* Background track for charts */
+				--primary-color: #007aff;
+				--primary-light: #e6f2ff;
+				--accent-purple: #af52de;
+				--accent-teal: #5ac8fa;
+				--accent-orange: #ff9500;
+				--accent-green: #34c759;
+				--accent-red: #ff3b30;
+				--background-color: #f2f2f7;
+				--surface-color: #ffffff;
+				--surface-secondary-color: #e5e5ea;
+				--bottom-nav-background: rgba(248, 248, 248, 0.92);
+				--text-primary: #000000;
+				--text-secondary: #3c3c43;
+				--text-tertiary: #8e8e93;
+				--text-link: var(--primary-color);
+				--text-on-primary: #ffffff;
+				--border-color: #d1d1d6;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+				--nav-height: 70px;
+				--content-padding: 24px;
+				--card-border-radius: 16px;
+                --chart-track-color: #ebebf0;
 				--chart-sleep-color: var(--accent-purple);
 			}
 
-			/* Basic Reset & Body */
 			body,
 			html {
 				margin: 0;
@@ -51,7 +49,7 @@
 				font-family: "Inter", -apple-system, BlinkMacSystemFont,
 					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 				height: 100%;
-				background-color: #dcdce1; /* Background outside the phone */
+				background-color: #dcdce1;
 				-webkit-font-smoothing: antialiased;
 				-moz-osx-font-smoothing: grayscale;
 			}
@@ -59,215 +57,214 @@
 				box-sizing: border-box;
 			}
 
-			/* Phone Container Simulation */
-			.phone-container {
-				width: 375px;
-				height: 667px;
+			/* --- iPad Container Simulation --- */
+			.ipad-container {
+				width: 768px;
+				height: 1024px;
 				border: 1px solid var(--border-color);
-				margin: 30px auto;
-				background-color: var(
-					--background-color
-				); /* Use the lighter gray */
+				margin: 40px auto;
+				background-color: var(--background-color);
 				display: flex;
 				flex-direction: column;
 				position: relative;
 				overflow: hidden;
-				border-radius: 25px; /* More pronounced rounding */
-				box-shadow: 0 12px 35px var(--shadow-strong-color);
+				border-radius: 20px;
+				box-shadow: 0 15px 40px var(--shadow-strong-color);
 			}
 
 			/* Header */
 			.header {
 				display: flex;
-				justify-content: space-between;
+				justify-content: space-between; /* Space for potential title/logo and icons */
 				align-items: center;
-				padding: 18px 20px 10px 20px; /* Reduced bottom padding */
+				padding: 20px var(--content-padding) 15px var(--content-padding);
 				flex-shrink: 0;
 				position: relative;
 				z-index: 10;
-				background-color: var(
-					--background-color
-				); /* Match background */
+				background-color: var(--background-color); /* Match page background */
+                /* border-bottom: 1px solid var(--border-color); Optional */
 			}
-			.menu-icon,
-			.notification-icon {
-				font-size: 22px;
-				color: var(--text-primary);
+            /* Optional: Add a logo or title if needed */
+            .header-logo {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+			.header-actions {
+                display: flex;
+                gap: 15px;
+            }
+            .action-icon { /* Reusing profile style */
+				font-size: 26px;
+				color: var(--text-secondary);
 				cursor: pointer;
-				padding: 5px;
+				padding: 8px;
 				transition: color 0.2s ease;
+				position: relative;
 			}
-			.menu-icon:hover,
-			.notification-icon:hover {
-				color: var(--primary-color);
+			.action-icon:hover {
+				color: var(--text-primary);
 			}
+            /* Notification specific styling */
 			.notification-icon::after {
-				/* Notification dot */
 				content: "";
 				display: block;
-				width: 8px;
-				height: 8px;
-				background-color: var(--primary-color);
+				width: 9px; /* Slightly larger dot */
+				height: 9px;
+				background-color: var(--accent-red);
 				border-radius: 50%;
 				position: absolute;
-				top: 18px;
-				right: 18px;
-				border: 1.5px solid var(--background-color);
-			}
-
-			/* Side Menu (Reused - Assuming it exists) */
-			.side-menu {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 75%;
-				max-width: 280px;
-				height: 100%;
-				background-color: var(--surface-color);
-				border-right: 1px solid var(--border-color);
-				padding: 60px 25px 30px 25px;
-				transform: translateX(-100%);
-				transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-				z-index: 100;
-				box-shadow: 5px 0 15px var(--shadow-strong-color);
-			}
-			.side-menu.open {
-				transform: translateX(0);
-			}
-			.side-menu a {
-				/* Simplified styling */
-				display: block;
-				padding: 18px 0;
-				text-decoration: none;
-				color: var(--text-primary);
-				font-size: 18px;
-				font-weight: 500;
-				border-bottom: 1px solid var(--border-color);
-				transition: color 0.2s ease;
-			}
-			.side-menu a:last-child {
-				border-bottom: none;
-			}
-			.side-menu a:hover {
-				color: var(--primary-color);
+				top: 8px; /* Adjust position */
+				right: 5px;
+				border: 2px solid var(--background-color);
 			}
 
 			/* Main Content Area */
 			.main-content {
 				flex-grow: 1;
 				overflow-y: auto;
-				padding: 0px 20px 30px 20px; /* No top padding needed */
-				scrollbar-width: none;
-				-ms-overflow-style: none;
+				padding: var(--content-padding);
+                padding-top: 10px; /* Less top padding */
+				padding-bottom: calc(
+					var(--nav-height) + var(--content-padding)
+				);
+				scrollbar-width: thin;
+				scrollbar-color: var(--border-color) transparent;
 			}
 			.main-content::-webkit-scrollbar {
-				display: none;
+				width: 6px;
+			}
+            .main-content::-webkit-scrollbar-thumb {
+				background-color: var(--border-color);
+				border-radius: 3px;
+			}
+             .main-content::-webkit-scrollbar-track {
+				background: transparent;
 			}
 
 			/* Greeting Message */
 			.greeting {
-				font-size: 26px; /* Larger */
-				font-weight: 700; /* Bold */
+				font-size: 28px; /* Larger greeting */
+				font-weight: 700;
 				color: var(--text-primary);
-				margin: 10px 0 20px 0; /* Spacing */
-				padding-left: 5px; /* Slight indent */
+				margin: 15px 0 25px 0; /* Adjusted spacing */
 			}
 
 			/* Time Filters */
 			.time-filters {
 				display: flex;
-				gap: 10px; /* Space between buttons */
-				margin-bottom: 25px; /* Space below filters */
-				padding-left: 5px; /* Match greeting indent */
+				gap: 12px; /* Increased gap */
+				margin-bottom: 30px; /* More space below filters */
 			}
 			.filter-btn {
-				padding: 8px 16px; /* Button size */
+				padding: 9px 20px; /* Larger buttons */
 				border: none;
-				border-radius: 20px; /* Pill shape */
-				font-size: 14px;
-				font-weight: 600; /* Semibold */
-				color: var(--text-secondary);
-				background-color: var(--surface-color); /* Use surface color */
+				border-radius: 25px;
+				font-size: 14px; /* Slightly larger font */
+				font-weight: 600;
+				color: var(--text-link);
+				background-color: var(--surface-color);
 				cursor: pointer;
 				transition: all 0.2s ease;
 				box-shadow: 0 2px 5px var(--shadow-color);
 			}
 			.filter-btn:hover {
 				background-color: var(--surface-secondary-color);
-				color: var(--text-primary);
+                transform: translateY(-1px);
 			}
 			.filter-btn.active {
 				background-color: var(--primary-color);
-				color: #ffffff; /* White text on active */
-				box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3); /* Blue shadow */
+				color: var(--text-on-primary);
+				box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3);
+                transform: translateY(0);
 			}
 
-			/* --- Card Styles --- */
+			/* --- Card Styles (Adapted for iPad) --- */
 			.card {
 				background-color: var(--surface-color);
-				border-radius: 18px; /* Consistent rounding */
-				margin-bottom: 20px; /* Space between cards */
-				padding: 20px;
-				box-shadow: 0 5px 15px var(--shadow-color);
-				overflow: hidden; /* Ensure content respects border-radius */
+				border-radius: var(--card-border-radius);
+				margin-bottom: 20px; /* Increased spacing */
+				padding: var(--content-padding); /* Use variable */
+				box-shadow: 0 5px 15px var(--shadow-color); /* Slightly stronger shadow */
+				overflow: hidden;
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				cursor: pointer;
+				position: relative;
 			}
 			.card:hover {
 				transform: translateY(-3px);
 				box-shadow: 0 8px 20px var(--shadow-strong-color);
 			}
+
+			/* Card Header */
 			.card-header {
 				display: flex;
 				align-items: center;
-				margin-bottom: 15px; /* Space below header */
-				font-size: 13px;
-				font-weight: 600; /* Semibold */
+				justify-content: space-between;
+				margin-bottom: 15px; /* Increased spacing */
+				font-size: 13px; /* Slightly larger */
+				font-weight: 600;
 				color: var(--text-secondary);
-				text-transform: uppercase; /* Match sketch */
-				letter-spacing: 0.5px;
+				text-transform: uppercase;
+				letter-spacing: 0.6px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--surface-secondary-color); /* Subtle separator */
+			}
+			.card-header-title {
+				display: flex;
+				align-items: center;
 			}
 			.card-header-icon {
-				font-size: 18px;
+				font-size: 18px; /* Larger icon */
 				margin-right: 8px;
-				color: var(--text-tertiary); /* Subtle icon color */
+			}
+			/* Chevron indicator */
+			.card::after {
+				content: "❯"; /* Use a better chevron */
+				position: absolute;
+				top: 22px; /* Adjust position */
+				right: 20px;
+				color: var(--text-tertiary);
+				font-weight: 600;
+				font-size: 20px;
+				opacity: 0.6;
+				transition: opacity 0.2s ease, transform 0.2s ease;
+			}
+			.card:hover::after {
+				opacity: 1;
+				color: var(--text-secondary);
+                transform: translateX(3px);
 			}
 			.card-body {
 				display: flex;
-				align-items: center; /* Default alignment */
+				align-items: center;
+                padding-top: 5px;
 			}
 
 			/* Sleep Analysis Card */
-			.sleep-card .card-header-icon {
-				color: var(--chart-sleep-color);
-			} /* Specific icon color */
+			.sleep-card .card-header-icon { color: var(--chart-sleep-color); }
 			.sleep-card .card-body {
-				justify-content: space-between; /* Space chart and text */
+				justify-content: space-between;
 				align-items: center;
+				gap: 25px; /* More gap */
 			}
 			.sleep-chart-container {
-				width: 100px; /* Chart size */
-				height: 100px;
-				position: relative; /* For positioning text inside */
-				margin-right: 20px; /* Space between chart and text */
+				width: 110px; /* Larger chart */
+				height: 110px;
+				position: relative;
+				flex-shrink: 0;
 			}
-			/* CSS Conic Gradient Chart */
-			.sleep-chart {
+			.sleep-chart { /* Recreate with SVG for better control? For now, keep CSS */
 				width: 100%;
 				height: 100%;
 				border-radius: 50%;
 				background: conic-gradient(
-					var(--chart-sleep-color) 0% 80.4%,
-					/* Value from sketch */ var(--chart-track-color) 80.4% 100%
+					var(--chart-sleep-color) 0% 80.4%, /* Example value */
+					var(--chart-track-color) 80.4% 100%
 				);
-				/* Create the donut hole */
-				mask-image: radial-gradient(
-					transparent 55%,
-					/* Adjust inner hole size */ black 56%
-				);
-				-webkit-mask-image: radial-gradient(
-					/* Safari */ transparent 55%,
-					black 56%
-				);
+                /* Adjust mask for thicker ring */
+				mask-image: radial-gradient(transparent 65%, black 66%);
+				-webkit-mask-image: radial-gradient(transparent 65%, black 66%);
 			}
 			.sleep-chart-text {
 				position: absolute;
@@ -278,213 +275,471 @@
 				font-weight: 600;
 			}
 			.sleep-chart-percentage {
-				font-size: 18px;
+				font-size: 20px; /* Larger percentage */
 				color: var(--text-primary);
-				line-height: 1.2;
+				line-height: 1.1;
 			}
 			.sleep-chart-label {
-				font-size: 11px;
+				font-size: 11px; /* Larger label */
 				color: var(--text-secondary);
 			}
 			.sleep-details {
 				text-align: right;
 			}
 			.sleep-duration {
-				font-size: 24px;
+				font-size: 26px; /* Larger duration */
 				font-weight: 600;
 				color: var(--text-primary);
-				margin-bottom: 4px;
+				margin-bottom: 5px;
 			}
 			.sleep-duration-label {
-				font-size: 13px;
+				font-size: 13px; /* Larger label */
 				color: var(--text-secondary);
 				font-weight: 500;
 			}
 
-			/* Stats Grid (for smaller cards) */
+			/* Stats Grid - Adapted for iPad */
 			.stats-grid {
 				display: grid;
-				grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-				gap: 15px; /* Space between grid items */
+                /* Use 3 columns for dashboard */
+				grid-template-columns: repeat(3, 1fr);
+				gap: 18px; /* Consistent gap */
 			}
 			.stat-card {
-				padding: 15px; /* Slightly less padding for smaller cards */
-				margin-bottom: 0; /* Grid gap handles spacing */
+				padding: 18px; /* Consistent padding */
+				margin-bottom: 0;
 				display: flex;
-				flex-direction: column; /* Stack header and icon */
-				align-items: flex-start; /* Align header left */
-				min-height: 140px; /* Ensure consistent height */
+				flex-direction: column;
+				align-items: flex-start;
+				min-height: 150px; /* Increased height */
 			}
-			.stat-card .card-header {
-				margin-bottom: 10px; /* Less space below header */
-			}
+			.stat-card .card-header { margin-bottom: 12px; border-bottom: none; padding-bottom: 0;}
+			.stat-card::after { content: "❯"; } /* Keep chevron on stat cards too */
+
 			.stat-card .card-body {
-				flex-grow: 1; /* Allow body to fill space */
+				flex-grow: 1;
 				width: 100%;
-				justify-content: center; /* Center the icon */
-				align-items: center; /* Center the icon */
-			}
-			.stat-card-icon {
-				font-size: 48px; /* Larger icons for visual emphasis */
-				line-height: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start; /* Align content top */
+				align-items: flex-start;
+				padding-top: 0px;
+                margin-top: auto; /* Push body content down */
 			}
 
-			/* Specific Icon Colors (optional, adds personality) */
-			.goals-card .card-header {
-				color: var(--accent-green);
+			.stat-value {
+				font-size: 24px; /* Larger value */
+				font-weight: 600;
+				color: var(--text-primary);
+				line-height: 1.2;
 			}
-			.kcal-card .card-header {
-				color: var(--accent-orange);
+			.stat-unit, .stat-label {
+				font-size: 12px; /* Larger labels */
+				color: var(--text-secondary);
+				font-weight: 500;
+				line-height: 1.4;
 			}
-			.water-card .card-header {
-				color: var(--accent-teal);
+			.stat-unit { margin-left: 3px; }
+			.stat-label { margin-top: 4px; }
+
+			.stat-progress-bar {
+				width: 100%;
+				height: 8px; /* Thicker bar */
+				background-color: var(--chart-track-color);
+				border-radius: 4px;
+				overflow: hidden;
+				margin-top: 12px; /* More space */
 			}
-			.exercise-card .card-header {
+			.stat-progress-bar-fill {
+				height: 100%;
+				background-color: var(--primary-color);
+				border-radius: 4px;
+				width: 0%;
+				transition: width 0.5s ease;
+			}
+
+			/* Specific Stat Card Styling */
+			.goals-card .card-header-icon { color: var(--accent-green); }
+			.goals-card .stat-progress-bar-fill { background-color: var(--accent-green); }
+			.kcal-card .card-header-icon { color: var(--accent-orange); }
+			.kcal-card .stat-progress-bar-fill { background-color: var(--accent-orange); }
+			.water-card .card-header-icon { color: var(--accent-teal); }
+			.water-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
+			.exercise-card .card-header-icon { color: var(--primary-color); }
+			.exercise-card .stat-progress-bar-fill { background-color: var(--primary-color); }
+            /* Add Steps Card */
+            .steps-card .card-header-icon { color: var(--accent-teal); }
+            .steps-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
+             /* Add Mindfulness Card */
+            .mind-card .card-header-icon { color: var(--accent-purple); }
+            .mind-card .stat-progress-bar-fill { background-color: var(--accent-purple); }
+
+			/* --- Bottom Navigation Bar (Consistent - Copied from log-exercise) --- */
+			.bottom-nav {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: var(--nav-height);
+				background-color: var(--bottom-nav-background);
+				backdrop-filter: blur(15px);
+				-webkit-backdrop-filter: blur(15px);
+				border-top: 0.5px solid var(--border-color);
+				display: flex;
+				justify-content: space-around;
+				align-items: stretch;
+				z-index: 100;
+				padding: 0 15px;
+			}
+			.nav-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				color: var(--text-tertiary);
+				font-size: 11px;
+				font-weight: 500;
+				flex-grow: 1;
+				text-align: center;
+				transition: color 0.2s ease;
+				padding: 8px 0 6px 0;
+				position: relative;
+				cursor: pointer;
+			}
+			.nav-icon {
+				font-size: 26px;
+				margin-bottom: 4px;
+				line-height: 1;
+			}
+			.nav-item:hover {
+				color: var(--text-secondary);
+			}
+			.nav-item.active {
 				color: var(--primary-color);
 			}
 		</style>
 	</head>
 	<body>
-		<div class="phone-container">
+		<div class="ipad-container"> <!-- Changed class name -->
 			<!-- Header -->
 			<div class="header">
-				<div class="menu-icon" id="menu-toggle" title="Menu">☰</div>
-				<div class="notification-icon" title="Notifications">?</div>
-			</div>
-
-			<!-- Side Menu (Initially Hidden - reuse from previous example) -->
-			<div class="side-menu" id="sideMenu">
-				<a href="#" class="active">Home</a>
-				<a href="#">Profile</a>
-				<a href="#">Activity Feed</a>
-				<a href="#">Settings</a>
+                <div class="header-logo">Wellness Hub</div> <!-- Optional Title/Logo -->
+                <div class="header-actions">
+                    <div class="action-icon notification-icon" title="Notifications">🔔</div>
+                    <div class="action-icon search-icon" title="Search">🔍</div> <!-- Example: Add Search -->
+                </div>
 			</div>
 
 			<!-- Main Scrollable Content Area -->
 			<div class="main-content">
 				<!-- Greeting -->
-				<h1 class="greeting">Hello User,</h1>
+				<h1 class="greeting">Hello Alex,</h1> <!-- Personalized -->
 
 				<!-- Time Filters -->
 				<div class="time-filters" id="timeFilters">
 					<button class="filter-btn active" data-filter="daily">
-						Daily
+						Today
 					</button>
 					<button class="filter-btn" data-filter="weekly">
-						Weekly
+						This Week
 					</button>
 					<button class="filter-btn" data-filter="monthly">
-						Monthly
+						This Month
 					</button>
 				</div>
 
 				<!-- Sleep Analysis Card -->
-				<div class="card sleep-card">
+				<div
+					class="card sleep-card"
+					onclick="navigateTo('sleep-details.shtml')" <!-- Example: Link to detail page -->
+				>
 					<div class="card-header">
-						<span class="card-header-icon">🌙</span> Sleep Analysis
+						<div class="card-header-title">
+							<span class="card-header-icon">🌙</span> Sleep Analysis
+						</div>
 					</div>
 					<div class="card-body">
 						<div class="sleep-chart-container">
-							<div class="sleep-chart"></div>
+							<div class="sleep-chart" id="sleepChart"></div> <!-- JS can update background -->
 							<div class="sleep-chart-text">
-								<div class="sleep-chart-percentage">80.4%</div>
+								<div class="sleep-chart-percentage" id="sleepQuality">80%</div>
 								<div class="sleep-chart-label">Quality</div>
 							</div>
 						</div>
 						<div class="sleep-details">
-							<div class="sleep-duration">7h 30m</div>
+							<div class="sleep-duration" id="sleepDuration">7h 30m</div>
 							<div class="sleep-duration-label">
-								Sleep duration
+								Last Night's Sleep
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- Stats Grid -->
+				<!-- Stats Grid - Now 3 columns -->
 				<div class="stats-grid">
-					<!-- Goals Card -->
-					<div class="card stat-card goals-card">
-						<div class="card-header">Goals</div>
+					<!-- Steps Card (Added) -->
+					<div
+						class="card stat-card steps-card"
+						onclick="navigateTo('activity-details.shtml')"
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">👣</span> Steps
+							</div>
+						</div>
 						<div class="card-body">
-							<span class="stat-card-icon">🌈</span>
+							<div class="stat-value">8,520</div>
+							<div class="stat-label">Goal: 10,000 steps</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 85%" id="stepsProgress"
+								></div>
+							</div>
 						</div>
 					</div>
 
-					<!-- Kcal Consumed Card -->
-					<div class="card stat-card kcal-card">
-						<div class="card-header">Kcal Consumed</div>
+                    <!-- Exercise Card -->
+					<div
+						class="card stat-card exercise-card"
+						onclick="navigateTo('log-exercise.shtml')"
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">🏃</span>
+								Exercise
+							</div>
+						</div>
 						<div class="card-body">
-							<span class="stat-card-icon">🍔</span>
+							<div class="stat-value">
+								45<span class="stat-unit">min</span>
+							</div>
+							<div class="stat-label">Goal: 60 min active</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 75%" id="exerciseProgress"
+								></div>
+							</div>
+						</div>
+					</div>
+
+                    <!-- Kcal Consumed Card -->
+					<div
+						class="card stat-card kcal-card"
+						onclick="navigateTo('log-meal.shtml')"
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">🔥</span> Kcal
+								Consumed
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="stat-value">
+								1580<span class="stat-unit">kcal</span>
+							</div>
+							<div class="stat-label">Goal: 2000 kcal</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 79%" id="kcalProgress"
+								></div>
+							</div>
 						</div>
 					</div>
 
 					<!-- Water Consumed Card -->
-					<div class="card stat-card water-card">
-						<div class="card-header">Water Consumed</div>
+					<div
+						class="card stat-card water-card"
+						onclick="navigateTo('log-water.shtml')" /* Example: Separate water log */
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">💧</span> Water
+								Intake
+							</div>
+						</div>
 						<div class="card-body">
-							<span class="stat-card-icon">💧</span>
-							<!-- Droplet emoji looks cleaner -->
+							<div class="stat-value">
+								1.2<span class="stat-unit">L</span>
+							</div>
+							<div class="stat-label">Goal: 2.0 L</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 60%" id="waterProgress"
+								></div>
+							</div>
 						</div>
 					</div>
 
-					<!-- Exercise Tracker Card -->
-					<div class="card stat-card exercise-card">
-						<div class="card-header">Exercise Tracker</div>
+					<!-- Mindfulness Card (Added) -->
+                    <div
+						class="card stat-card mind-card"
+						onclick="navigateTo('log-mindfulness.shtml')" /* Example: Log mindfulness */
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">🧘</span> Mindfulness
+							</div>
+						</div>
 						<div class="card-body">
-							<span class="stat-card-icon">🏋️</span>
-							<!-- Weight lifter emoji -->
+							<div class="stat-value">
+								10<span class="stat-unit">min</span>
+							</div>
+							<div class="stat-label">Goal: 15 min today</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 66%" id="mindProgress"
+								></div>
+							</div>
 						</div>
 					</div>
-				</div>
+
+                    <!-- Goals Card -->
+					<div
+						class="card stat-card goals-card"
+						onclick="navigateTo('goals.shtml')" /* Example: Goals page */
+					>
+						<div class="card-header">
+							<div class="card-header-title">
+								<span class="card-header-icon">🎯</span> Goals
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="stat-value">3 / 5</div>
+							<div class="stat-label">Active Goals Met Today</div>
+							<div class="stat-progress-bar">
+								<div
+									class="stat-progress-bar-fill"
+									style="width: 60%" id="goalsProgress"
+								></div>
+							</div>
+						</div>
+					</div>
+
+				</div> <!-- End Stats Grid -->
 			</div>
 			<!-- End Main Content -->
-		</div>
-		<!-- End Phone Container -->
+
+			<!-- Bottom Navigation Bar (UPDATED) -->
+			<nav class="bottom-nav" id="bottomNav">
+				<a href="todo.shtml" class="nav-item active" data-page="home"> <!-- Active -->
+					<span class="nav-icon">🏠</span>
+					<span class="nav-label">Home</span>
+				</a>
+				<a href="progress.shtml" class="nav-item" data-page="progress">
+					<span class="nav-icon">📊</span>
+					<span class="nav-label">Progress</span>
+				</a>
+				<a href="log-meal.shtml" class="nav-item" data-page="log-meal">
+					<span class="nav-icon">🍔</span>
+					<span class="nav-label">Log Meal</span>
+				</a>
+                <a href="log-exercise.shtml" class="nav-item" data-page="log-exercise">
+					<span class="nav-icon">🏃</span>
+					<span class="nav-label">Log Exercise</span>
+				</a>
+				<a href="profile.shtml" class="nav-item" data-page="profile">
+					<span class="nav-icon">👤</span>
+					<span class="nav-label">Profile</span>
+				</a>
+			</nav>
+			<!-- End Bottom Navigation Bar -->
+        </div>
+		<!-- End ipad Container -->
 
 		<script>
-			// --- Hamburger Menu Toggle (Reused) ---
-			const menuToggle = document.getElementById("menu-toggle");
-			const sideMenu = document.getElementById("sideMenu");
-
-			if (menuToggle && sideMenu) {
-				menuToggle.addEventListener("click", (event) => {
-					event.stopPropagation();
-					sideMenu.classList.toggle("open");
-				});
-
-				document.addEventListener("click", (event) => {
-					if (
-						sideMenu.classList.contains("open") &&
-						!sideMenu.contains(event.target) &&
-						event.target !== menuToggle
-					) {
-						sideMenu.classList.remove("open");
-					}
-				});
-			}
-
 			// --- Time Filter Button Handler ---
 			const timeFiltersContainer = document.getElementById("timeFilters");
 			if (timeFiltersContainer) {
-				const filterButtons =
-					timeFiltersContainer.querySelectorAll(".filter-btn");
-
+				const filterButtons = timeFiltersContainer.querySelectorAll(".filter-btn");
 				timeFiltersContainer.addEventListener("click", (event) => {
 					if (event.target.classList.contains("filter-btn")) {
-						// Remove active class from all buttons
-						filterButtons.forEach((btn) =>
-							btn.classList.remove("active")
-						);
-						// Add active class to the clicked button
+						filterButtons.forEach((btn) => btn.classList.remove("active"));
 						event.target.classList.add("active");
-
-						// Optional: Get the selected filter value
 						const selectedFilter = event.target.dataset.filter;
 						console.log("Selected Filter:", selectedFilter);
-						// Here you would typically trigger data updates based on the filter
+						// Add logic to update card data based on filter
+                        // e.g., fetchWeeklyData(), fetchMonthlyData()
+                        updateDashboardData(selectedFilter); // Mock update
 					}
 				});
 			}
+
+            // --- Mock Data Update Function ---
+            function updateDashboardData(filter) {
+                console.log(`Updating dashboard for ${filter} view...`);
+                // In a real app, fetch data and update DOM elements
+                // Example: Change sleep duration based on filter
+                const sleepDurationEl = document.getElementById('sleepDuration');
+                const sleepQualityEl = document.getElementById('sleepQuality');
+                const sleepChartEl = document.getElementById('sleepChart');
+
+                if (filter === 'daily') {
+                    sleepDurationEl.textContent = '7h 30m';
+                    sleepQualityEl.textContent = '80%';
+                    if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 80%, var(--chart-track-color) 80% 100%)';
+                    // Update other cards... e.g., steps, kcal, etc.
+                    document.getElementById('stepsProgress').style.width = '85%';
+                    document.getElementById('exerciseProgress').style.width = '75%';
+                    document.getElementById('kcalProgress').style.width = '79%';
+                    document.getElementById('waterProgress').style.width = '60%';
+                    document.getElementById('mindProgress').style.width = '66%';
+                    document.getElementById('goalsProgress').style.width = '60%';
+
+
+                } else if (filter === 'weekly') {
+                    sleepDurationEl.textContent = '7h 15m'; // Avg for week
+                    sleepQualityEl.textContent = '75%'; // Avg quality
+                     if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 75%, var(--chart-track-color) 75% 100%)';
+                    // Update other cards...
+                     document.getElementById('stepsProgress').style.width = '92%'; // Example weekly progress
+                     document.getElementById('exerciseProgress').style.width = '88%';
+                     document.getElementById('kcalProgress').style.width = '85%';
+                     document.getElementById('waterProgress').style.width = '70%';
+                     document.getElementById('mindProgress').style.width = '75%';
+                     document.getElementById('goalsProgress').style.width = '70%';
+
+                } else if (filter === 'monthly') {
+                     sleepDurationEl.textContent = '7h 20m'; // Avg for month
+                     sleepQualityEl.textContent = '78%'; // Avg quality
+                      if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 78%, var(--chart-track-color) 78% 100%)';
+                     // Update other cards...
+                     document.getElementById('stepsProgress').style.width = '95%'; // Example monthly progress
+                     document.getElementById('exerciseProgress').style.width = '90%';
+                     document.getElementById('kcalProgress').style.width = '82%';
+                     document.getElementById('waterProgress').style.width = '75%';
+                     document.getElementById('mindProgress').style.width = '80%';
+                     document.getElementById('goalsProgress').style.width = '75%';
+                }
+                 alert(`Dashboard updated for ${filter} view (mock data)`);
+            }
+
+			// --- Mock Navigation Function (for card clicks) ---
+			function navigateTo(url) {
+				console.log("Navigating to:", url);
+                if (url && url !== '#') {
+                   window.location.href = url; // Navigate for real if URL is provided
+                } else {
+				    alert(`Navigation to ${url} section (implementation needed)`);
+                }
+			}
+
+			// --- Initial Setup ---
+			document.addEventListener("DOMContentLoaded", () => {
+				// Set initial state based on 'daily' filter
+				updateDashboardData('daily');
+
+                // Optional: Add listeners for header icons
+                const notificationIcon = document.querySelector('.notification-icon');
+                if(notificationIcon) notificationIcon.addEventListener('click', () => alert('Show Notifications'));
+                const searchIcon = document.querySelector('.search-icon');
+                 if(searchIcon) searchIcon.addEventListener('click', () => alert('Show Search'));
+			});
 		</script>
 	</body>
 </html>
