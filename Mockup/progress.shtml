@@ -7,23 +7,276 @@
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
 		<title>Progress & Stats - iPad View</title>
+		<!-- New Page Title -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
+		<!-- Include Chart.js library -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
-		<link rel="stylesheet" href="style.css" />
 		<style>
-			/* Page-specific overrides if necessary */
+			/* --- Root Variables (Consistent - Copied from log-exercise) --- */
+			:root {
+				--primary-color: #007aff;
+				--primary-light: #e6f2ff;
+				--accent-purple: #af52de;
+				--accent-teal: #5ac8fa;
+				--accent-orange: #ff9500;
+				--accent-green: #34c759;
+				--accent-red: #ff3b30;
+				--background-color: #f2f2f7;
+				--surface-color: #ffffff;
+				--surface-secondary-color: #e5e5ea;
+				--bottom-nav-background: rgba(248, 248, 248, 0.92);
+				--text-primary: #000000;
+				--text-secondary: #3c3c43;
+				--text-tertiary: #8e8e93;
+				--text-link: var(--primary-color);
+				--text-on-primary: #ffffff;
+				--border-color: #d1d1d6;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+				--nav-height: 70px;
+				--content-padding: 24px;
+				--card-border-radius: 16px;
+				--chart-track-color: #ebebf0;
+			}
+
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				height: 100%;
+				background-color: #dcdce1;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			* {
+				box-sizing: border-box;
+			}
+
+			/* --- iPad Container Simulation --- */
+			.ipad-container {
+				width: 768px;
+				height: 1024px;
+				border: 1px solid var(--border-color);
+				margin: 40px auto;
+				background-color: var(--background-color);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px;
+				box-shadow: 0 15px 40px var(--shadow-strong-color);
+			}
+
+			/* Header */
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 20px var(--content-padding) 15px var(--content-padding);
+				flex-shrink: 0;
+				position: relative;
+				z-index: 10;
+				background-color: var(--surface-color); /* White header */
+				border-bottom: 1px solid var(--border-color);
+			}
+			.header-title {
+				font-size: 20px;
+				font-weight: 600;
+				color: var(--text-primary);
+				flex-grow: 1; /* Allow title to take space */
+				text-align: center; /* Center title */
+			}
+			.header-action {
+				/* Placeholder for potential right-side actions */
+				width: 50px; /* Balance the title */
+			}
+
+			/* Main Content Area */
+			.main-content {
+				flex-grow: 1;
+				overflow-y: auto;
+				padding: var(--content-padding);
+				padding-top: 30px;
+				padding-bottom: calc(
+					var(--nav-height) + var(--content-padding)
+				);
+				scrollbar-width: thin;
+				scrollbar-color: var(--border-color) transparent;
+			}
+			.main-content::-webkit-scrollbar {
+				width: 6px;
+			}
+			.main-content::-webkit-scrollbar-thumb {
+				background-color: var(--border-color);
+				border-radius: 3px;
+			}
+			.main-content::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			/* Section Styling */
+			.progress-section {
+				background-color: var(--surface-color);
+				border-radius: var(--card-border-radius);
+				margin-bottom: 25px;
+				padding: var(--content-padding);
+				box-shadow: 0 5px 15px var(--shadow-color);
+			}
+			.section-title {
+				font-size: 18px;
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0 0 20px 0;
+				padding-bottom: 15px;
+				border-bottom: 1px solid var(--surface-secondary-color);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+			.section-title-icon {
+				font-size: 20px;
+				margin-right: 10px;
+			}
+			.section-controls {
+				font-size: 14px;
+			}
+			.section-controls select,
+			.section-controls button {
+				margin-left: 10px;
+				padding: 5px 10px;
+				font-size: 13px;
+				border: 1px solid var(--border-color);
+				border-radius: 8px;
+				background-color: var(--surface-secondary-color);
+				cursor: pointer;
+			}
+
+			/* Chart Container Styling */
+			.chart-container {
+				position: relative;
+				height: 250px; /* Adjust height as needed */
+				width: 100%;
+				margin-bottom: 20px;
+			}
+
+			/* Summary Stats Grid */
+			.summary-stats-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+				gap: 15px;
+				margin-top: 20px;
+			}
+			.summary-stat {
+				background-color: var(--background-color);
+				padding: 15px;
+				border-radius: 12px;
+				text-align: center;
+			}
+			.summary-stat-value {
+				font-size: 20px;
+				font-weight: 600;
+				color: var(--text-primary);
+				margin-bottom: 4px;
+			}
+			.summary-stat-label {
+				font-size: 12px;
+				color: var(--text-secondary);
+				text-transform: uppercase;
+				letter-spacing: 0.3px;
+			}
+
+			/* Achievements List (Example) */
+			.achievements-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.achievement-item {
+				display: flex;
+				align-items: center;
+				padding: 12px 0;
+				border-bottom: 1px solid var(--background-color);
+			}
+			.achievement-item:last-child {
+				border-bottom: none;
+			}
+			.achievement-icon {
+				font-size: 28px;
+				margin-right: 15px;
+				flex-shrink: 0;
+			}
+			.achievement-details {
+				flex-grow: 1;
+			}
+			.achievement-name {
+				font-weight: 600;
+				color: var(--text-primary);
+				font-size: 16px;
+			}
+			.achievement-date {
+				font-size: 13px;
+				color: var(--text-secondary);
+				margin-top: 3px;
+			}
+
+			/* --- Bottom Navigation Bar (Consistent - Copied from log-exercise) --- */
+			.bottom-nav {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: var(--nav-height);
+				background-color: var(--bottom-nav-background);
+				backdrop-filter: blur(15px);
+				-webkit-backdrop-filter: blur(15px);
+				border-top: 0.5px solid var(--border-color);
+				display: flex;
+				justify-content: space-around;
+				align-items: stretch;
+				z-index: 100;
+				padding: 0 15px;
+			}
+			.nav-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				color: var(--text-tertiary);
+				font-size: 11px;
+				font-weight: 500;
+				flex-grow: 1;
+				text-align: center;
+				transition: color 0.2s ease;
+				padding: 8px 0 6px 0;
+				position: relative;
+				cursor: pointer;
+			}
+			.nav-icon {
+				font-size: 26px;
+				margin-bottom: 4px;
+				line-height: 1;
+			}
+			.nav-item:hover {
+				color: var(--text-secondary);
+			}
+			.nav-item.active {
+				color: var(--primary-color);
+			}
 		</style>
 	</head>
 	<body>
 		<div class="ipad-container">
+			<!-- Changed class name -->
 			<!-- Header -->
 			<div class="header">
-				<!-- Standard Header -->
 				<div class="header-action"></div>
 				<!-- Spacer -->
 				<span class="header-title">Progress & Stats</span>
@@ -33,8 +286,6 @@
 
 			<!-- Main Scrollable Content Area -->
 			<div class="main-content">
-				<!-- Standard Padding -->
-
 				<!-- Section 1: Activity Trends -->
 				<section class="progress-section">
 					<h2 class="section-title">
@@ -61,13 +312,13 @@
 					<div class="summary-stats-grid">
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgSteps">
-								--
+								11,500
 							</div>
 							<div class="summary-stat-label">Avg Steps/Day</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgExercise">
-								--
+								40 min
 							</div>
 							<div class="summary-stat-label">
 								Avg Exercise/Day
@@ -75,13 +326,13 @@
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="totalDistance">
-								--
+								150 km
 							</div>
 							<div class="summary-stat-label">Total Distance</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="activeDays">
-								--
+								25 days
 							</div>
 							<div class="summary-stat-label">Active Days</div>
 						</div>
@@ -109,11 +360,12 @@
 					</h2>
 					<div class="chart-container">
 						<canvas id="nutritionChart"></canvas>
+						<!-- Could be calorie trend or macros pie -->
 					</div>
 					<div class="summary-stats-grid">
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgCalories">
-								--
+								1950 kcal
 							</div>
 							<div class="summary-stat-label">
 								Avg Calories/Day
@@ -121,18 +373,20 @@
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgProtein">
-								--
+								100 g
 							</div>
 							<div class="summary-stat-label">Avg Protein</div>
 						</div>
 						<div class="summary-stat">
 							<div class="summary-stat-value" id="avgCarbs">
-								--
+								220 g
 							</div>
 							<div class="summary-stat-label">Avg Carbs</div>
 						</div>
 						<div class="summary-stat">
-							<div class="summary-stat-value" id="avgFat">--</div>
+							<div class="summary-stat-value" id="avgFat">
+								65 g
+							</div>
 							<div class="summary-stat-label">Avg Fat</div>
 						</div>
 					</div>
@@ -178,6 +432,7 @@
 						</li>
 						<li class="achievement-item">
 							<span class="achievement-icon">🏃‍♀️</span>
+							<!-- Specific activity -->
 							<div class="achievement-details">
 								<div class="achievement-name">
 									First 5km Run
@@ -203,7 +458,7 @@
 			</div>
 			<!-- End Main Content -->
 
-			<!-- Bottom Navigation Bar -->
+			<!-- Bottom Navigation Bar (UPDATED) -->
 			<nav class="bottom-nav" id="bottomNav">
 				<a href="todo.shtml" class="nav-item" data-page="home">
 					<span class="nav-icon">🏠</span>
@@ -214,6 +469,7 @@
 					class="nav-item active"
 					data-page="progress"
 				>
+					<!-- Active -->
 					<span class="nav-icon">📊</span>
 					<span class="nav-label">Progress</span>
 				</a>
@@ -234,101 +490,169 @@
 					<span class="nav-label">Profile</span>
 				</a>
 			</nav>
+			<!-- End Bottom Navigation Bar -->
 		</div>
 		<!-- End ipad Container -->
 
 		<script>
-			// --- Apply theme early ---
-			const htmlElement = document.documentElement;
-			const savedTheme = localStorage.getItem("theme") || "light";
-			if (savedTheme === "dark") {
-				htmlElement.classList.add("dark-mode");
-			} else {
-				htmlElement.classList.remove("dark-mode");
-			}
-			// --- End Apply theme early ---
-
 			let activityChartInstance = null;
 			let nutritionChartInstance = null;
 
-			function getChartColors() {
-				/* ... same code ... */
-			}
+			// Mock Data Generation
 			function generateChartData(period, numPoints, maxVal) {
-				/* ... same code ... */
+				const labels = [];
+				const data = [];
+				let labelPrefix = "";
+				if (period === "weekly") labelPrefix = "Day ";
+				if (period === "monthly") labelPrefix = "Wk ";
+				if (period === "yearly") labelPrefix = "M ";
+
+				for (let i = 1; i <= numPoints; i++) {
+					labels.push(labelPrefix + i);
+					data.push(Math.random() * maxVal);
+				}
+				return { labels, data };
 			}
+
+			// --- Chart Initialization ---
 			function initActivityChart(period = "monthly") {
-				/* ... same code, ensure summary stats are updated */
+				const ctx = document
+					.getElementById("activityChart")
+					?.getContext("2d");
+				if (!ctx) return;
+
+				let numPoints = 12; // Default yearly
+				let maxVal = 15000; // Steps example
+				if (period === "weekly") {
+					numPoints = 7;
+					maxVal = 18000;
+				}
+				if (period === "monthly") {
+					numPoints = 4;
+					maxVal = 16000;
+				}
+
 				const { labels, data } = generateChartData(
 					period,
 					numPoints,
 					maxVal
 				);
-				// ... (rest of chart init) ...
+
+				// Destroy previous instance if exists
+				if (activityChartInstance) {
+					activityChartInstance.destroy();
+				}
+
+				activityChartInstance = new Chart(ctx, {
+					type: "line", // Or 'bar'
+					data: {
+						labels: labels,
+						datasets: [
+							{
+								label: "Average Steps",
+								data: data,
+								borderColor: "var(--primary-color)",
+								backgroundColor: "rgba(0, 122, 255, 0.1)",
+								fill: true,
+								tension: 0.3, // Smoothen line
+							},
+						],
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							y: { beginAtZero: true },
+						},
+						plugins: { legend: { display: false } },
+					},
+				});
+				// Update summary stats (mock)
 				document.getElementById("avgSteps").textContent = Math.round(
 					data.reduce((a, b) => a + b, 0) / data.length
 				);
-				document.getElementById("avgExercise").textContent =
-					period === "weekly" ? "45 min" : "40 min";
-				document.getElementById("totalDistance").textContent =
-					period === "monthly"
-						? "150 km"
-						: period === "weekly"
-						? "35 km"
-						: "1800 km";
-				document.getElementById("activeDays").textContent =
-					period === "monthly"
-						? "25 days"
-						: period === "weekly"
-						? "6 days"
-						: "300 days";
+				// ... update other stats based on period
 			}
+
 			function initNutritionChart(period = "monthly") {
-				/* ... same code, ensure summary stats are updated */
-				// ... (rest of chart init) ...
-				document.getElementById("avgCalories").textContent =
-					"1950 kcal";
-				document.getElementById("avgProtein").textContent = "100 g";
-				document.getElementById("avgCarbs").textContent = "220 g";
-				document.getElementById("avgFat").textContent = "65 g";
+				const ctx = document
+					.getElementById("nutritionChart")
+					?.getContext("2d");
+				if (!ctx) return;
+
+				// Example: Macronutrient Pie Chart (doesn't change with period in this mock)
+				const macroData = {
+					labels: ["Protein (g)", "Carbs (g)", "Fat (g)"],
+					data: [100, 220, 65], // Corresponds to summary stats
+				};
+
+				// Destroy previous instance if exists
+				if (nutritionChartInstance) {
+					nutritionChartInstance.destroy();
+				}
+
+				nutritionChartInstance = new Chart(ctx, {
+					type: "doughnut",
+					data: {
+						labels: macroData.labels,
+						datasets: [
+							{
+								label: "Avg Macros",
+								data: macroData.data,
+								backgroundColor: [
+									"var(--accent-green)",
+									"var(--accent-orange)",
+									"var(--accent-red)",
+								],
+								hoverOffset: 4,
+							},
+						],
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							legend: { position: "bottom" },
+						},
+					},
+				});
+				// Update summary stats (already done above)
 			}
-			function updateChartColors() {
-				/* ... same code ... */
-			}
+
+			// --- Update Functions (Called by dropdowns) ---
 			function updateActivityChart() {
-				/* ... same code ... */
+				const period = document.getElementById(
+					"activityTrendPeriod"
+				).value;
+				initActivityChart(period);
 			}
 			function updateNutritionChart() {
-				/* ... same code ... */
+				const period = document.getElementById(
+					"nutritionTrendPeriod"
+				).value;
+				// For this mock, pie chart doesn't change with period, but you could add logic here
+				initNutritionChart(period);
+				alert(
+					`Nutrition chart period changed to: ${period} (Chart type may not change in this demo)`
+				);
 			}
+
+			// --- Mock Navigation ---
 			function navigateTo(url) {
-				/* ... same code ... */
+				console.log("Navigating to:", url);
+				if (url && url !== "#") {
+					window.location.href = url;
+				} else {
+					alert(
+						`Navigation to ${url} page/section (implementation needed)`
+					);
+				}
 			}
 
+			// --- Initial Load ---
 			document.addEventListener("DOMContentLoaded", () => {
-				// Theme already applied by early script
-				initActivityChart(); // Initialize charts
-				initNutritionChart();
-
-				// Active state for bottom nav
-				const bottomNavContainer = document.getElementById("bottomNav");
-				if (bottomNavContainer) {
-					const navItems =
-						bottomNavContainer.querySelectorAll(".nav-item");
-					const currentPage =
-						window.location.pathname.split("/").pop() ||
-						"progress.shtml";
-					navItems.forEach((item) => {
-						const itemPage = item
-							.getAttribute("href")
-							?.split("/")
-							.pop();
-						item.classList.toggle(
-							"active",
-							itemPage === currentPage
-						);
-					});
-				}
+				initActivityChart(); // Initialize with default period
+				initNutritionChart(); // Initialize with default period
 			});
 		</script>
 	</body>

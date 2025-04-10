@@ -6,43 +6,435 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no"
 		/>
-		<title>Health Dashboard - iPad View</title>
+		<title>Health Dashboard - iPad View</title> <!-- Updated Title -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
-		<link rel="stylesheet" href="style.css" />
 		<style>
-			/* Page-specific overrides if necessary */
-			/* Example: Slightly different body background ONLY for dashboard? */
-			/* body { background-color: #FAFAFC; }
-            .dark-mode body { background-color: #0F0F0F; } */
+			/* --- Root Variables (Consistent - Copied from log-exercise) --- */
+			:root {
+				--primary-color: #007aff;
+				--primary-light: #e6f2ff;
+				--accent-purple: #af52de;
+				--accent-teal: #5ac8fa;
+				--accent-orange: #ff9500;
+				--accent-green: #34c759;
+				--accent-red: #ff3b30;
+				--background-color: #f2f2f7;
+				--surface-color: #ffffff;
+				--surface-secondary-color: #e5e5ea;
+				--bottom-nav-background: rgba(248, 248, 248, 0.92);
+				--text-primary: #000000;
+				--text-secondary: #3c3c43;
+				--text-tertiary: #8e8e93;
+				--text-link: var(--primary-color);
+				--text-on-primary: #ffffff;
+				--border-color: #d1d1d6;
+				--shadow-color: rgba(0, 0, 0, 0.05);
+				--shadow-strong-color: rgba(0, 0, 0, 0.1);
+				--nav-height: 70px;
+				--content-padding: 24px;
+				--card-border-radius: 16px;
+                --chart-track-color: #ebebf0;
+				--chart-sleep-color: var(--accent-purple);
+			}
+
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				height: 100%;
+				background-color: #dcdce1;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			* {
+				box-sizing: border-box;
+			}
+
+			/* --- iPad Container Simulation --- */
+			.ipad-container {
+				width: 768px;
+				height: 1024px;
+				border: 1px solid var(--border-color);
+				margin: 40px auto;
+				background-color: var(--background-color);
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px;
+				box-shadow: 0 15px 40px var(--shadow-strong-color);
+			}
+
+			/* Header */
+			.header {
+				display: flex;
+				justify-content: space-between; /* Space for potential title/logo and icons */
+				align-items: center;
+				padding: 20px var(--content-padding) 15px var(--content-padding);
+				flex-shrink: 0;
+				position: relative;
+				z-index: 10;
+				background-color: var(--background-color); /* Match page background */
+                /* border-bottom: 1px solid var(--border-color); Optional */
+			}
+            /* Optional: Add a logo or title if needed */
+            .header-logo {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--text-primary);
+            }
+			.header-actions {
+                display: flex;
+                gap: 15px;
+            }
+            .action-icon { /* Reusing profile style */
+				font-size: 26px;
+				color: var(--text-secondary);
+				cursor: pointer;
+				padding: 8px;
+				transition: color 0.2s ease;
+				position: relative;
+			}
+			.action-icon:hover {
+				color: var(--text-primary);
+			}
+            /* Notification specific styling */
+			.notification-icon::after {
+				content: "";
+				display: block;
+				width: 9px; /* Slightly larger dot */
+				height: 9px;
+				background-color: var(--accent-red);
+				border-radius: 50%;
+				position: absolute;
+				top: 8px; /* Adjust position */
+				right: 5px;
+				border: 2px solid var(--background-color);
+			}
+
+			/* Main Content Area */
+			.main-content {
+				flex-grow: 1;
+				overflow-y: auto;
+				padding: var(--content-padding);
+                padding-top: 10px; /* Less top padding */
+				padding-bottom: calc(
+					var(--nav-height) + var(--content-padding)
+				);
+				scrollbar-width: thin;
+				scrollbar-color: var(--border-color) transparent;
+			}
+			.main-content::-webkit-scrollbar {
+				width: 6px;
+			}
+            .main-content::-webkit-scrollbar-thumb {
+				background-color: var(--border-color);
+				border-radius: 3px;
+			}
+             .main-content::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			/* Greeting Message */
+			.greeting {
+				font-size: 28px; /* Larger greeting */
+				font-weight: 700;
+				color: var(--text-primary);
+				margin: 15px 0 25px 0; /* Adjusted spacing */
+			}
+
+			/* Time Filters */
+			.time-filters {
+				display: flex;
+				gap: 12px; /* Increased gap */
+				margin-bottom: 30px; /* More space below filters */
+			}
+			.filter-btn {
+				padding: 9px 20px; /* Larger buttons */
+				border: none;
+				border-radius: 25px;
+				font-size: 14px; /* Slightly larger font */
+				font-weight: 600;
+				color: var(--text-link);
+				background-color: var(--surface-color);
+				cursor: pointer;
+				transition: all 0.2s ease;
+				box-shadow: 0 2px 5px var(--shadow-color);
+			}
+			.filter-btn:hover {
+				background-color: var(--surface-secondary-color);
+                transform: translateY(-1px);
+			}
+			.filter-btn.active {
+				background-color: var(--primary-color);
+				color: var(--text-on-primary);
+				box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3);
+                transform: translateY(0);
+			}
+
+			/* --- Card Styles (Adapted for iPad) --- */
+			.card {
+				background-color: var(--surface-color);
+				border-radius: var(--card-border-radius);
+				margin-bottom: 20px; /* Increased spacing */
+				padding: var(--content-padding); /* Use variable */
+				box-shadow: 0 5px 15px var(--shadow-color); /* Slightly stronger shadow */
+				overflow: hidden;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				cursor: pointer;
+				position: relative;
+			}
+			.card:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 20px var(--shadow-strong-color);
+			}
+
+			/* Card Header */
+			.card-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 15px; /* Increased spacing */
+				font-size: 13px; /* Slightly larger */
+				font-weight: 600;
+				color: var(--text-secondary);
+				text-transform: uppercase;
+				letter-spacing: 0.6px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--surface-secondary-color); /* Subtle separator */
+			}
+			.card-header-title {
+				display: flex;
+				align-items: center;
+			}
+			.card-header-icon {
+				font-size: 18px; /* Larger icon */
+				margin-right: 8px;
+			}
+			/* Chevron indicator */
+			.card::after {
+				content: "❯"; /* Use a better chevron */
+				position: absolute;
+				top: 22px; /* Adjust position */
+				right: 20px;
+				color: var(--text-tertiary);
+				font-weight: 600;
+				font-size: 20px;
+				opacity: 0.6;
+				transition: opacity 0.2s ease, transform 0.2s ease;
+			}
+			.card:hover::after {
+				opacity: 1;
+				color: var(--text-secondary);
+                transform: translateX(3px);
+			}
+			.card-body {
+				display: flex;
+				align-items: center;
+                padding-top: 5px;
+			}
+
+			/* Sleep Analysis Card */
+			.sleep-card .card-header-icon { color: var(--chart-sleep-color); }
+			.sleep-card .card-body {
+				justify-content: space-between;
+				align-items: center;
+				gap: 25px; /* More gap */
+			}
+			.sleep-chart-container {
+				width: 110px; /* Larger chart */
+				height: 110px;
+				position: relative;
+				flex-shrink: 0;
+			}
+			.sleep-chart { /* Recreate with SVG for better control? For now, keep CSS */
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				background: conic-gradient(
+					var(--chart-sleep-color) 0% 80.4%, /* Example value */
+					var(--chart-track-color) 80.4% 100%
+				);
+                /* Adjust mask for thicker ring */
+				mask-image: radial-gradient(transparent 65%, black 66%);
+				-webkit-mask-image: radial-gradient(transparent 65%, black 66%);
+			}
+			.sleep-chart-text {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+				font-weight: 600;
+			}
+			.sleep-chart-percentage {
+				font-size: 20px; /* Larger percentage */
+				color: var(--text-primary);
+				line-height: 1.1;
+			}
+			.sleep-chart-label {
+				font-size: 11px; /* Larger label */
+				color: var(--text-secondary);
+			}
+			.sleep-details {
+				text-align: right;
+			}
+			.sleep-duration {
+				font-size: 26px; /* Larger duration */
+				font-weight: 600;
+				color: var(--text-primary);
+				margin-bottom: 5px;
+			}
+			.sleep-duration-label {
+				font-size: 13px; /* Larger label */
+				color: var(--text-secondary);
+				font-weight: 500;
+			}
+
+			/* Stats Grid - Adapted for iPad */
+			.stats-grid {
+				display: grid;
+                /* Use 3 columns for dashboard */
+				grid-template-columns: repeat(3, 1fr);
+				gap: 18px; /* Consistent gap */
+			}
+			.stat-card {
+				padding: 18px; /* Consistent padding */
+				margin-bottom: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				min-height: 150px; /* Increased height */
+			}
+			.stat-card .card-header { margin-bottom: 12px; border-bottom: none; padding-bottom: 0;}
+			.stat-card::after { content: "❯"; } /* Keep chevron on stat cards too */
+
+			.stat-card .card-body {
+				flex-grow: 1;
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start; /* Align content top */
+				align-items: flex-start;
+				padding-top: 0px;
+                margin-top: auto; /* Push body content down */
+			}
+
+			.stat-value {
+				font-size: 24px; /* Larger value */
+				font-weight: 600;
+				color: var(--text-primary);
+				line-height: 1.2;
+			}
+			.stat-unit, .stat-label {
+				font-size: 12px; /* Larger labels */
+				color: var(--text-secondary);
+				font-weight: 500;
+				line-height: 1.4;
+			}
+			.stat-unit { margin-left: 3px; }
+			.stat-label { margin-top: 4px; }
+
+			.stat-progress-bar {
+				width: 100%;
+				height: 8px; /* Thicker bar */
+				background-color: var(--chart-track-color);
+				border-radius: 4px;
+				overflow: hidden;
+				margin-top: 12px; /* More space */
+			}
+			.stat-progress-bar-fill {
+				height: 100%;
+				background-color: var(--primary-color);
+				border-radius: 4px;
+				width: 0%;
+				transition: width 0.5s ease;
+			}
+
+			/* Specific Stat Card Styling */
+			.goals-card .card-header-icon { color: var(--accent-green); }
+			.goals-card .stat-progress-bar-fill { background-color: var(--accent-green); }
+			.kcal-card .card-header-icon { color: var(--accent-orange); }
+			.kcal-card .stat-progress-bar-fill { background-color: var(--accent-orange); }
+			.water-card .card-header-icon { color: var(--accent-teal); }
+			.water-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
+			.exercise-card .card-header-icon { color: var(--primary-color); }
+			.exercise-card .stat-progress-bar-fill { background-color: var(--primary-color); }
+            /* Add Steps Card */
+            .steps-card .card-header-icon { color: var(--accent-teal); }
+            .steps-card .stat-progress-bar-fill { background-color: var(--accent-teal); }
+             /* Add Mindfulness Card */
+            .mind-card .card-header-icon { color: var(--accent-purple); }
+            .mind-card .stat-progress-bar-fill { background-color: var(--accent-purple); }
+
+			/* --- Bottom Navigation Bar (Consistent - Copied from log-exercise) --- */
+			.bottom-nav {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: var(--nav-height);
+				background-color: var(--bottom-nav-background);
+				backdrop-filter: blur(15px);
+				-webkit-backdrop-filter: blur(15px);
+				border-top: 0.5px solid var(--border-color);
+				display: flex;
+				justify-content: space-around;
+				align-items: stretch;
+				z-index: 100;
+				padding: 0 15px;
+			}
+			.nav-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				color: var(--text-tertiary);
+				font-size: 11px;
+				font-weight: 500;
+				flex-grow: 1;
+				text-align: center;
+				transition: color 0.2s ease;
+				padding: 8px 0 6px 0;
+				position: relative;
+				cursor: pointer;
+			}
+			.nav-icon {
+				font-size: 26px;
+				margin-bottom: 4px;
+				line-height: 1;
+			}
+			.nav-item:hover {
+				color: var(--text-secondary);
+			}
+			.nav-item.active {
+				color: var(--primary-color);
+			}
 		</style>
 	</head>
 	<body>
-		<div class="ipad-container">
+		<div class="ipad-container"> <!-- Changed class name -->
 			<!-- Header -->
-			<div class="header transparent-bg">
-				<!-- Transparent Header -->
-				<div class="header-logo">Wellness Hub</div>
-				<div class="header-actions">
-					<div
-						class="action-icon notification-icon"
-						title="Notifications"
-					>
-						🔔
-					</div>
-					<div class="action-icon search-icon" title="Search">🔍</div>
-				</div>
+			<div class="header">
+                <div class="header-logo">Wellness Hub</div> <!-- Optional Title/Logo -->
+                <div class="header-actions">
+                    <div class="action-icon notification-icon" title="Notifications">🔔</div>
+                    <div class="action-icon search-icon" title="Search">🔍</div> <!-- Example: Add Search -->
+                </div>
 			</div>
 
 			<!-- Main Scrollable Content Area -->
-			<div class="main-content less-top-padding">
-				<!-- Less Top Padding -->
+			<div class="main-content">
 				<!-- Greeting -->
-				<h1 class="greeting">Hello Alex,</h1>
+				<h1 class="greeting">Hello Alex,</h1> <!-- Personalized -->
 
 				<!-- Time Filters -->
 				<div class="time-filters" id="timeFilters">
@@ -60,31 +452,23 @@
 				<!-- Sleep Analysis Card -->
 				<div
 					class="card sleep-card"
-					onclick="navigateTo('sleep-details.shtml')"
+					onclick="navigateTo('sleep-details.shtml')" <!-- Example: Link to detail page -->
 				>
 					<div class="card-header">
 						<div class="card-header-title">
-							<span class="card-header-icon">🌙</span> Sleep
-							Analysis
+							<span class="card-header-icon">🌙</span> Sleep Analysis
 						</div>
 					</div>
 					<div class="card-body">
 						<div class="sleep-chart-container">
-							<div class="sleep-chart" id="sleepChart"></div>
+							<div class="sleep-chart" id="sleepChart"></div> <!-- JS can update background -->
 							<div class="sleep-chart-text">
-								<div
-									class="sleep-chart-percentage"
-									id="sleepQuality"
-								>
-									--%
-								</div>
+								<div class="sleep-chart-percentage" id="sleepQuality">80%</div>
 								<div class="sleep-chart-label">Quality</div>
 							</div>
 						</div>
 						<div class="sleep-details">
-							<div class="sleep-duration" id="sleepDuration">
-								--h --m
-							</div>
+							<div class="sleep-duration" id="sleepDuration">7h 30m</div>
 							<div class="sleep-duration-label">
 								Last Night's Sleep
 							</div>
@@ -92,11 +476,11 @@
 					</div>
 				</div>
 
-				<!-- Stats Grid -->
+				<!-- Stats Grid - Now 3 columns -->
 				<div class="stats-grid">
-					<!-- Steps Card -->
+					<!-- Steps Card (Added) -->
 					<div
-						class="stat-card steps-card"
+						class="card stat-card steps-card"
 						onclick="navigateTo('activity-details.shtml')"
 					>
 						<div class="card-header">
@@ -105,20 +489,20 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="stepsValue">--</div>
+							<div class="stat-value">8,520</div>
 							<div class="stat-label">Goal: 10,000 steps</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="stepsProgress"
-									style="width: 0%"
+									style="width: 85%" id="stepsProgress"
 								></div>
 							</div>
 						</div>
 					</div>
-					<!-- Exercise Card -->
+
+                    <!-- Exercise Card -->
 					<div
-						class="stat-card exercise-card"
+						class="card stat-card exercise-card"
 						onclick="navigateTo('log-exercise.shtml')"
 					>
 						<div class="card-header">
@@ -128,22 +512,22 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="exerciseValue">
-								--<span class="stat-unit">min</span>
+							<div class="stat-value">
+								45<span class="stat-unit">min</span>
 							</div>
 							<div class="stat-label">Goal: 60 min active</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="exerciseProgress"
-									style="width: 0%"
+									style="width: 75%" id="exerciseProgress"
 								></div>
 							</div>
 						</div>
 					</div>
-					<!-- Kcal Consumed Card -->
+
+                    <!-- Kcal Consumed Card -->
 					<div
-						class="stat-card kcal-card"
+						class="card stat-card kcal-card"
 						onclick="navigateTo('log-meal.shtml')"
 					>
 						<div class="card-header">
@@ -153,23 +537,23 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="kcalValue">
-								--<span class="stat-unit">kcal</span>
+							<div class="stat-value">
+								1580<span class="stat-unit">kcal</span>
 							</div>
 							<div class="stat-label">Goal: 2000 kcal</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="kcalProgress"
-									style="width: 0%"
+									style="width: 79%" id="kcalProgress"
 								></div>
 							</div>
 						</div>
 					</div>
+
 					<!-- Water Consumed Card -->
 					<div
-						class="stat-card water-card"
-						onclick="navigateTo('log-water.shtml')"
+						class="card stat-card water-card"
+						onclick="navigateTo('log-water.shtml')" /* Example: Separate water log */
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -178,48 +562,47 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="waterValue">
-								--<span class="stat-unit">L</span>
+							<div class="stat-value">
+								1.2<span class="stat-unit">L</span>
 							</div>
 							<div class="stat-label">Goal: 2.0 L</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="waterProgress"
-									style="width: 0%"
+									style="width: 60%" id="waterProgress"
 								></div>
 							</div>
 						</div>
 					</div>
-					<!-- Mindfulness Card -->
-					<div
-						class="stat-card mind-card"
-						onclick="navigateTo('log-mindfulness.shtml')"
+
+					<!-- Mindfulness Card (Added) -->
+                    <div
+						class="card stat-card mind-card"
+						onclick="navigateTo('log-mindfulness.shtml')" /* Example: Log mindfulness */
 					>
 						<div class="card-header">
 							<div class="card-header-title">
-								<span class="card-header-icon">🧘</span>
-								Mindfulness
+								<span class="card-header-icon">🧘</span> Mindfulness
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="mindValue">
-								--<span class="stat-unit">min</span>
+							<div class="stat-value">
+								10<span class="stat-unit">min</span>
 							</div>
 							<div class="stat-label">Goal: 15 min today</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="mindProgress"
-									style="width: 0%"
+									style="width: 66%" id="mindProgress"
 								></div>
 							</div>
 						</div>
 					</div>
-					<!-- Goals Card -->
+
+                    <!-- Goals Card -->
 					<div
-						class="stat-card goals-card"
-						onclick="navigateTo('goals.shtml')"
+						class="card stat-card goals-card"
+						onclick="navigateTo('goals.shtml')" /* Example: Goals page */
 					>
 						<div class="card-header">
 							<div class="card-header-title">
@@ -227,27 +610,24 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div class="stat-value" id="goalsValue">
-								-- / --
-							</div>
+							<div class="stat-value">3 / 5</div>
 							<div class="stat-label">Active Goals Met Today</div>
 							<div class="stat-progress-bar">
 								<div
 									class="stat-progress-bar-fill"
-									id="goalsProgress"
-									style="width: 0%"
+									style="width: 60%" id="goalsProgress"
 								></div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<!-- End Stats Grid -->
+
+				</div> <!-- End Stats Grid -->
 			</div>
 			<!-- End Main Content -->
 
-			<!-- Bottom Navigation Bar -->
+			<!-- Bottom Navigation Bar (UPDATED) -->
 			<nav class="bottom-nav" id="bottomNav">
-				<a href="todo.shtml" class="nav-item active" data-page="home">
+				<a href="todo.shtml" class="nav-item active" data-page="home"> <!-- Active -->
 					<span class="nav-icon">🏠</span>
 					<span class="nav-label">Home</span>
 				</a>
@@ -259,11 +639,7 @@
 					<span class="nav-icon">🍔</span>
 					<span class="nav-label">Log Meal</span>
 				</a>
-				<a
-					href="log-exercise.shtml"
-					class="nav-item"
-					data-page="log-exercise"
-				>
+                <a href="log-exercise.shtml" class="nav-item" data-page="log-exercise">
 					<span class="nav-icon">🏃</span>
 					<span class="nav-label">Log Exercise</span>
 				</a>
@@ -272,210 +648,97 @@
 					<span class="nav-label">Profile</span>
 				</a>
 			</nav>
-		</div>
+			<!-- End Bottom Navigation Bar -->
+        </div>
 		<!-- End ipad Container -->
 
 		<script>
-			// --- Apply theme early ---
-			const htmlElement = document.documentElement;
-			const savedTheme = localStorage.getItem("theme") || "light";
-			if (savedTheme === "dark") {
-				htmlElement.classList.add("dark-mode");
-			} else {
-				htmlElement.classList.remove("dark-mode");
-			}
-			// --- End Apply theme early ---
-
 			// --- Time Filter Button Handler ---
 			const timeFiltersContainer = document.getElementById("timeFilters");
 			if (timeFiltersContainer) {
-				/* ... same code ... */
+				const filterButtons = timeFiltersContainer.querySelectorAll(".filter-btn");
+				timeFiltersContainer.addEventListener("click", (event) => {
+					if (event.target.classList.contains("filter-btn")) {
+						filterButtons.forEach((btn) => btn.classList.remove("active"));
+						event.target.classList.add("active");
+						const selectedFilter = event.target.dataset.filter;
+						console.log("Selected Filter:", selectedFilter);
+						// Add logic to update card data based on filter
+                        // e.g., fetchWeeklyData(), fetchMonthlyData()
+                        updateDashboardData(selectedFilter); // Mock update
+					}
+				});
 			}
 
-			// --- Mock Data Update Function ---
-			function updateDashboardData(filter) {
-				console.log(`Updating dashboard for ${filter} view...`);
-				// Selectors for elements to update
-				const sleepDurationEl =
-					document.getElementById("sleepDuration");
-				const sleepQualityEl = document.getElementById("sleepQuality");
-				const sleepChartEl = document.getElementById("sleepChart");
-				const stepsValueEl = document.getElementById("stepsValue");
-				const stepsProgressEl =
-					document.getElementById("stepsProgress");
-				const exerciseValueEl =
-					document.getElementById("exerciseValue");
-				const exerciseProgressEl =
-					document.getElementById("exerciseProgress");
-				const kcalValueEl = document.getElementById("kcalValue");
-				const kcalProgressEl = document.getElementById("kcalProgress");
-				const waterValueEl = document.getElementById("waterValue");
-				const waterProgressEl =
-					document.getElementById("waterProgress");
-				const mindValueEl = document.getElementById("mindValue");
-				const mindProgressEl = document.getElementById("mindProgress");
-				const goalsValueEl = document.getElementById("goalsValue");
-				const goalsProgressEl =
-					document.getElementById("goalsProgress");
+            // --- Mock Data Update Function ---
+            function updateDashboardData(filter) {
+                console.log(`Updating dashboard for ${filter} view...`);
+                // In a real app, fetch data and update DOM elements
+                // Example: Change sleep duration based on filter
+                const sleepDurationEl = document.getElementById('sleepDuration');
+                const sleepQualityEl = document.getElementById('sleepQuality');
+                const sleepChartEl = document.getElementById('sleepChart');
 
-				// Mock data based on filter
-				let data = {};
-				if (filter === "daily") {
-					data = {
-						sleep: "7h 30m",
-						quality: 80,
-						steps: 8520,
-						exercise: 45,
-						kcal: 1580,
-						water: 1.2,
-						mind: 10,
-						goalsMet: 3,
-						goalsTotal: 5,
-					};
-				} else if (filter === "weekly") {
-					data = {
-						sleep: "7h 15m",
-						quality: 75,
-						steps: 64500,
-						exercise: 300,
-						kcal: 14500,
-						water: 10.5,
-						mind: 60,
-						goalsMet: 20,
-						goalsTotal: 35,
-					}; // Weekly totals/avgs
-					// Adjust labels for weekly view if needed
-				} else if (filter === "monthly") {
-					data = {
-						sleep: "7h 20m",
-						quality: 78,
-						steps: 280000,
-						exercise: 1200,
-						kcal: 60000,
-						water: 45.0,
-						mind: 250,
-						goalsMet: 80,
-						goalsTotal: 150,
-					}; // Monthly totals/avgs
-					// Adjust labels for monthly view if needed
-				}
+                if (filter === 'daily') {
+                    sleepDurationEl.textContent = '7h 30m';
+                    sleepQualityEl.textContent = '80%';
+                    if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 80%, var(--chart-track-color) 80% 100%)';
+                    // Update other cards... e.g., steps, kcal, etc.
+                    document.getElementById('stepsProgress').style.width = '85%';
+                    document.getElementById('exerciseProgress').style.width = '75%';
+                    document.getElementById('kcalProgress').style.width = '79%';
+                    document.getElementById('waterProgress').style.width = '60%';
+                    document.getElementById('mindProgress').style.width = '66%';
+                    document.getElementById('goalsProgress').style.width = '60%';
 
-				// Update DOM (with basic formatting)
-				if (sleepDurationEl)
-					sleepDurationEl.textContent = data.sleep || "--h --m";
-				if (sleepQualityEl)
-					sleepQualityEl.textContent = data.quality
-						? `${data.quality}%`
-						: "--%";
-				if (sleepChartEl)
-					sleepChartEl.style.background = `conic-gradient(var(--accent-purple) 0% ${
-						data.quality || 0
-					}%, var(--chart-track-color) ${data.quality || 0}% 100%)`;
 
-				if (stepsValueEl)
-					stepsValueEl.textContent =
-						data.steps?.toLocaleString() || "--";
-				if (stepsProgressEl)
-					stepsProgressEl.style.width = `${Math.min(
-						100,
-						((data.steps || 0) / 10000) * 100
-					)}%`; // Assuming 10k goal
+                } else if (filter === 'weekly') {
+                    sleepDurationEl.textContent = '7h 15m'; // Avg for week
+                    sleepQualityEl.textContent = '75%'; // Avg quality
+                     if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 75%, var(--chart-track-color) 75% 100%)';
+                    // Update other cards...
+                     document.getElementById('stepsProgress').style.width = '92%'; // Example weekly progress
+                     document.getElementById('exerciseProgress').style.width = '88%';
+                     document.getElementById('kcalProgress').style.width = '85%';
+                     document.getElementById('waterProgress').style.width = '70%';
+                     document.getElementById('mindProgress').style.width = '75%';
+                     document.getElementById('goalsProgress').style.width = '70%';
 
-				if (exerciseValueEl)
-					exerciseValueEl.innerHTML = `${
-						data.exercise || "--"
-					}<span class="stat-unit">min</span>`;
-				if (exerciseProgressEl)
-					exerciseProgressEl.style.width = `${Math.min(
-						100,
-						((data.exercise || 0) / 60) * 100
-					)}%`; // Assuming 60 min goal
+                } else if (filter === 'monthly') {
+                     sleepDurationEl.textContent = '7h 20m'; // Avg for month
+                     sleepQualityEl.textContent = '78%'; // Avg quality
+                      if(sleepChartEl) sleepChartEl.style.background = 'conic-gradient(var(--chart-sleep-color) 0% 78%, var(--chart-track-color) 78% 100%)';
+                     // Update other cards...
+                     document.getElementById('stepsProgress').style.width = '95%'; // Example monthly progress
+                     document.getElementById('exerciseProgress').style.width = '90%';
+                     document.getElementById('kcalProgress').style.width = '82%';
+                     document.getElementById('waterProgress').style.width = '75%';
+                     document.getElementById('mindProgress').style.width = '80%';
+                     document.getElementById('goalsProgress').style.width = '75%';
+                }
+                 alert(`Dashboard updated for ${filter} view (mock data)`);
+            }
 
-				if (kcalValueEl)
-					kcalValueEl.innerHTML = `${
-						data.kcal?.toLocaleString() || "--"
-					}<span class="stat-unit">kcal</span>`;
-				if (kcalProgressEl)
-					kcalProgressEl.style.width = `${Math.min(
-						100,
-						((data.kcal || 0) / 2000) * 100
-					)}%`; // Assuming 2000 kcal goal
-
-				if (waterValueEl)
-					waterValueEl.innerHTML = `${
-						data.water?.toFixed(1) || "--"
-					}<span class="stat-unit">L</span>`;
-				if (waterProgressEl)
-					waterProgressEl.style.width = `${Math.min(
-						100,
-						((data.water || 0) / 2.0) * 100
-					)}%`; // Assuming 2.0 L goal
-
-				if (mindValueEl)
-					mindValueEl.innerHTML = `${
-						data.mind || "--"
-					}<span class="stat-unit">min</span>`;
-				if (mindProgressEl)
-					mindProgressEl.style.width = `${Math.min(
-						100,
-						((data.mind || 0) / 15) * 100
-					)}%`; // Assuming 15 min goal
-
-				if (goalsValueEl)
-					goalsValueEl.textContent = `${data.goalsMet || "--"} / ${
-						data.goalsTotal || "--"
-					}`;
-				if (goalsProgressEl)
-					goalsProgressEl.style.width = `${
-						((data.goalsMet || 0) / (data.goalsTotal || 1)) * 100
-					}%`;
-
-				// Optional: Slightly delay alert to let UI update visually first
-				// setTimeout(() => alert(`Dashboard updated for ${filter} view (mock data)`), 100);
-			}
-
-			// --- Mock Navigation Function ---
+			// --- Mock Navigation Function (for card clicks) ---
 			function navigateTo(url) {
-				/* ... same code ... */
+				console.log("Navigating to:", url);
+                if (url && url !== '#') {
+                   window.location.href = url; // Navigate for real if URL is provided
+                } else {
+				    alert(`Navigation to ${url} section (implementation needed)`);
+                }
 			}
 
 			// --- Initial Setup ---
 			document.addEventListener("DOMContentLoaded", () => {
-				// Theme already applied by early script
-				updateDashboardData("daily"); // Load initial daily data
+				// Set initial state based on 'daily' filter
+				updateDashboardData('daily');
 
-				// Add listeners for header icons
-				const notificationIcon =
-					document.querySelector(".notification-icon");
-				if (notificationIcon)
-					notificationIcon.addEventListener("click", () =>
-						alert("Show Notifications")
-					);
-				const searchIcon = document.querySelector(".search-icon");
-				if (searchIcon)
-					searchIcon.addEventListener("click", () =>
-						alert("Show Search")
-					);
-
-				// Active state for bottom nav
-				const bottomNavContainer = document.getElementById("bottomNav");
-				if (bottomNavContainer) {
-					const navItems =
-						bottomNavContainer.querySelectorAll(".nav-item");
-					const currentPage =
-						window.location.pathname.split("/").pop() ||
-						"todo.shtml";
-					navItems.forEach((item) => {
-						const itemPage = item
-							.getAttribute("href")
-							?.split("/")
-							.pop();
-						item.classList.toggle(
-							"active",
-							itemPage === currentPage
-						);
-					});
-				}
+                // Optional: Add listeners for header icons
+                const notificationIcon = document.querySelector('.notification-icon');
+                if(notificationIcon) notificationIcon.addEventListener('click', () => alert('Show Notifications'));
+                const searchIcon = document.querySelector('.search-icon');
+                 if(searchIcon) searchIcon.addEventListener('click', () => alert('Show Search'));
 			});
 		</script>
 	</body>
