@@ -1,40 +1,53 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const navButtons = document.querySelectorAll('.nav-button');
-  const screens = document.querySelectorAll('.screen');
+// This file is kept for backward compatibility
+// You should use the files in the js/ directory instead
 
-  function setActiveScreen(targetScreenId) {
-      navButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.target === targetScreenId);
-      });
+document.addEventListener("DOMContentLoaded", () => {
+	// Initialize shared data
+	if (typeof initializeData === "function") {
+		initializeData();
+	}
 
-      screens.forEach(screen => {
-          screen.classList.toggle('active', screen.id === targetScreenId);
-      });
+	// Legacy code for Phase 2 screens (if still needed)
+	const navButtons = document.querySelectorAll(".nav-button");
+	const screens = document.querySelectorAll(".screen");
 
-      const contentArea = document.querySelector('.content-area');
-      if (contentArea) {
-          contentArea.scrollTop = 0;
-      }
-  }
+	function setActiveScreen(targetScreenId) {
+		navButtons.forEach((btn) => {
+			btn.classList.toggle(
+				"active",
+				btn.dataset.target === targetScreenId
+			);
+		});
 
-  navButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const targetScreenId = button.dataset.target;
-          setActiveScreen(targetScreenId);
-      });
-  });
+		screens.forEach((screen) => {
+			screen.classList.toggle("active", screen.id === targetScreenId);
+		});
 
-  const initialActiveButton = document.querySelector('.nav-button.active') || document.querySelector('.nav-button[data-target="home"]');
-  if (initialActiveButton) {
-      setActiveScreen(initialActiveButton.dataset.target);
-  }
+		const contentArea = document.querySelector(".content-area");
+		if (contentArea) {
+			contentArea.scrollTop = 0;
+		}
+	}
 
+	navButtons.forEach((button) => {
+		button.addEventListener("click", () => {
+			const targetScreenId = button.dataset.target;
+			setActiveScreen(targetScreenId);
+		});
+	});
 
-  const sleepChart = document.querySelector('.donut-chart');
-  if (sleepChart) {
-      const progress = sleepChart.dataset.progress || 0;
-      sleepChart.style.setProperty('--progress', progress);
-  }
+	const initialActiveButton =
+		document.querySelector(".nav-button.active") ||
+		document.querySelector('.nav-button[data-target="home"]');
+	if (initialActiveButton) {
+		setActiveScreen(initialActiveButton.dataset.target);
+	}
 
-  console.log("Fitness App Phase 2 Initialized");
+	const sleepChart = document.querySelector(".donut-chart");
+	if (sleepChart) {
+		const progress = sleepChart.dataset.progress || 0;
+		sleepChart.style.setProperty("--progress", progress);
+	}
+
+	console.log("Wellness Hub App Initialized");
 });
