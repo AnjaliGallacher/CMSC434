@@ -20,7 +20,6 @@
 		<!-- Date Adapter -->
 
 		<style>
-			/* Page-specific styles */
 			.progress-section {
 				background-color: var(--surface-color);
 				border-radius: var(--card-border-radius);
@@ -107,7 +106,6 @@
 				letter-spacing: 0.3px;
 			}
 
-			/* Achievements List */
 			.achievements-list {
 				list-style: none;
 				padding: 0;
@@ -501,14 +499,11 @@
 			let nutritionChartInstance = null;
 			let weightChartInstance = null;
 
-			// --- Mock Data Storage (Use localStorage for basic persistence) ---
 			const MOCK_DATA = {
-				// Example: Weight log [{date: 'YYYY-MM-DD', weight: 70}, ...]
 				weightLog: JSON.parse(
 					localStorage.getItem("weightLog") ||
 						'[{"date": "2023-10-01", "weight": 75}, {"date": "2023-10-15", "weight": 74.5}, {"date": "2023-11-01", "weight": 74}]'
 				),
-				// Add mealHistory, exerciseHistory if needed for charts
 				mealHistory: JSON.parse(
 					localStorage.getItem("mealHistory") || "[]"
 				),
@@ -517,12 +512,12 @@
 				),
 				profile: JSON.parse(
 					localStorage.getItem("userProfile") || "{}"
-				), // Load profile data
+				),
 				goals: JSON.parse(localStorage.getItem("userGoals") || "[]"),
 				achievements: JSON.parse(
 					localStorage.getItem("userAchievements") ||
 						'[{"name": "10k Steps Milestone", "date": "Yesterday", "icon": "🏅", "color": "var(--accent-green)"}, {"name": "Perfect Week (All Goals Met)", "date": "3 days ago", "icon": "📅", "color": "var(--primary-color)"}, {"name": "First 5km Run", "date": "Last Sunday", "icon": "🏃", "color": "var(--accent-orange)"}]'
-				), // Example achievements
+				),
 			};
 
 			function saveMockData() {
@@ -542,14 +537,12 @@
 					"userAchievements",
 					JSON.stringify(MOCK_DATA.achievements)
 				);
-				// Profile & Goals saved elsewhere (e.g., profile page)
 			}
 
-			// --- Utility: Get Date Range ---
 			function getDateRange(period) {
 				const endDate = new Date();
 				let startDate = new Date();
-				let numDays = 7; // default '7d'
+				let numDays = 7;
 
 				switch (period) {
 					case "30d":
@@ -560,14 +553,14 @@
 						break;
 					case "6m":
 						numDays = 180;
-						break; // Approx
+						break;
 					case "1y":
 						numDays = 365;
 						break;
 					case "all":
 						startDate = new Date(2000, 0, 1);
-						break; // Very old start date for 'all'
-					case "7d": // Fallthrough default
+						break;
+					case "7d":
 					default:
 						numDays = 7;
 						break;
@@ -578,7 +571,6 @@
 				return { startDate, endDate };
 			}
 
-			// --- Chart Configuration ---
 			const chartDefaultOptions = {
 				responsive: true,
 				maintainAspectRatio: false,
@@ -601,7 +593,6 @@
 				elements: { point: { radius: 3, hoverRadius: 5 } },
 			};
 
-			// --- Update Chart Functions ---
 			function updateActivityChart() {
 				const period = document.getElementById(
 					"activityTrendPeriod"
@@ -614,7 +605,6 @@
 					?.getContext("2d");
 				if (!ctx) return;
 
-				// Filter data based on period (using MOCK_DATA.exerciseHistory)
 				const filteredData = MOCK_DATA.exerciseHistory.filter(
 					(entry) => {
 						const entryDate = new Date(entry.exercise_date);
@@ -622,7 +612,6 @@
 					}
 				);
 
-				// Aggregate data by date (example for steps - needs refinement for other types)
 				const aggregatedData = {};
 				filteredData.forEach((entry) => {
 					const dateStr = entry.exercise_date;
@@ -634,11 +623,9 @@
 							count: 0,
 						};
 
-					// Logic to get the correct value based on statType
 					let value = 0;
 					switch (statType) {
 						case "steps":
-							// Assuming steps might be in notes or a dedicated field later
 							if (
 								entry.exercise_type.toLowerCase() ===
 									"walking" ||
@@ -648,7 +635,7 @@
 									(parseFloat(entry.exercise_distance) || 0) *
 									(entry.exercise_distance_unit === "km"
 										? 1250
-										: 2000); // Rough estimate
+										: 2000);
 							}
 							break;
 						case "duration":
@@ -676,7 +663,7 @@
 					}
 					aggregatedData[dateStr][statType] =
 						(aggregatedData[dateStr][statType] || 0) + value;
-					aggregatedData[dateStr].count++; // Needed for averaging maybe
+					aggregatedData[dateStr].count++;
 				});
 
 				const chartData = Object.entries(aggregatedData)
@@ -716,7 +703,6 @@
 						},
 					},
 				});
-				// Update summary stats (basic example)
 				let totalSteps = 0,
 					totalDuration = 0,
 					totalDist = 0,
@@ -726,7 +712,6 @@
 					if (d >= startDate && d <= endDate) {
 						days.add(e.exercise_date);
 						totalDuration += parseFloat(e.exercise_duration) || 0;
-						// Add step/distance calculation if needed
 					}
 				});
 				const numDays = days.size || 1;
@@ -757,7 +742,6 @@
 					return entryDate >= startDate && entryDate <= endDate;
 				});
 
-				// Calculate averages
 				let totalCalories = 0,
 					totalProtein = 0,
 					totalCarbs = 0,
@@ -777,7 +761,6 @@
 				const avgCarbs = Math.round(totalCarbs / daysCounted);
 				const avgFat = Math.round(totalFat / daysCounted);
 
-				// Update summary stats
 				document.getElementById(
 					"avgCalories"
 				).textContent = `${avgCalories} kcal`;
@@ -792,7 +775,6 @@
 				if (nutritionChartInstance) nutritionChartInstance.destroy();
 
 				if (chartType === "calories") {
-					// Aggregate calories by date
 					const aggregatedData = {};
 					filteredData.forEach((entry) => {
 						const dateStr = entry.date;
@@ -907,10 +889,9 @@
 								},
 							},
 						},
-					}, // Don't start Y at 0 for weight
+					},
 				});
 
-				// Update summary stats
 				const currentWeight =
 					filteredData.length > 0
 						? filteredData[filteredData.length - 1].weight
@@ -958,7 +939,7 @@
 				const weight = parseFloat(weightStr);
 
 				if (!isNaN(weight) && weight > 0) {
-					// Avoid duplicate entries for the same day (replace if exists)
+					
 					const existingIndex = MOCK_DATA.weightLog.findIndex(
 						(e) => e.date === today
 					);
@@ -971,9 +952,8 @@
 						});
 					}
 					saveMockData();
-					updateWeightChart(); // Refresh chart
+					updateWeightChart();
 				} else if (weightStr !== null) {
-					// Only show alert if user didn't cancel
 					alert("Invalid weight entered.");
 				}
 			}
@@ -984,7 +964,7 @@
 					document.getElementById("noAchievements");
 				if (!list || !noAchievementsMsg) return;
 
-				list.innerHTML = ""; // Clear existing
+				list.innerHTML = "";
 				if (MOCK_DATA.achievements.length === 0) {
 					noAchievementsMsg.classList.remove("d-none");
 				} else {
@@ -1007,7 +987,6 @@
 				}
 			}
 
-			// --- Mock Navigation ---
 			function navigateTo(url) {
 				console.log("Navigating to:", url);
 				if (url && url !== "#") {
@@ -1019,14 +998,11 @@
 				}
 			}
 
-			// --- Initial Load ---
 			document.addEventListener("DOMContentLoaded", () => {
-				// Load profile data needed for charts/stats (e.g., height for BMI)
 				MOCK_DATA.profile = JSON.parse(
 					localStorage.getItem("userProfile") || "{}"
 				);
 
-				// Initial chart renders
 				updateActivityChart();
 				updateNutritionChart();
 				updateWeightChart();
