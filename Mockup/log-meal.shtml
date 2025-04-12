@@ -15,7 +15,6 @@
 		/>
 		<link rel="stylesheet" href="shared-styles.css" />
 		<style>
-			/* Page-specific styles */
 			.food-items-section {
 				background-color: var(--surface-color);
 				border-radius: var(--card-border-radius);
@@ -43,7 +42,7 @@
 			.section-header-icon {
 				font-size: 20px;
 				margin-right: 10px;
-				color: var(--primary-color); /* Or specific color */
+				color: var(--primary-color);
 			}
 			.food-item-list {
 				list-style: none;
@@ -92,7 +91,6 @@
 			}
 
 			.add-item-area {
-				/* New area for adding items */
 				padding: 20px 0;
 				border-top: 1px solid var(--border-color);
 				margin-top: 20px;
@@ -527,10 +525,8 @@
 						JSON.stringify(history)
 					);
 					alert("Meal Saved!");
-					// Clear the list and form
 					document.getElementById("foodList").innerHTML = "";
 					document.getElementById("log-meal-form").reset(); // Reset date/time/type
-					// Clear add item form
 					document.getElementById("food-name").value = "";
 					document.getElementById("food-portion").value = "";
 					document.getElementById("food-calories").value = "";
@@ -575,7 +571,6 @@
 				if (list) {
 					const newItem = document.createElement("li");
 					newItem.classList.add("food-item");
-					// Store data attributes
 					newItem.dataset.calories = calories;
 					newItem.dataset.protein = protein;
 					newItem.dataset.carbs = carbs;
@@ -598,7 +593,6 @@
                         <button class="remove-item-btn" onclick="removeItem(this)" title="Remove Item">×</button>`;
 					list.appendChild(newItem);
 
-					// Clear input fields after adding
 					nameInput.value = "";
 					portionInput.value = "";
 					caloriesInput.value = "";
@@ -606,8 +600,8 @@
 					carbsInput.value = "";
 					fatInput.value = "";
 
-					updateSummary(); // Update totals when item is added
-					nameInput.focus(); // Set focus back to name field
+					updateSummary();
+					nameInput.focus();
 				}
 			}
 
@@ -615,7 +609,7 @@
 				const listItem = button.closest(".food-item");
 				if (listItem) {
 					listItem.remove();
-					updateSummary(); // Update totals when item is removed
+					updateSummary();
 				}
 			}
 
@@ -663,7 +657,6 @@
 
 			document.addEventListener("DOMContentLoaded", () => {
 				setDefaultDateTime();
-				// Initial summary calculation based on any pre-loaded items
 				updateSummary();
 			});
 		</script>
