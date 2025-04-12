@@ -15,11 +15,11 @@
 		/>
 		<link rel="stylesheet" href="shared-styles.css" />
 		<style>
-			/* Page-specific styles */
+
 			.header {
 				background-color: var(--background-color);
 				border-bottom: none;
-			} /* Blend header */
+			}
 
 			.profile-section {
 				display: flex;
@@ -46,8 +46,8 @@
 				color: var(--primary-color);
 				cursor: pointer;
 				transition: transform 0.2s ease;
-				overflow: hidden; /* Ensure image fits */
-				border: 2px solid var(--surface-color); /* Add border */
+				overflow: hidden;
+				border: 2px solid var(--surface-color);
 			}
 			.profile-picture img {
 				width: 100%;
@@ -68,13 +68,13 @@
 				right: 5px;
 				font-size: 18px;
 				background-color: var(--surface-color);
-				color: var(--text-primary); /* Make icon visible */
+				color: var(--text-primary);
 				border-radius: 50%;
 				padding: 5px;
 				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 				opacity: 0;
 				transition: opacity 0.2s ease;
-				pointer-events: none; /* Don't block click on picture */
+				pointer-events: none;
 			}
 			.profile-picture:hover .profile-picture-edit-icon {
 				opacity: 1;
@@ -161,7 +161,7 @@
 			}
 			.profile-stat-icon {
 				font-size: 18px;
-				margin-right: 8px; /* Color set per stat */
+				margin-right: 8px;
 			}
 			.profile-stat-value {
 				font-size: 22px;
@@ -273,11 +273,9 @@
 				font-weight: 500;
 			}
 			.settings-item-control {
-				/* For toggles or values */
 				color: var(--text-secondary);
 			}
 			.toggle-switch {
-				/* Basic toggle */
 				width: 50px;
 				height: 28px;
 				background-color: var(--surface-secondary-color);
@@ -990,10 +988,8 @@
 				alert(
 					"Image Upload/Selection feature not implemented in this demo."
 				);
-				// Add file input logic here
 			}
 
-			// --- Stat Calculation Examples (Needs real data) ---
 			function calculateWeightTrend() {
 				const weightLog = JSON.parse(
 					localStorage.getItem("weightLog") || "[]"
@@ -1035,7 +1031,7 @@
 				localStorage.setItem("weightLog", JSON.stringify(weightLog));
 			}
 
-			// --- Goal Functions ---
+
 			function loadGoals() {
 				userGoals = JSON.parse(
 					localStorage.getItem("userGoals") || "[]"
@@ -1269,7 +1265,6 @@
 				}
 			}
 
-			// --- Utility ---
 			function scrollToSection(sectionId) {
 				const element = document.getElementById(sectionId);
 				if (element) {
@@ -1290,7 +1285,6 @@
 				}
 			}
 
-			// --- Initial Load ---
 			document.addEventListener("DOMContentLoaded", () => {
 				loadProfileData();
 				loadGoals();
