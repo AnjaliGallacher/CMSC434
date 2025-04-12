@@ -21,13 +21,9 @@
 				padding: var(--content-padding);
 				margin-bottom: 30px;
 				box-shadow: 0 4px 12px var(--shadow-color);
-				border: 1px solid transparent;
+				border: 1px solid var(--border-color); /* Use theme border */
 			}
-			@media (prefers-color-scheme: light) {
-				.food-items-section {
-					border-color: var(--border-color);
-				}
-			}
+			/* Removed light mode specific border */
 
 			.section-header {
 				font-size: 18px;
@@ -35,14 +31,14 @@
 				color: var(--text-primary);
 				margin: 0 0 20px 0; /* Adjusted margin */
 				padding-bottom: 15px;
-				border-bottom: 1px solid var(--border-color);
+				border-bottom: 1px solid var(--border-color); /* Use theme border */
 				display: flex;
 				align-items: center;
 			}
 			.section-header-icon {
 				font-size: 20px;
 				margin-right: 10px;
-				color: var(--primary-color);
+				color: var(--primary-color); /* Use theme primary color */
 			}
 			.food-item-list {
 				list-style: none;
@@ -109,13 +105,9 @@
 				padding: var(--content-padding);
 				box-shadow: 0 4px 12px var(--shadow-color);
 				margin-top: 30px;
-				border: 1px solid transparent;
+				border: 1px solid var(--border-color); /* Use theme border */
 			}
-			@media (prefers-color-scheme: light) {
-				.summary-section {
-					border-color: var(--border-color);
-				}
-			}
+			/* Removed light mode specific border */
 
 			.summary-grid {
 				display: grid;
@@ -147,7 +139,6 @@
 				<button class="header-action-button" onclick="saveMeal()">
 					Save Meal
 				</button>
-				<!-- <div class="header-spacer"></div> -->
 			</div>
 
 			<!-- Main Scrollable Content Area -->
@@ -205,16 +196,18 @@
 				<!-- Food Items Section -->
 				<div class="food-items-section">
 					<h3 class="section-header">
-						<span class="section-header-icon">🍲</span> Food Items
+						<span class="section-header-icon"></span> Food Items
 					</h3>
 					<ul class="food-item-list" id="foodList">
-						<!-- Items added by JS will appear here -->
+						<!-- Example Items (can be removed or kept) -->
 						<li
 							class="food-item"
 							data-calories="95"
 							data-protein="0.5"
 							data-carbs="25"
 							data-fat="0.3"
+							data-name="Apple"
+							data-portion="1 medium"
 						>
 							<div class="food-item-info">
 								<span class="food-item-name">Apple</span>
@@ -236,6 +229,8 @@
 							data-protein="30"
 							data-carbs="10"
 							data-fat="20"
+							data-name="Grilled Chicken Salad"
+							data-portion="1 serving"
 						>
 							<div class="food-item-info">
 								<span class="food-item-name"
@@ -253,6 +248,7 @@
 								×
 							</button>
 						</li>
+						<!-- End Example Items -->
 					</ul>
 
 					<!-- Area to Add New Food Item -->
@@ -358,8 +354,7 @@
 				<!-- Summary Section -->
 				<div class="summary-section">
 					<h3 class="section-header">
-						<span class="section-header-icon">📊</span> Meal Summary
-						(Estimated)
+						<span class="section-header-icon"></span> Meal Summary
 					</h3>
 					<div class="summary-grid" id="summaryGrid">
 						<div class="summary-item">
@@ -447,6 +442,10 @@
 		<!-- End ipad Container -->
 
 		<script>
+			function getISODateString(date) {
+				return date.toISOString().split("T")[0];
+			}
+
 			function saveMeal() {
 				const foodItems = document.querySelectorAll(
 					"#foodList .food-item"
@@ -456,9 +455,13 @@
 					return;
 				}
 
-				const mealDate = document.getElementById("meal-date").value;
-				const mealTime = document.getElementById("meal-time").value;
-				const mealType = document.getElementById("meal-type").value;
+				const mealDateInput = document.getElementById("meal-date");
+				const mealTimeInput = document.getElementById("meal-time");
+				const mealTypeInput = document.getElementById("meal-type");
+
+				const mealDate = mealDateInput.value;
+				const mealTime = mealTimeInput.value;
+				const mealType = mealTypeInput.value;
 
 				if (!mealDate || !mealTime || !mealType) {
 					alert(
@@ -467,43 +470,52 @@
 					return;
 				}
 
+				// Get summary values directly from the display
+				const summaryCalories =
+					parseFloat(
+						document.querySelector('[data-summary="calories"]')
+							.textContent
+					) || 0;
+				const summaryProtein =
+					parseFloat(
+						document.querySelector('[data-summary="protein"]')
+							.textContent
+					) || 0;
+				const summaryCarbs =
+					parseFloat(
+						document.querySelector('[data-summary="carbs"]')
+							.textContent
+					) || 0;
+				const summaryFat =
+					parseFloat(
+						document.querySelector('[data-summary="fat"]')
+							.textContent
+					) || 0;
+
 				const mealData = {
+					id: Date.now(), // Generate ID on save
 					date: mealDate,
 					time: mealTime,
 					type: mealType,
 					items: [],
 					summary: {
-						calories:
-							parseFloat(
-								document.querySelector(
-									'[data-summary="calories"]'
-								).textContent
-							) || 0,
-						protein:
-							parseFloat(
-								document.querySelector(
-									'[data-summary="protein"]'
-								).textContent
-							) || 0,
-						carbs:
-							parseFloat(
-								document.querySelector('[data-summary="carbs"]')
-									.textContent
-							) || 0,
-						fat:
-							parseFloat(
-								document.querySelector('[data-summary="fat"]')
-									.textContent
-							) || 0,
+						calories: summaryCalories,
+						protein: summaryProtein,
+						carbs: summaryCarbs,
+						fat: summaryFat,
 					},
 				};
 
 				foodItems.forEach((item) => {
+					// Retrieve data from data-* attributes
 					mealData.items.push({
-						name: item.querySelector(".food-item-name").textContent,
+						name:
+							item.dataset.name ||
+							item.querySelector(".food-item-name").textContent, // Prefer data attribute
+						portion: item.dataset.portion || "",
 						details:
 							item.querySelector(".food-item-details")
-								.textContent,
+								.textContent, // Keep original detail string
 						calories: parseFloat(item.dataset.calories) || 0,
 						protein: parseFloat(item.dataset.protein) || 0,
 						carbs: parseFloat(item.dataset.carbs) || 0,
@@ -511,30 +523,45 @@
 					});
 				});
 
-				console.log("Meal Data:", mealData);
+				console.log("Meal Data to Save:", mealData);
 
 				// Simulate saving to localStorage
 				try {
 					let history = JSON.parse(
 						localStorage.getItem("mealHistory") || "[]"
 					);
-					mealData.id = Date.now();
 					history.push(mealData);
 					localStorage.setItem(
 						"mealHistory",
 						JSON.stringify(history)
 					);
+
+					// Update daily log totals for the dashboard
+					const dateStr = mealData.date; // Should be YYYY-MM-DD
+					let dailyLog = JSON.parse(
+						localStorage.getItem(`dailyLog_${dateStr}`) || "{}"
+					);
+					dailyLog.kcal =
+						(dailyLog.kcal || 0) + mealData.summary.calories;
+					// Optionally add macros to daily log if needed elsewhere
+					localStorage.setItem(
+						`dailyLog_${dateStr}`,
+						JSON.stringify(dailyLog)
+					);
+
 					alert("Meal Saved!");
+					// Clear the form and list
 					document.getElementById("foodList").innerHTML = "";
-					document.getElementById("log-meal-form").reset(); // Reset date/time/type
+					document.getElementById("log-meal-form").reset();
 					document.getElementById("food-name").value = "";
 					document.getElementById("food-portion").value = "";
 					document.getElementById("food-calories").value = "";
 					document.getElementById("food-protein").value = "";
 					document.getElementById("food-carbs").value = "";
 					document.getElementById("food-fat").value = "";
-					updateSummary(); // Reset summary display
-					setDefaultDateTime(); // Reset date/time inputs
+
+					updateSummary(); // Reset summary display to 0
+					setDefaultDateTime(); // Reset date/time inputs to current
 				} catch (e) {
 					console.error("Error saving meal:", e);
 					alert("Error saving meal. Check console for details.");
@@ -551,7 +578,7 @@
 
 				const name = nameInput.value.trim();
 				const portion = portionInput.value.trim();
-				const calories = parseFloat(caloriesInput.value) || 0; // User input calories
+				const calories = parseFloat(caloriesInput.value) || 0;
 				const protein = parseFloat(proteinInput.value) || 0;
 				const carbs = parseFloat(carbsInput.value) || 0;
 				const fat = parseFloat(fatInput.value) || 0;
@@ -561,8 +588,29 @@
 					nameInput.focus();
 					return;
 				}
+				if (calories <= 0 && protein <= 0 && carbs <= 0 && fat <= 0) {
+					// Allow adding if macros are provided even without calories explicitly
+					if (
+						confirm(
+							"Calories not entered. Add item based on macros only?"
+						)
+					) {
+						// Calculate calories from macros (standard approximation)
+						// calories = (protein * 4) + (carbs * 4) + (fat * 9);
+						// For simplicity, we'll just require calories for now
+						alert(
+							"Please enter the Calories (kcal) for the food item."
+						);
+						caloriesInput.focus();
+						return;
+					} else {
+						return;
+					}
+				}
 				if (calories <= 0) {
-					alert("Please enter the Calories for the food item.");
+					alert(
+						"Please enter the Calories (kcal) for the food item."
+					);
 					caloriesInput.focus();
 					return;
 				}
@@ -571,19 +619,18 @@
 				if (list) {
 					const newItem = document.createElement("li");
 					newItem.classList.add("food-item");
+					// Store all values in data attributes for reliable retrieval
+					newItem.dataset.name = name;
+					newItem.dataset.portion = portion;
 					newItem.dataset.calories = calories;
 					newItem.dataset.protein = protein;
 					newItem.dataset.carbs = carbs;
 					newItem.dataset.fat = fat;
 
-					// Construct details string
+					// Construct details string for display
 					let detailsStr = `${
 						portion ? portion + " - " : ""
 					}${calories} kcal`;
-					// Optionally add macros to details if entered
-					// if (protein > 0 || carbs > 0 || fat > 0) {
-					//     detailsStr += ` (P:${protein}g C:${carbs}g F:${fat}g)`;
-					// }
 
 					newItem.innerHTML = `
                         <div class="food-item-info">
@@ -593,6 +640,7 @@
                         <button class="remove-item-btn" onclick="removeItem(this)" title="Remove Item">×</button>`;
 					list.appendChild(newItem);
 
+					// Clear input fields
 					nameInput.value = "";
 					portionInput.value = "";
 					caloriesInput.value = "";
@@ -601,7 +649,7 @@
 					fatInput.value = "";
 
 					updateSummary();
-					nameInput.focus();
+					nameInput.focus(); // Focus back on name for next item
 				}
 			}
 
@@ -621,7 +669,7 @@
 					totalFat = 0;
 
 				items.forEach((item) => {
-					// Read from data attributes
+					// Read reliably from data attributes
 					totalCalories += parseFloat(item.dataset.calories) || 0;
 					totalProtein += parseFloat(item.dataset.protein) || 0;
 					totalCarbs += parseFloat(item.dataset.carbs) || 0;
@@ -643,12 +691,13 @@
 			function setDefaultDateTime() {
 				const dateInput = document.getElementById("meal-date");
 				const timeInput = document.getElementById("meal-time");
+				const now = new Date();
+
 				if (!dateInput.value) {
-					const today = new Date();
-					dateInput.valueAsDate = today;
+					// Set to today's date in YYYY-MM-DD format
+					dateInput.value = getISODateString(now);
 				}
 				if (!timeInput.value) {
-					const now = new Date();
 					const hh = String(now.getHours()).padStart(2, "0");
 					const mm = String(now.getMinutes()).padStart(2, "0");
 					timeInput.value = `${hh}:${mm}`;
@@ -657,7 +706,7 @@
 
 			document.addEventListener("DOMContentLoaded", () => {
 				setDefaultDateTime();
-				updateSummary();
+				updateSummary(); // Initial summary calculation (for example items)
 			});
 		</script>
 	</body>

@@ -17,8 +17,9 @@
 		<style>
 			/* Page-specific styles */
 			.form-label-icon {
-				display: none;
-			} /* Hide old emoji labels if desired */
+				display: inline-block; /* Keep icons visible */
+				color: var(--text-secondary); /* Use theme color */
+			}
 		</style>
 	</head>
 	<body>
@@ -26,13 +27,10 @@
 			<!-- Header -->
 			<div class="header">
 				<div class="header-spacer"></div>
-				<!-- Spacer -->
 				<span class="header-title">Log Exercise</span>
 				<button class="header-action-button" onclick="saveExercise()">
 					Save
 				</button>
-				<!-- <div class="header-spacer"></div> -->
-				<!-- Or use absolute positioning in CSS -->
 			</div>
 
 			<!-- Main Scrollable Content Area -->
@@ -41,7 +39,6 @@
 					<!-- Exercise Type -->
 					<div class="input-group">
 						<label for="ex-type" class="form-label">
-							<span class="form-label-icon">🏃</span>
 							Exercise Type
 						</label>
 						<input
@@ -64,6 +61,10 @@
 							<option value="Rowing"></option>
 							<option value="Pilates"></option>
 							<option value="Strength Training"></option>
+							<option value="Elliptical"></option>
+							<option value="Stair Climbing"></option>
+							<option value="Dancing"></option>
+							<option value="HIIT"></option>
 						</datalist>
 					</div>
 
@@ -72,7 +73,6 @@
 						<div class="input-row">
 							<div>
 								<label for="ex-date" class="form-label">
-									<span class="form-label-icon">📅</span>
 									Date
 								</label>
 								<input
@@ -85,7 +85,6 @@
 							</div>
 							<div>
 								<label for="ex-time" class="form-label">
-									<span class="form-label-icon">⏰</span>
 									Start Time
 								</label>
 								<input
@@ -104,7 +103,6 @@
 						<div class="input-row">
 							<div>
 								<label for="ex-duration" class="form-label">
-									<span class="form-label-icon">⏱️</span>
 									Duration
 								</label>
 								<div class="input-with-unit">
@@ -123,7 +121,6 @@
 							</div>
 							<div>
 								<label for="ex-calories" class="form-label">
-									<span class="form-label-icon">🔥</span>
 									Calories Burned (Optional)
 								</label>
 								<div class="input-with-unit">
@@ -188,8 +185,7 @@
 					<!-- Distance Row -->
 					<div class="input-group">
 						<label for="ex-distance" class="form-label">
-							<span class="form-label-icon">📏</span>Distance
-							(Optional)
+							Distance (Optional)
 						</label>
 						<div class="input-with-unit">
 							<input
@@ -217,15 +213,14 @@
 					<!-- Notes -->
 					<div class="input-group">
 						<label for="ex-notes" class="form-label">
-							<span class="form-label-icon">📝</span>Notes
-							(Optional)
+							Notes (Optional)
 						</label>
 						<textarea
 							id="ex-notes"
 							name="exercise_notes"
 							class="form-textarea"
 							rows="4"
-							placeholder="e.g., Felt strong, new PR, specific sets/reps, location, weather..."
+							placeholder="How did your workout feel? Any achievements or challenges?"
 						></textarea>
 					</div>
 				</form>
@@ -234,7 +229,6 @@
 
 			<!-- Bottom Navigation Bar -->
 			<nav class="bottom-nav" id="bottomNav">
-				<!-- Use button elements for better accessibility if not navigating -->
 				<button
 					onclick="window.location.href='todo.shtml'"
 					class="nav-item"
@@ -280,43 +274,94 @@
 		<!-- End ipad Container -->
 
 		<script>
+			function getISODateString(date) {
+				return date.toISOString().split("T")[0];
+			}
+
 			function saveExercise() {
 				// Basic validation example
-				const exType = document.getElementById("ex-type").value;
-				const exDuration = document.getElementById("ex-duration").value;
-				const exDate = document.getElementById("ex-date").value;
-				const exTime = document.getElementById("ex-time").value;
+				const exTypeInput = document.getElementById("ex-type");
+				const exDurationInput = document.getElementById("ex-duration");
+				const exDateInput = document.getElementById("ex-date");
+				const exTimeInput = document.getElementById("ex-time");
+
+				const exType = exTypeInput.value.trim();
+				const exDuration = exDurationInput.value;
+				const exDate = exDateInput.value;
+				const exTime = exTimeInput.value;
 
 				if (!exType || !exDuration || !exDate || !exTime) {
 					alert(
 						"Please fill in Exercise Type, Date, Time, and Duration."
 					);
+					// Highlight missing fields (optional enhancement)
+					if (!exType) exTypeInput.focus();
+					else if (!exDate) exDateInput.focus();
+					else if (!exTime) exTimeInput.focus();
+					else if (!exDuration) exDurationInput.focus();
+					return;
+				}
+				if (parseInt(exDuration) <= 0) {
+					alert("Duration must be a positive number.");
+					exDurationInput.focus();
 					return;
 				}
 
-				// Gather form data (Example)
-				const formData = new FormData(
-					document.getElementById("log-exercise-form")
-				);
+				// Gather form data
+				const form = document.getElementById("log-exercise-form");
+				const formData = new FormData(form);
 				const exerciseData = Object.fromEntries(formData.entries());
+				exerciseData.id = Date.now(); // Simple unique ID
+				// Convert numbers where appropriate
+				exerciseData.exercise_duration =
+					parseFloat(exerciseData.exercise_duration) || 0;
+				exerciseData.exercise_calories =
+					parseFloat(exerciseData.exercise_calories) || null; // Keep null if empty/invalid
+				exerciseData.exercise_distance =
+					parseFloat(exerciseData.exercise_distance) || null;
+
 				console.log("Exercise Data:", exerciseData);
 
-				// Simulate saving to localStorage (replace with actual API call)
+				// Simulate saving to localStorage
 				try {
 					let history = JSON.parse(
 						localStorage.getItem("exerciseHistory") || "[]"
 					);
-					exerciseData.id = Date.now(); // Simple unique ID
 					history.push(exerciseData);
+					// Sort history by date/time after adding (optional but good practice)
+					history.sort((a, b) => {
+						const dateA = new Date(
+							`${a.exercise_date}T${a.exercise_time}`
+						);
+						const dateB = new Date(
+							`${b.exercise_date}T${b.exercise_time}`
+						);
+						return dateA - dateB;
+					});
 					localStorage.setItem(
 						"exerciseHistory",
 						JSON.stringify(history)
 					);
+
+					// Update daily log totals for the dashboard
+					const dateStr = exerciseData.exercise_date; // Should be YYYY-MM-DD
+					let dailyLog = JSON.parse(
+						localStorage.getItem(`dailyLog_${dateStr}`) || "{}"
+					);
+					dailyLog.exercise =
+						(dailyLog.exercise || 0) +
+						exerciseData.exercise_duration;
+					// Add other relevant daily summaries if needed (e.g., total calories burned from exercise)
+					localStorage.setItem(
+						`dailyLog_${dateStr}`,
+						JSON.stringify(dailyLog)
+					);
+
 					alert("Exercise Saved!");
 					// Optionally redirect or clear form
 					// window.location.href = 'progress.shtml';
-					document.getElementById("log-exercise-form").reset();
-					setDefaultDateTime(); // Reset date/time after saving
+					form.reset();
+					setDefaultDateTime(); // Reset date/time after saving/resetting
 				} catch (e) {
 					console.error("Error saving exercise:", e);
 					alert("Error saving exercise. Check console for details.");
@@ -326,23 +371,22 @@
 			function setDefaultDateTime() {
 				const dateInput = document.getElementById("ex-date");
 				const timeInput = document.getElementById("ex-time");
+				const now = new Date();
 
-				// Set default date if SSI failed or value is empty/reset
+				// Set default date if value is empty/reset
 				if (!dateInput.value) {
-					const today = new Date();
-					dateInput.valueAsDate = today; // Simpler way to set date
+					dateInput.value = getISODateString(now); // Use helper
 				}
 
-				// Set default time if SSI failed or value is empty/reset
+				// Set default time if value is empty/reset
 				if (!timeInput.value) {
-					const now = new Date();
 					const hh = String(now.getHours()).padStart(2, "0");
 					const mm = String(now.getMinutes()).padStart(2, "0");
 					timeInput.value = `${hh}:${mm}`;
 				}
 			}
 
-			// Fallback for date/time on initial load
+			// Set date/time on initial load
 			document.addEventListener("DOMContentLoaded", setDefaultDateTime);
 		</script>
 	</body>

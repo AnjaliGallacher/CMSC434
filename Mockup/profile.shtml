@@ -17,8 +17,8 @@
 		<style>
 
 			.header {
-				background-color: var(--background-color);
-				border-bottom: none;
+				background-color: var(--background-color); /* Match app background */
+				border-bottom: 1px solid var(--border-color); /* Add border back for separation */
 			}
 
 			.profile-section {
@@ -139,13 +139,10 @@
 				display: flex;
 				flex-direction: column;
 				min-height: 130px;
-				border: 1px solid transparent;
+				border: 1px solid var(--border-color); /* Use theme border */
 			}
-			@media (prefers-color-scheme: light) {
-				.profile-stat-box {
-					border-color: var(--border-color);
-				}
-			}
+			/* Removed light mode specific border */
+
 			.profile-stat-box.clickable:hover {
 				transform: translateY(-3px);
 				box-shadow: 0 6px 16px var(--shadow-strong-color);
@@ -162,6 +159,7 @@
 			.profile-stat-icon {
 				font-size: 18px;
 				margin-right: 8px;
+                 /* Color is now set inline based on variable */
 			}
 			.profile-stat-value {
 				font-size: 22px;
@@ -216,10 +214,19 @@
 				font-weight: 500;
 				color: var(--accent-green);
 			}
-			.goal-actions button {
+			.goal-actions button { /* Style action icons */
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
 				font-size: 18px;
 				margin-left: 5px;
 			}
+            .goal-actions button:hover {
+                opacity: 1;
+            }
 
 			/* Achievements Grid */
 			.achievements-grid {
@@ -241,6 +248,7 @@
 			.achievement-badge-icon {
 				font-size: 40px;
 				margin-bottom: 8px;
+                /* Color set inline from JS */
 			}
 			.achievement-badge-name {
 				font-size: 12px;
@@ -253,19 +261,28 @@
 				list-style: none;
 				padding: 0;
 				margin: 0;
+                background-color: var(--surface-color); /* Group settings in a card-like bg */
+                border-radius: var(--card-border-radius);
+                border: 1px solid var(--border-color);
+                box-shadow: 0 4px 12px var(--shadow-color);
+                overflow: hidden; /* Ensures border radius applies to items */
 			}
 			.settings-item {
-				background-color: var(--surface-color);
-				border-radius: 12px;
+				/* background-color: var(--surface-color); Removed, use list bg */
+				/* border-radius: 12px; Removed */
 				padding: 15px var(--content-padding);
-				margin-bottom: 10px;
+				/* margin-bottom: 10px; Removed, use border */
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				cursor: pointer;
 				transition: background-color 0.2s ease;
-				border: 1px solid var(--border-color);
+				/* border: 1px solid var(--border-color); Removed */
+                border-bottom: 1px solid var(--border-color); /* Separator */
 			}
+            .settings-item:last-child {
+                 border-bottom: none; /* No border for last item */
+            }
 			.settings-item:hover {
 				background-color: var(--surface-secondary-color);
 			}
@@ -275,6 +292,12 @@
 			.settings-item-control {
 				color: var(--text-secondary);
 			}
+            /* Chevron for navigation items */
+            .settings-item.navigable .settings-item-control {
+                font-weight: bold;
+                font-size: 18px;
+                color: var(--text-tertiary);
+            }
 			.toggle-switch {
 				width: 50px;
 				height: 28px;
@@ -282,6 +305,7 @@
 				border-radius: 14px;
 				position: relative;
 				cursor: pointer;
+                border: 1px solid var(--border-color);
 			}
 			.toggle-switch::before {
 				content: "";
@@ -290,13 +314,14 @@
 				height: 24px;
 				background-color: white;
 				border-radius: 50%;
-				top: 2px;
-				left: 2px;
+				top: 1px; /* Adjusted for border */
+				left: 1px; /* Adjusted for border */
 				transition: transform 0.2s ease;
 				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 			}
 			.toggle-switch.active {
-				background-color: var(--accent-green);
+				background-color: var(--accent-green); /* Use green for active toggle */
+                border-color: var(--accent-green);
 			}
 			.toggle-switch.active::before {
 				transform: translateX(22px);
@@ -310,13 +335,7 @@
 				<div class="header-spacer"></div>
 				<span class="header-title">Profile</span>
 				<div class="header-actions">
-					<button
-						class="action-icon settings-icon"
-						title="Settings"
-						onclick="scrollToSection('settings')"
-					>
-						⚙️
-					</button>
+                    <!-- Settings icon moved to settings section header -->
 				</div>
 			</div>
 
@@ -378,7 +397,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-teal)"
+									style="color: var(--accent-teal)" /* Teal */
 									>👣</span
 								>
 								Daily Steps Avg
@@ -395,7 +414,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--primary-color)"
+									style="color: var(--primary-color)" /* Blue */
 									>🏃</span
 								>
 								Weekly Run Distance
@@ -412,7 +431,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-orange)"
+									style="color: var(--accent-red)" /* Red */
 									>🔥</span
 								>
 								Avg Calories Burned
@@ -429,69 +448,12 @@
 						</div>
 						<div
 							class="profile-stat-box clickable"
-							onclick="navigateTo('progress.shtml#activity')"
-						>
-							<div class="profile-stat-header">
-								<span
-									class="profile-stat-icon"
-									style="color: var(--accent-purple)"
-									>🏋️</span
-								>
-								Strength Workouts
-							</div>
-							<div
-								class="profile-stat-value"
-								id="statStrengthWorkouts"
-							>
-								--<span class="profile-stat-unit">/ week</span>
-							</div>
-							<div class="profile-stat-label">Avg This Month</div>
-						</div>
-						<div
-							class="profile-stat-box clickable"
-							onclick="navigateTo('progress.shtml#sleep')"
-						>
-							<div class="profile-stat-header">
-								<span
-									class="profile-stat-icon"
-									style="color: var(--accent-purple)"
-									>🌙</span
-								>
-								Avg Sleep
-							</div>
-							<div class="profile-stat-value" id="statAvgSleep">
-								--h --m
-							</div>
-							<div class="profile-stat-label">Last 7d</div>
-						</div>
-						<div
-							class="profile-stat-box clickable"
-							onclick="navigateTo('progress.shtml#water')"
-						>
-							<div class="profile-stat-header">
-								<span
-									class="profile-stat-icon"
-									style="color: var(--accent-teal)"
-									>💧</span
-								>
-								Water Intake Goal
-							</div>
-							<div
-								class="profile-stat-value"
-								id="statWaterGoalMet"
-							>
-								--%<span class="profile-stat-unit">met</span>
-							</div>
-							<div class="profile-stat-label">Avg Last 7d</div>
-						</div>
-						<div
-							class="profile-stat-box clickable"
 							onclick="navigateTo('progress.shtml#weight')"
 						>
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-red)"
+									style="color: var(--accent-red)" /* Red */
 									>⚖️</span
 								>
 								Weight Trend
@@ -504,33 +466,13 @@
 							</div>
 							<div class="profile-stat-label">Last 30 Days</div>
 						</div>
-						<div
-							class="profile-stat-box clickable"
-							onclick="scrollToSection('achievements')"
-						>
-							<div class="profile-stat-header">
-								<span
-									class="profile-stat-icon"
-									style="color: var(--accent-orange)"
-									>🏆</span
-								>
-								Achievements
-							</div>
-							<div
-								class="profile-stat-value"
-								id="statAchievementsCount"
-							>
-								--<span class="profile-stat-unit">Earned</span>
-							</div>
-							<div class="profile-stat-label">View All</div>
-						</div>
 					</div>
 				</section>
 
 				<!-- Goals Section -->
 				<section id="goals" class="goals-section">
 					<h2 class="section-header">
-						<span>🎯 My Goals</span>
+						<span>My Goals</span>
 						<button
 							class="button button-secondary"
 							style="padding: 6px 12px; font-size: 14px"
@@ -552,7 +494,7 @@
 
 				<!-- Achievements Section -->
 				<section id="achievements" class="achievements-section">
-					<h2 class="section-header">🏅 Achievements</h2>
+					<h2 class="section-header">Achievements</h2>
 					<div class="achievements-grid" id="achievementsGrid">
 						<!-- Badges loaded by JS -->
 					</div>
@@ -566,7 +508,7 @@
 
 				<!-- Settings Section -->
 				<section id="settings" class="settings-section">
-					<h2 class="section-header">⚙️ Settings</h2>
+					<h2 class="section-header">Settings</h2>
 					<ul class="settings-list">
 						<li
 							class="settings-item"
@@ -582,18 +524,27 @@
 								></div>
 							</div>
 						</li>
-						<li class="settings-item" onclick="toggleDarkMode()">
-							<span class="settings-item-label">Dark Mode</span>
-							<div class="settings-item-control">
-								<div
-									class="toggle-switch"
-									id="darkModeToggle"
-								></div>
-							</div>
+						<li class="settings-item navigable" onclick="alert('Account Settings not implemented')">
+							<span class="settings-item-label"
+								>Account Settings</span
+							>
+							<span class="settings-item-control">❯</span>
 						</li>
-						<li class="settings-item" onclick="exportData()">
+						<li class="settings-item navigable" onclick="alert('Connected Apps not implemented')">
+							<span class="settings-item-label"
+								>Connected Apps</span
+							>
+							<span class="settings-item-control">❯</span>
+						</li>
+						<li class="settings-item navigable" onclick="exportData()">
 							<span class="settings-item-label"
 								>Export My Data</span
+							>
+							<span class="settings-item-control">❯</span>
+						</li>
+                        <li class="settings-item navigable" onclick="alert('Help & Support not implemented')">
+							<span class="settings-item-label"
+								>Help & Support</span
 							>
 							<span class="settings-item-control">❯</span>
 						</li>
@@ -605,7 +556,6 @@
 							>
 							<span class="settings-item-control"></span>
 						</li>
-						<!-- Add more settings -->
 					</ul>
 				</section>
 			</div>
@@ -774,25 +724,15 @@
 										class="form-select"
 										required
 									>
-										<option value="steps">
-											Steps per Day
-										</option>
-										<option value="exercise_duration">
-											Exercise Minutes per Week
-										</option>
-										<option value="weight">
-											Target Weight
-										</option>
-										<option value="water">
-											Water Intake per Day
-										</option>
-										<option value="frequency">
-											Activity Frequency (e.g., run 3
-											times/week)
-										</option>
-										<option value="custom">
-											Custom / Milestone
-										</option>
+                                        <option value="">Select Type...</option>
+										<option value="steps">Steps per Day</option>
+										<option value="exercise_duration">Exercise Minutes per Week</option>
+										<option value="weight">Target Weight</option>
+										<option value="water">Water Intake per Day (mL)</option>
+                                        <option value="calories">Calories per Day</option>
+                                        <option value="mindfulness">Mindfulness Minutes per Day</option>
+										<option value="frequency">Activity Frequency (e.g., run 3 times/week)</option>
+										<option value="custom">Custom / Milestone</option>
 									</select>
 								</div>
 								<div>
@@ -806,7 +746,7 @@
 										id="goalTargetValue"
 										name="goal_target_value"
 										class="form-input"
-										placeholder="e.g., 10000, 70, 3"
+										placeholder="e.g., 10000, 70, 3, 2000"
 										step="any"
 									/>
 								</div>
@@ -905,137 +845,196 @@
 			let userGoals = []; // Global goals array
 			let userAchievements = []; // Global achievements array
 
+            function getISODateString(date) {
+				return date.toISOString().split("T")[0];
+			}
+             // --- Helper to get CSS Variable Value ---
+            function getCssVariable(variable) {
+                return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+            }
+
 			// --- Profile Functions ---
 			function loadProfileData() {
-				userProfile = JSON.parse(
-					localStorage.getItem("userProfile") || "{}"
-				);
-				document.getElementById("displayUsername").textContent =
-					userProfile.username || "User Name";
-				document.getElementById(
-					"displayUserDetails"
-				).textContent = `Age: ${userProfile.age || "--"} | Gender: ${
-					userProfile.gender || "--"
-				} | Height: ${userProfile.height_cm || "--"} cm | Weight: ${
-					userProfile.weight_kg || "--"
-				} kg`;
-				document.getElementById("displayUserBio").textContent =
-					userProfile.bio ||
-					"Edit your profile to add a bio and update your details.";
-				// Load profile picture if available (add logic for storing/retrieving image URL/data)
-				// const profilePic = localStorage.getItem('profilePicData');
-				// if (profilePic) {
-				//     document.getElementById('profilePicImage').src = profilePic;
-				//     document.getElementById('profilePicImage').style.display = 'block';
-				//     document.getElementById('profilePicPlaceholder').style.display = 'none';
-				// } else {
-				//     document.getElementById('profilePicImage').style.display = 'none';
-				//     document.getElementById('profilePicPlaceholder').style.display = 'block';
-				// }
+				userProfile = JSON.parse(localStorage.getItem("userProfile") || "{}");
+                // Update display elements
+				document.getElementById("displayUsername").textContent = userProfile.username || "User Name";
 
-				// Update stats boxes (requires data from other sources/calculations)
-				// Example:
-				// document.getElementById('statAvgSteps').textContent = calculateAvgSteps();
-				document.getElementById(
-					"statWeightTrend"
-				).textContent = `${calculateWeightTrend()} kg`;
+                const ageText = userProfile.age ? `Age: ${userProfile.age}` : 'Age: --';
+                const genderText = userProfile.gender ? `Gender: ${userProfile.gender}` : 'Gender: --';
+                const heightText = userProfile.height_cm ? `Height: ${userProfile.height_cm} cm` : 'Height: -- cm';
+                const weightText = userProfile.weight_kg ? `Weight: ${userProfile.weight_kg} kg` : 'Weight: -- kg';
+				document.getElementById("displayUserDetails").textContent = `${ageText} | ${genderText} | ${heightText} | ${weightText}`;
+
+				document.getElementById("displayUserBio").textContent = userProfile.bio || "Edit your profile to add a bio and update your details.";
+
+				// Update stats boxes (requires data aggregation - simplified examples)
+				document.getElementById('statAvgSteps').textContent = calculateAvgSteps(30).toLocaleString(); // Avg steps last 30d
+				document.getElementById('statWeeklyRun').textContent = calculateWeeklyRunDistance().toFixed(1);
+                document.getElementById('statAvgCaloriesBurned').textContent = calculateAvgCaloriesBurned(30).toLocaleString();
+                document.getElementById('statStrengthWorkouts').textContent = calculateAvgStrengthWorkouts(30);
+				document.getElementById('statWeightTrend').textContent = calculateWeightTrend(30); // Last 30d trend
+                document.getElementById('statAchievementsCount').textContent = userAchievements.length;
 			}
+
+            // --- Stat Calculation Helpers (Simplified Examples) ---
+            function calculateAvgSteps(days) {
+                let totalSteps = 0;
+                let count = 0;
+                const endDate = new Date();
+                for (let i = 0; i < days; i++) {
+                    let date = new Date(endDate);
+                    date.setDate(endDate.getDate() - i);
+                    let dateStr = getISODateString(date);
+                    let dailyLog = JSON.parse(localStorage.getItem(`dailyLog_${dateStr}`) || '{}');
+                    if (dailyLog.steps !== undefined) {
+                        totalSteps += dailyLog.steps;
+                        count++;
+                    }
+                }
+                return count > 0 ? Math.round(totalSteps / count) : '--';
+            }
+            function calculateWeeklyRunDistance() {
+                 let totalDistance = 0;
+                 const endDate = new Date();
+                 const startDate = new Date();
+                 startDate.setDate(endDate.getDate() - 6); // Last 7 days including today
+
+                 const history = JSON.parse(localStorage.getItem("exerciseHistory") || "[]");
+                 history.forEach(entry => {
+                     const entryDate = entry.exercise_date ? new Date(entry.exercise_date + 'T00:00:00') : null;
+                     if (entryDate && entryDate >= startDate && entryDate <= endDate && entry.exercise_type.toLowerCase() === 'running') {
+                         let distKm = parseFloat(entry.exercise_distance) || 0;
+                         if (entry.exercise_distance_unit === "miles") distKm *= 1.609;
+                         else if (entry.exercise_distance_unit === "meters") distKm /= 1000;
+                         else if (entry.exercise_distance_unit === "yards") distKm *= 0.0009144;
+                         totalDistance += distKm;
+                     }
+                 });
+                 return totalDistance;
+            }
+             function calculateAvgCaloriesBurned(days) {
+                // This is tricky - needs estimation based on exercise logs or total daily expenditure
+                // Simple example: Sum calories from exercise logs
+                let totalCalories = 0;
+                let activeDays = new Set();
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(endDate.getDate() - (days - 1));
+
+                const history = JSON.parse(localStorage.getItem("exerciseHistory") || "[]");
+                history.forEach(entry => {
+                    const entryDate = entry.exercise_date ? new Date(entry.exercise_date + 'T00:00:00') : null;
+                    if (entryDate && entryDate >= startDate && entryDate <= endDate && entry.exercise_calories) {
+                        totalCalories += parseFloat(entry.exercise_calories);
+                        activeDays.add(entry.exercise_date);
+                    }
+                });
+                return activeDays.size > 0 ? Math.round(totalCalories / activeDays.size) : '--';
+            }
+            function calculateAvgStrengthWorkouts(days) {
+                let workoutCount = 0;
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(endDate.getDate() - (days - 1));
+                const numWeeks = days / 7;
+
+                const history = JSON.parse(localStorage.getItem("exerciseHistory") || "[]");
+                history.forEach(entry => {
+                    const entryDate = entry.exercise_date ? new Date(entry.exercise_date + 'T00:00:00') : null;
+                    const type = entry.exercise_type.toLowerCase();
+                    if (entryDate && entryDate >= startDate && entryDate <= endDate && (type.includes('strength') || type.includes('weightlifting'))) {
+                         workoutCount++;
+                    }
+                });
+                return numWeeks > 0 ? (workoutCount / numWeeks).toFixed(1) : '--';
+            }
+             function calculateWeightTrend(days) {
+				const weightLog = JSON.parse(localStorage.getItem("weightLog") || "[]").sort((a,b) => new Date(a.date) - new Date(b.date));
+				if (weightLog.length < 1) return "--"; // Need at least one entry
+
+				const endDate = new Date();
+				const startDate = new Date();
+				startDate.setDate(endDate.getDate() - (days - 1));
+
+				const relevantEntries = weightLog.filter(e => {
+                    const entryDate = e.date ? new Date(e.date + 'T00:00:00') : null;
+                    return entryDate && entryDate >= startDate && entryDate <= endDate;
+                });
+
+                if (relevantEntries.length < 2) { // Need at least 2 points for a trend
+                     return (relevantEntries.length === 1) ? `${relevantEntries[0].weight}` : "--"; // Show current if only one point
+                }
+
+				const startW = relevantEntries[0].weight;
+				const endW = relevantEntries[relevantEntries.length - 1].weight;
+				const trend = (endW - startW);
+                const sign = trend > 0 ? '+' : '';
+				return `${sign}${trend.toFixed(1)}`; // Show signed trend
+			}
+            // --- End Stat Helpers ---
+
 
 			function openEditProfileModal() {
 				// Populate modal with current data
-				document.getElementById("editUsername").value =
-					userProfile.username || "";
-				document.getElementById("editAge").value =
-					userProfile.age || "";
-				document.getElementById("editGender").value =
-					userProfile.gender || "";
-				document.getElementById("editHeight").value =
-					userProfile.height_cm || "";
-				document.getElementById("editWeight").value =
-					userProfile.weight_kg || "";
-				document.getElementById("editBio").value =
-					userProfile.bio || "";
-				document
-					.getElementById("editProfileModal")
-					.classList.add("active");
+				document.getElementById("editUsername").value = userProfile.username || "";
+				document.getElementById("editAge").value = userProfile.age || "";
+				document.getElementById("editGender").value = userProfile.gender || "";
+				document.getElementById("editHeight").value = userProfile.height_cm || "";
+				document.getElementById("editWeight").value = userProfile.weight_kg || "";
+				document.getElementById("editBio").value = userProfile.bio || "";
+				document.getElementById("editProfileModal").classList.add("active");
 			}
 			function closeEditProfileModal() {
-				document
-					.getElementById("editProfileModal")
-					.classList.remove("active");
+				document.getElementById("editProfileModal").classList.remove("active");
 			}
 			function saveProfile() {
 				const form = document.getElementById("edit-profile-form");
-				userProfile.username = form.elements["username"].value;
-				userProfile.age = form.elements["age"].value;
-				userProfile.gender = form.elements["gender"].value;
-				userProfile.height_cm = form.elements["height_cm"].value;
-				userProfile.weight_kg = form.elements["weight_kg"].value;
-				userProfile.bio = form.elements["bio"].value;
+				userProfile.username = form.elements["username"].value.trim();
+				userProfile.age = form.elements["age"].value || null; // Store as null if empty
+				userProfile.gender = form.elements["gender"].value || null;
+				userProfile.height_cm = form.elements["height_cm"].value || null;
+				userProfile.weight_kg = form.elements["weight_kg"].value || null;
+				userProfile.bio = form.elements["bio"].value.trim();
 
-				localStorage.setItem(
-					"userProfile",
-					JSON.stringify(userProfile)
-				);
-				loadProfileData(); // Update display
+                if (!userProfile.username) {
+                    alert("Username is required.");
+                    form.elements["username"].focus();
+                    return;
+                }
+
+				localStorage.setItem("userProfile", JSON.stringify(userProfile));
+
+				// Also update latest weight in weight log if changed here
+                if (userProfile.weight_kg) {
+				    const today = getISODateString(new Date());
+				    logWeightValue(today, userProfile.weight_kg); // Function to update weight log
+                }
+
+                loadProfileData(); // Update display immediately
 				closeEditProfileModal();
 				alert("Profile Updated!");
-				// Also update latest weight in weight log if changed here
-				const today = new Date().toISOString().split("T")[0];
-				logWeightValue(today, userProfile.weight_kg); // Function to update weight log
 			}
 			function changePicture() {
-				alert(
-					"Image Upload/Selection feature not implemented in this demo."
-				);
+				alert("Image Upload/Selection feature not implemented in this demo.");
 			}
 
-			function calculateWeightTrend() {
-				const weightLog = JSON.parse(
-					localStorage.getItem("weightLog") || "[]"
-				);
-				if (weightLog.length < 2) return "--";
-				const endDate = new Date();
-				const startDate = new Date();
-				startDate.setDate(endDate.getDate() - 30);
-
-				const relevantEntries = weightLog
-					.filter(
-						(e) =>
-							new Date(e.date) >= startDate &&
-							new Date(e.date) <= endDate
-					)
-					.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-				if (relevantEntries.length < 2) return "--";
-				const startW = relevantEntries[0].weight;
-				const endW = relevantEntries[relevantEntries.length - 1].weight;
-				return (endW - startW).toFixed(1);
-			}
+			// Helper to update weight log (ensure it exists)
 			function logWeightValue(date, weight) {
-				// Helper to update weight log from profile save
 				if (!date || isNaN(parseFloat(weight))) return;
-				let weightLog = JSON.parse(
-					localStorage.getItem("weightLog") || "[]"
-				);
-				const existingIndex = weightLog.findIndex(
-					(e) => e.date === date
-				);
+				let weightLog = JSON.parse(localStorage.getItem("weightLog") || "[]");
+				const existingIndex = weightLog.findIndex(e => e.date === date);
 				if (existingIndex > -1) {
 					weightLog[existingIndex].weight = parseFloat(weight);
 				} else {
 					weightLog.push({ date: date, weight: parseFloat(weight) });
 				}
-				// Sort log just in case
 				weightLog.sort((a, b) => new Date(a.date) - new Date(b.date));
 				localStorage.setItem("weightLog", JSON.stringify(weightLog));
 			}
 
 
 			function loadGoals() {
-				userGoals = JSON.parse(
-					localStorage.getItem("userGoals") || "[]"
-				);
+				userGoals = JSON.parse(localStorage.getItem("userGoals") || "[]");
 				const list = document.getElementById("goalList");
 				const noGoalsMsg = document.getElementById("noGoals");
 				list.innerHTML = ""; // Clear list
@@ -1046,34 +1045,39 @@
 				}
 
 				noGoalsMsg.classList.add("d-none");
+				userGoals.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // Sort by creation date
+
 				userGoals.forEach((goal) => {
 					const item = document.createElement("li");
 					item.classList.add("goal-item");
 					item.dataset.goalId = goal.id;
 
-					// Basic progress display (needs real calculation)
-					let progressText = goal.targetValue
-						? `Target: ${goal.targetValue}`
-						: "Milestone";
-					if (goal.deadline) progressText += ` by ${goal.deadline}`;
+                    let goalDetailText = '';
+                    if (goal.targetValue) {
+                        let unit = '';
+                        if (goal.type === 'steps') unit = 'steps/day';
+                        else if (goal.type === 'water') unit = 'mL/day';
+                        else if (goal.type === 'exercise_duration') unit = 'min/week';
+                        else if (goal.type === 'calories') unit = 'kcal/day';
+                        else if (goal.type === 'weight') unit = 'kg';
+                        else if (goal.type === 'mindfulness') unit = 'min/day';
+                        else if (goal.type === 'frequency') unit = 'times/week'; // Example
+                        goalDetailText = `Target: ${goal.targetValue} ${unit}`;
+                    } else if (goal.type === 'custom'){
+                        goalDetailText = "Milestone Goal";
+                    }
+                    if (goal.deadline) goalDetailText += ` (Due: ${goal.deadline})`;
+
 
 					item.innerHTML = `
                         <div class="goal-info">
                             <div class="goal-name">${goal.name}</div>
-                            <div class="goal-details">${progressText}</div>
-                            ${
-								goal.notes
-									? `<div class="goal-details" style="margin-top: 5px; font-style: italic;">Notes: ${goal.notes}</div>`
-									: ""
-							}
+                            <div class="goal-details">${goalDetailText}</div>
+                            ${goal.notes ? `<div class="goal-details" style="margin-top: 5px; font-style: italic;">Notes: ${goal.notes}</div>` : ""}
                         </div>
                         <div class="goal-actions">
-                             <button class="action-icon" title="Edit Goal" onclick="editGoal('${
-									goal.id
-								}')">✏️</button>
-                             <button class="action-icon" title="Delete Goal" onclick="deleteGoal('${
-									goal.id
-								}')" style="color: var(--accent-red);">🗑️</button>
+                             <button class="action-icon" title="Edit Goal" onclick="editGoal('${goal.id}')">✏️</button>
+                             <button class="action-icon" title="Delete Goal" onclick="deleteGoal('${goal.id}')" style="color: var(--accent-red);">🗑️</button>
                         </div>
                     `;
 					list.appendChild(item);
@@ -1083,37 +1087,36 @@
 			function openAddGoalModal() {
 				document.getElementById("add-goal-form").reset();
 				document.getElementById("editGoalId").value = ""; // Clear edit ID
-				document.getElementById("goalModalTitle").textContent =
-					"Add New Goal";
+				document.getElementById("goalModalTitle").textContent = "Add New Goal";
 				document.getElementById("addGoalModal").classList.add("active");
 			}
 			function closeAddGoalModal() {
-				document
-					.getElementById("addGoalModal")
-					.classList.remove("active");
+				document.getElementById("addGoalModal").classList.remove("active");
 			}
 			function saveGoal() {
 				const form = document.getElementById("add-goal-form");
 				const goalId = form.elements["goal_id"].value;
-				const goalData = {
-					id: goalId || Date.now().toString(), // Use existing ID if editing, else generate new
-					name: form.elements["goal_name"].value,
-					type: form.elements["goal_type"].value,
-					targetValue: form.elements["goal_target_value"].value,
-					deadline: form.elements["goal_deadline"].value,
-					notes: form.elements["goal_notes"].value,
-					createdAt: goalId
-						? userGoals.find((g) => g.id === goalId)?.createdAt
-						: new Date().toISOString(), // Keep original creation date
-					status: goalId
-						? userGoals.find((g) => g.id === goalId)?.status
-						: "active", // Keep status or default
-				};
+                const goalName = form.elements["goal_name"].value.trim();
+                const goalType = form.elements["goal_type"].value;
 
-				if (!goalData.name || !goalData.type) {
+				if (!goalName || !goalType) {
 					alert("Please enter a goal description and select a type.");
 					return;
 				}
+
+                // Find existing goal data if editing
+                const existingGoal = goalId ? userGoals.find((g) => g.id === goalId) : null;
+
+				const goalData = {
+					id: goalId || Date.now().toString(), // Use existing ID if editing, else generate new
+					name: goalName,
+					type: goalType,
+					targetValue: form.elements["goal_target_value"].value || null, // Store null if empty
+					deadline: form.elements["goal_deadline"].value || null,
+					notes: form.elements["goal_notes"].value.trim() || null,
+					createdAt: existingGoal?.createdAt || new Date().toISOString(), // Keep original creation date
+					status: existingGoal?.status || "active", // Keep status or default
+				};
 
 				if (goalId) {
 					// Editing existing goal
@@ -1125,7 +1128,7 @@
 				}
 
 				localStorage.setItem("userGoals", JSON.stringify(userGoals));
-				loadGoals();
+				loadGoals(); // Refresh the list
 				closeAddGoalModal();
 			}
 			function editGoal(goalId) {
@@ -1136,132 +1139,112 @@
 				document.getElementById("editGoalId").value = goal.id;
 				document.getElementById("goalName").value = goal.name;
 				document.getElementById("goalType").value = goal.type;
-				document.getElementById("goalTargetValue").value =
-					goal.targetValue || "";
-				document.getElementById("goalDeadline").value =
-					goal.deadline || "";
+				document.getElementById("goalTargetValue").value = goal.targetValue || "";
+				document.getElementById("goalDeadline").value = goal.deadline || "";
 				document.getElementById("goalNotes").value = goal.notes || "";
-				document.getElementById("goalModalTitle").textContent =
-					"Edit Goal";
+				document.getElementById("goalModalTitle").textContent = "Edit Goal";
 				document.getElementById("addGoalModal").classList.add("active");
 			}
 			function deleteGoal(goalId) {
 				if (confirm("Are you sure you want to delete this goal?")) {
 					userGoals = userGoals.filter((g) => g.id !== goalId);
-					localStorage.setItem(
-						"userGoals",
-						JSON.stringify(userGoals)
-					);
+					localStorage.setItem("userGoals", JSON.stringify(userGoals));
 					loadGoals();
+                    loadProfileData(); // Update stats that might depend on goals
 				}
 			}
 
 			// --- Achievement Functions ---
 			function loadAchievements() {
-				userAchievements = JSON.parse(
-					localStorage.getItem("userAchievements") || "[]"
-				); // Use the achievements from Progress page MOCK_DATA
+				userAchievements = JSON.parse(localStorage.getItem("userAchievements") || "[]");
 				const grid = document.getElementById("achievementsGrid");
-				const noAchievementsMsg = document.getElementById(
-					"noAchievementsProfile"
-				);
+				const noAchievementsMsg = document.getElementById("noAchievementsProfile");
 				grid.innerHTML = "";
 
 				if (userAchievements.length === 0) {
 					noAchievementsMsg.classList.remove("d-none");
+                    document.getElementById("statAchievementsCount").textContent = '0'; // Update stat count
 					return;
 				}
 
 				noAchievementsMsg.classList.add("d-none");
-				userAchievements.forEach((ach) => {
+                userAchievements.sort((a,b) => (new Date(b.achievedAt || 0) - new Date(a.achievedAt || 0))); // Sort by date achieved if available
+
+				// Only display up to 4 achievements (reduced)
+				const limitedAchievements = userAchievements.slice(0, 4);
+				limitedAchievements.forEach((ach) => {
+                    const iconColor = ach.color ? getCssVariable(ach.color) : getCssVariable('--primary-color'); // Use theme color
 					const badge = document.createElement("div");
 					badge.classList.add("achievement-badge");
-					badge.title = `${ach.name} (Achieved: ${ach.date})`;
+					badge.title = `${ach.name} (Achieved: ${ach.date})`; // Keep date in title
 					badge.innerHTML = `
-                        <div class="achievement-badge-icon" style="color: ${
-							ach.color || "var(--accent-purple)"
-						}">${ach.icon || "🏆"}</div>
                         <div class="achievement-badge-name">${ach.name}</div>
                      `;
-					badge.onclick = () =>
-						alert(
-							`Achievement: ${ach.name}\nAchieved: ${ach.date}`
-						);
+					badge.onclick = () => alert(`Achievement: ${ach.name}\nAchieved: ${ach.date}`);
 					grid.appendChild(badge);
 				});
-				document.getElementById("statAchievementsCount").textContent =
-					userAchievements.length;
+                // Update stat count after loading
+				document.getElementById("statAchievementsCount").textContent = userAchievements.length;
 			}
 
 			// --- Settings Functions ---
 			function loadSettings() {
 				// Load notification preference
-				const notificationsEnabled =
-					localStorage.getItem("notificationsEnabled") === "true";
-				document
-					.getElementById("notificationToggle")
-					.classList.toggle("active", notificationsEnabled);
-				// Load dark mode preference (check system pref and local storage override)
-				const prefersDark = window.matchMedia(
-					"(prefers-color-scheme: dark)"
-				).matches;
-				const storedTheme = localStorage.getItem("theme");
-				let darkModeActive = false;
-				if (storedTheme === "dark") {
-					darkModeActive = true;
-				} else if (storedTheme === "light") {
-					darkModeActive = false;
-				} else {
-					// Follow system
-					darkModeActive = prefersDark;
-				}
-				document
-					.getElementById("darkModeToggle")
-					.classList.toggle("active", darkModeActive);
-				// Apply theme on load
-				document.documentElement.setAttribute(
-					"data-theme",
-					darkModeActive ? "dark" : "light"
-				); // Add data attribute for potential CSS overrides if needed
-				// Apply dark mode class if needed, or rely purely on prefers-color-scheme
-				document.body.classList.toggle("dark-mode", darkModeActive); // Example using a class
+				const notificationsEnabled = localStorage.getItem("notificationsEnabled") === "true";
+				document.getElementById("notificationToggle").classList.toggle("active", notificationsEnabled);
+				// Dark Mode toggle removed
 			}
 
 			function toggleNotifications() {
 				const toggle = document.getElementById("notificationToggle");
 				const isActive = toggle.classList.toggle("active");
 				localStorage.setItem("notificationsEnabled", isActive);
-				alert(
-					`Daily notifications ${
-						isActive ? "enabled" : "disabled"
-					}. (Requires actual implementation)`
-				);
+				alert(`Daily notifications ${isActive ? "enabled" : "disabled"}. (Simulation only)`);
 			}
 
-			function toggleDarkMode() {
-				const toggle = document.getElementById("darkModeToggle");
-				const isActive = toggle.classList.toggle("active");
-				localStorage.setItem("theme", isActive ? "dark" : "light"); // Store user preference
-				// Apply theme immediately
-				document.documentElement.setAttribute(
-					"data-theme",
-					isActive ? "dark" : "light"
-				);
-				document.body.classList.toggle("dark-mode", isActive); // Example using a class
-				// Note: The prefers-color-scheme styles in shared-styles.css will handle most cases automatically.
-				// This toggle provides a manual override. You might need more specific CSS rules using [data-theme="dark"] if the class isn't enough.
-			}
+			// Dark mode toggle function removed
 
 			function exportData() {
-				alert("Export data feature not implemented in this demo.");
-				// Logic to gather all localStorage data and offer download
+                try {
+                    const dataToExport = {
+                        profile: JSON.parse(localStorage.getItem("userProfile") || "{}"),
+                        goals: JSON.parse(localStorage.getItem("userGoals") || "[]"),
+                        achievements: JSON.parse(localStorage.getItem("userAchievements") || "[]"),
+                        weightLog: JSON.parse(localStorage.getItem("weightLog") || "[]"),
+                        mealHistory: JSON.parse(localStorage.getItem("mealHistory") || "[]"),
+                        exerciseHistory: JSON.parse(localStorage.getItem("exerciseHistory") || "[]"),
+                        // Add daily logs if desired
+                    };
+                    const dataStr = JSON.stringify(dataToExport, null, 2); // Pretty print JSON
+                    const blob = new Blob([dataStr], {type: "application/json"});
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    const dateStr = new Date().toISOString().split('T')[0];
+                    link.download = `wellness_hub_data_${dateStr}.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                     alert("Data export initiated. Check your downloads.");
+                } catch (e) {
+                    console.error("Error exporting data:", e);
+                    alert("Could not export data. See console for details.");
+                }
+
 			}
 			function logout() {
 				if (confirm("Are you sure you want to log out?")) {
-					alert("Logging out... (Feature not fully implemented)");
-					// Clear relevant localStorage, redirect to login page, etc.
-					// localStorage.removeItem('userProfile');
-					// window.location.href = '/login.html';
+					alert("Logging out... (Simulation: Clearing some data)");
+					// Clear sensitive data - adjust as needed for a real app
+					localStorage.removeItem('userProfile');
+					localStorage.removeItem('userGoals');
+                    // Potentially clear logs too, or keep them for anonymous use?
+                    // localStorage.removeItem('weightLog');
+                    // localStorage.removeItem('mealHistory');
+                    // localStorage.removeItem('exerciseHistory');
+                    // Redirect to a hypothetical login page or the dashboard
+					window.location.href = 'todo.shtml'; // Go back to dashboard after simulated logout
 				}
 			}
 
@@ -1279,27 +1262,21 @@
 				if (url && url !== "#") {
 					window.location.href = url;
 				} else {
-					alert(
-						`Navigation to ${url} section (implementation needed)`
-					);
+                    console.warn(`Navigation to ${url} not implemented or invalid.`);
 				}
 			}
 
 			document.addEventListener("DOMContentLoaded", () => {
+                // Load necessary data first
+                userProfile = JSON.parse(localStorage.getItem("userProfile") || "{}");
+                userGoals = JSON.parse(localStorage.getItem("userGoals") || "[]");
+                userAchievements = JSON.parse(localStorage.getItem("userAchievements") || "[]");
+
+                // Then load UI components that depend on the data
 				loadProfileData();
 				loadGoals();
 				loadAchievements();
 				loadSettings();
-
-				// Add listener for system theme changes if using prefers-color-scheme
-				window
-					.matchMedia("(prefers-color-scheme: dark)")
-					.addEventListener("change", (event) => {
-						// Reload settings ONLY if no manual override is set
-						if (!localStorage.getItem("theme")) {
-							loadSettings();
-						}
-					});
 			});
 		</script>
 	</body>

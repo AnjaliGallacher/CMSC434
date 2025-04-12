@@ -26,13 +26,9 @@
 				margin-bottom: 25px;
 				padding: var(--content-padding);
 				box-shadow: 0 5px 15px var(--shadow-color);
-				border: 1px solid transparent;
+				border: 1px solid var(--border-color); /* Use theme border */
 			}
-			@media (prefers-color-scheme: light) {
-				.progress-section {
-					border-color: var(--border-color);
-				}
-			}
+			/* Removed light mode specific border */
 
 			.section-title {
 				font-size: 18px;
@@ -62,7 +58,7 @@
 				border: 1px solid var(--border-color);
 				border-radius: 8px;
 				background-color: var(--surface-secondary-color);
-				color: var(--text-link);
+				color: var(--text-link); /* Use link color for select text */
 				cursor: pointer;
 			}
 			.section-controls button {
@@ -71,7 +67,7 @@
 				font-weight: 500;
 			}
 			.section-controls button:hover {
-				background-color: var(--border-color);
+				background-color: var(--border-color); /* Use border color for hover */
 			}
 
 			.chart-container {
@@ -88,9 +84,10 @@
 				margin-top: 20px;
 			}
 			.summary-stat {
-				background-color: var(--background-color);
+				background-color: var(--background-color); /* Use app background */
 				padding: 15px;
-				border-radius: 12px;
+				border-radius: 12px; /* Match card radius */
+                border: 1px solid var(--border-color); /* Add subtle border */
 				text-align: center;
 			}
 			.summary-stat-value {
@@ -159,8 +156,8 @@
 						<div>
 							<span
 								class="section-title-icon"
-								style="color: var(--primary-color)"
-								>📈</span
+								style="color: var(--primary-color)" /* Blue */
+								></span
 							>Activity Trends
 						</div>
 						<div class="section-controls">
@@ -239,8 +236,8 @@
 						<div>
 							<span
 								class="section-title-icon"
-								style="color: var(--accent-orange)"
-								>🍎</span
+								style="color: var(--accent-red)" /* Red */
+								></span
 							>Nutrition Overview
 						</div>
 						<div class="section-controls">
@@ -314,8 +311,8 @@
 						<div>
 							<span
 								class="section-title-icon"
-								style="color: var(--accent-red)"
-								>⚖️</span
+								style="color: var(--accent-red)" /* Red */
+								></span
 							>Weight Trend
 						</div>
 						<div class="section-controls">
@@ -370,14 +367,14 @@
 					</div>
 				</section>
 
-				<!-- Section 4: Recent Achievements -->
+				<!-- Section 4: Recent Achievements - Reduced -->
 				<section class="progress-section">
 					<h2 class="section-title">
 						<div>
 							<span
 								class="section-title-icon"
-								style="color: var(--accent-purple)"
-								>🏆</span
+								style="color: var(--primary-color)" /* Blue */
+								></span
 							>Recent Achievements
 						</div>
 						<div class="section-controls">
@@ -390,12 +387,12 @@
 						</div>
 					</h2>
 					<ul class="achievements-list" id="achievementsList">
-						<!-- Populated by JS -->
+						<!-- Populated by JS - Only show 2 achievements -->
 						<li class="achievement-item">
 							<span
 								class="achievement-icon"
-								style="color: var(--accent-green)"
-								>🏅</span
+								style="color: var(--accent-green)" /* Keep green */
+								></span
 							>
 							<div class="achievement-details">
 								<div class="achievement-name">
@@ -409,30 +406,15 @@
 						<li class="achievement-item">
 							<span
 								class="achievement-icon"
-								style="color: var(--primary-color)"
-								>📅</span
+								style="color: var(--primary-color)" /* Blue */
+								></span
 							>
 							<div class="achievement-details">
 								<div class="achievement-name">
-									Perfect Week (All Goals Met)
+									Perfect Week
 								</div>
 								<div class="achievement-date">
 									Achieved: 3 days ago
-								</div>
-							</div>
-						</li>
-						<li class="achievement-item">
-							<span
-								class="achievement-icon"
-								style="color: var(--accent-orange)"
-								>🏃</span
-							>
-							<div class="achievement-details">
-								<div class="achievement-name">
-									First 5km Run
-								</div>
-								<div class="achievement-date">
-									Achieved: Last Sunday
 								</div>
 							</div>
 						</li>
@@ -499,6 +481,12 @@
 			let nutritionChartInstance = null;
 			let weightChartInstance = null;
 
+            // --- Helper to get CSS Variable Value ---
+            function getCssVariable(variable) {
+                return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+            }
+
+			// Modify achievements mock data to reduce badges
 			const MOCK_DATA = {
 				weightLog: JSON.parse(
 					localStorage.getItem("weightLog") ||
@@ -516,8 +504,8 @@
 				goals: JSON.parse(localStorage.getItem("userGoals") || "[]"),
 				achievements: JSON.parse(
 					localStorage.getItem("userAchievements") ||
-						'[{"name": "10k Steps Milestone", "date": "Yesterday", "icon": "🏅", "color": "var(--accent-green)"}, {"name": "Perfect Week (All Goals Met)", "date": "3 days ago", "icon": "📅", "color": "var(--primary-color)"}, {"name": "First 5km Run", "date": "Last Sunday", "icon": "🏃", "color": "var(--accent-orange)"}]'
-				),
+						'[{"name": "10k Steps Milestone", "date": "Yesterday", "icon": "", "color": "--accent-green"}, {"name": "Perfect Week", "date": "3 days ago", "icon": "", "color": "--primary-color"}]'
+				), // Reduced achievements with empty icons
 			};
 
 			function saveMockData() {
@@ -552,13 +540,16 @@
 						numDays = 90;
 						break;
 					case "6m":
-						numDays = 180;
+						numDays = 180; // Approx 6 months
 						break;
 					case "1y":
 						numDays = 365;
 						break;
 					case "all":
-						startDate = new Date(2000, 0, 1);
+						// Find earliest date in logs if possible, otherwise default
+                        const earliestWeight = MOCK_DATA.weightLog.length > 0 ? new Date(MOCK_DATA.weightLog[0].date) : new Date(2000, 0, 1);
+                        // Add checks for other logs if needed
+                        startDate = earliestWeight; // Use earliest known date
 						break;
 					case "7d":
 					default:
@@ -568,10 +559,14 @@
 				if (period !== "all") {
 					startDate.setDate(endDate.getDate() - numDays);
 				}
+                // Ensure start date is not before a reasonable minimum if needed
+                const minDate = new Date(2000, 0, 1);
+                if (startDate < minDate) startDate = minDate;
+
 				return { startDate, endDate };
 			}
 
-			const chartDefaultOptions = {
+			const chartDefaultOptions = (isDarkMode = false) => ({ // Accept dark mode flag if needed later, though removed now
 				responsive: true,
 				maintainAspectRatio: false,
 				interaction: { intersect: false, mode: "index" },
@@ -580,18 +575,38 @@
 						type: "time",
 						time: { unit: "day" },
 						grid: { display: false },
+                        ticks: { color: getCssVariable('--text-secondary') } // Use CSS var for ticks
 					},
 					y: {
 						beginAtZero: true,
-						grid: { color: "var(--border-color)" },
+						grid: { color: getCssVariable('--border-color') }, // Use CSS var for grid lines
+                        ticks: { color: getCssVariable('--text-secondary') } // Use CSS var for ticks
 					},
 				},
 				plugins: {
-					legend: { display: false },
-					tooltip: { enabled: true },
+					legend: {
+                        display: false,
+                        labels: { color: getCssVariable('--text-primary') } // Use CSS var
+                     },
+					tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Keep tooltip dark for contrast
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                    },
 				},
-				elements: { point: { radius: 3, hoverRadius: 5 } },
-			};
+				elements: {
+                    point: {
+                        radius: 3,
+                        hoverRadius: 5,
+                        backgroundColor: getCssVariable('--primary-color') // Default point color
+                    },
+                    line: {
+                         borderColor: getCssVariable('--primary-color'), // Default line color
+                         tension: 0.3
+                    }
+                },
+			});
 
 			function updateActivityChart() {
 				const period = document.getElementById(
@@ -607,8 +622,9 @@
 
 				const filteredData = MOCK_DATA.exerciseHistory.filter(
 					(entry) => {
-						const entryDate = new Date(entry.exercise_date);
-						return entryDate >= startDate && entryDate <= endDate;
+                        // Ensure date parsing is robust
+                        const entryDate = entry.exercise_date ? new Date(entry.exercise_date + 'T00:00:00') : null; // Add time to avoid timezone issues
+						return entryDate && entryDate >= startDate && entryDate <= endDate;
 					}
 				);
 
@@ -624,18 +640,17 @@
 						};
 
 					let value = 0;
+					// Use daily log for steps if available and type matches
+                    const dailyLog = JSON.parse(localStorage.getItem(`dailyLog_${dateStr}`) || '{}');
+
 					switch (statType) {
 						case "steps":
-							if (
-								entry.exercise_type.toLowerCase() ===
-									"walking" ||
-								entry.exercise_type.toLowerCase() === "running"
-							) {
-								value =
-									(parseFloat(entry.exercise_distance) || 0) *
-									(entry.exercise_distance_unit === "km"
-										? 1250
-										: 2000);
+                            // Prioritize daily log steps if available, otherwise estimate
+                            if (dailyLog.steps !== undefined) {
+                                value = dailyLog.steps;
+                            } else if (entry.exercise_type.toLowerCase() === 'walking' || entry.exercise_type.toLowerCase() === 'running') {
+                                // Fallback estimation (less accurate)
+								value = (parseFloat(entry.exercise_distance) || 0) * (entry.exercise_distance_unit === "km" ? 1250 : 2000);
 							}
 							break;
 						case "duration":
@@ -661,8 +676,13 @@
 							}
 							break;
 					}
-					aggregatedData[dateStr][statType] =
-						(aggregatedData[dateStr][statType] || 0) + value;
+                    // Aggregate based on stat type correctly
+                    if (statType === 'steps') {
+                         // Steps are aggregated per day, not per exercise entry unless it's the only source
+                         aggregatedData[dateStr][statType] = Math.max(aggregatedData[dateStr][statType] || 0, value); // Take max steps logged/estimated for the day
+                    } else {
+					    aggregatedData[dateStr][statType] = (aggregatedData[dateStr][statType] || 0) + value;
+                    }
 					aggregatedData[dateStr].count++;
 				});
 
@@ -672,6 +692,8 @@
 						y: values[statType] || 0,
 					}))
 					.sort((a, b) => new Date(a.x) - new Date(b.x)); // Sort by date
+
+                const primaryColor = getCssVariable('--primary-color');
 
 				if (activityChartInstance) activityChartInstance.destroy();
 				activityChartInstance = new Chart(ctx, {
@@ -683,19 +705,21 @@
 									statType.charAt(0).toUpperCase() +
 									statType.slice(1),
 								data: chartData,
-								borderColor: "var(--primary-color)",
-								backgroundColor: "rgba(0, 122, 255, 0.1)", // Use primary color with alpha
+								borderColor: primaryColor,
+								backgroundColor: primaryColor + '1A', // Add alpha using hex notation if possible, or use rgba
 								fill: true,
 								tension: 0.3,
+                                pointBackgroundColor: primaryColor,
 							},
 						],
 					},
 					options: {
-						...chartDefaultOptions,
+						...chartDefaultOptions(),
 						scales: {
-							...chartDefaultOptions.scales,
+							...chartDefaultOptions().scales,
+                            y: { ...chartDefaultOptions().scales.y, beginAtZero: true }, // Ensure y starts at 0
 							x: {
-								...chartDefaultOptions.scales.x,
+								...chartDefaultOptions().scales.x,
 								time: {
 									unit: period === "1y" ? "month" : "day",
 								},
@@ -703,26 +727,21 @@
 						},
 					},
 				});
-				let totalSteps = 0,
-					totalDuration = 0,
-					totalDist = 0,
-					days = new Set();
-				MOCK_DATA.exerciseHistory.forEach((e) => {
-					const d = new Date(e.exercise_date);
-					if (d >= startDate && d <= endDate) {
-						days.add(e.exercise_date);
-						totalDuration += parseFloat(e.exercise_duration) || 0;
-					}
-				});
+
+                // Update Summary Stats - Calculate based on aggregated data for accuracy
+                let totalSteps = 0, totalDuration = 0, totalDist = 0;
+                const days = new Set(Object.keys(aggregatedData));
+                Object.values(aggregatedData).forEach(dayData => {
+                    totalSteps += dayData.steps || 0;
+                    totalDuration += dayData.duration || 0;
+                    totalDist += dayData.distance || 0;
+                });
+
 				const numDays = days.size || 1;
-				document.getElementById("avgSteps").textContent = "--"; // Needs better calculation
-				document.getElementById(
-					"avgExercise"
-				).textContent = `${Math.round(totalDuration / numDays)} min`;
-				document.getElementById("totalDistance").textContent = "-- km"; // Needs calculation
-				document.getElementById(
-					"activeDays"
-				).textContent = `${days.size} days`;
+				document.getElementById("avgSteps").textContent = Math.round(totalSteps / numDays).toLocaleString();
+				document.getElementById("avgExercise").textContent = `${Math.round(totalDuration / numDays)} min`;
+				document.getElementById("totalDistance").textContent = `${totalDist.toFixed(1)} km`;
+				document.getElementById("activeDays").textContent = `${days.size} days`;
 			}
 
 			function updateNutritionChart() {
@@ -738,22 +757,21 @@
 				if (!ctx) return;
 
 				const filteredData = MOCK_DATA.mealHistory.filter((entry) => {
-					const entryDate = new Date(entry.date);
-					return entryDate >= startDate && entryDate <= endDate;
+					const entryDate = entry.date ? new Date(entry.date + 'T00:00:00') : null;
+					return entryDate && entryDate >= startDate && entryDate <= endDate;
 				});
 
 				let totalCalories = 0,
 					totalProtein = 0,
 					totalCarbs = 0,
 					totalFat = 0;
-				const daysCounted =
-					new Set(filteredData.map((e) => e.date)).size || 1;
+				const daysCounted = new Set(filteredData.map((e) => e.date)).size || 1;
 
 				filteredData.forEach((meal) => {
-					totalCalories += meal.summary.calories || 0;
-					totalProtein += meal.summary.protein || 0;
-					totalCarbs += meal.summary.carbs || 0;
-					totalFat += meal.summary.fat || 0;
+					totalCalories += meal.summary?.calories || 0;
+					totalProtein += meal.summary?.protein || 0;
+					totalCarbs += meal.summary?.carbs || 0;
+					totalFat += meal.summary?.fat || 0;
 				});
 
 				const avgCalories = Math.round(totalCalories / daysCounted);
@@ -761,16 +779,16 @@
 				const avgCarbs = Math.round(totalCarbs / daysCounted);
 				const avgFat = Math.round(totalFat / daysCounted);
 
-				document.getElementById(
-					"avgCalories"
-				).textContent = `${avgCalories} kcal`;
-				document.getElementById(
-					"avgProtein"
-				).textContent = `${avgProtein} g`;
-				document.getElementById(
-					"avgCarbs"
-				).textContent = `${avgCarbs} g`;
+				document.getElementById("avgCalories").textContent = `${avgCalories.toLocaleString()} kcal`;
+				document.getElementById("avgProtein").textContent = `${avgProtein} g`;
+				document.getElementById("avgCarbs").textContent = `${avgCarbs} g`;
 				document.getElementById("avgFat").textContent = `${avgFat} g`;
+
+                // Get theme colors
+                const accentRed = getCssVariable('--accent-red');
+                const accentGreen = getCssVariable('--accent-green'); // Assuming green for protein
+                const accentTeal = getCssVariable('--accent-teal'); // Assuming teal for carbs
+
 
 				if (nutritionChartInstance) nutritionChartInstance.destroy();
 
@@ -780,29 +798,31 @@
 						const dateStr = entry.date;
 						aggregatedData[dateStr] =
 							(aggregatedData[dateStr] || 0) +
-							(entry.summary.calories || 0);
+							(entry.summary?.calories || 0);
 					});
 					const chartData = Object.entries(aggregatedData)
 						.map(([date, value]) => ({ x: date, y: value }))
 						.sort((a, b) => new Date(a.x) - new Date(b.x));
 
 					nutritionChartInstance = new Chart(ctx, {
-						type: "bar", // Bar chart for daily calories
+						type: "bar",
 						data: {
 							datasets: [
 								{
 									label: "Daily Calories",
 									data: chartData,
-									backgroundColor: "var(--accent-orange)",
+									backgroundColor: accentRed, // Use accent red for calories
+                                    borderColor: accentRed,
 								},
 							],
 						},
 						options: {
-							...chartDefaultOptions,
+							...chartDefaultOptions(),
 							scales: {
-								...chartDefaultOptions.scales,
+                                ...chartDefaultOptions().scales,
+                                y: { ...chartDefaultOptions().scales.y, beginAtZero: true },
 								x: {
-									...chartDefaultOptions.scales.x,
+									...chartDefaultOptions().scales.x,
 									time: {
 										unit: period === "90d" ? "week" : "day",
 									},
@@ -821,10 +841,12 @@
 									label: "Avg Macros",
 									data: [avgProtein, avgCarbs, avgFat],
 									backgroundColor: [
-										"var(--accent-green)",
-										"var(--accent-teal)",
-										"var(--accent-red)",
+										accentGreen, // Green for Protein
+										accentTeal,  // Teal for Carbs
+										accentRed,   // Red for Fat
 									],
+                                    borderColor: getCssVariable('--surface-color'), // White border between segments
+                                    borderWidth: 2,
 									hoverOffset: 4,
 								},
 							],
@@ -832,7 +854,13 @@
 						options: {
 							responsive: true,
 							maintainAspectRatio: false,
-							plugins: { legend: { position: "bottom" } },
+							plugins: {
+                                legend: {
+                                    position: "bottom",
+                                    labels: { color: getCssVariable('--text-primary') }
+                                },
+                                tooltip: chartDefaultOptions().plugins.tooltip // Use default tooltip style
+                            },
 						},
 					});
 				}
@@ -849,8 +877,8 @@
 
 				const filteredData = MOCK_DATA.weightLog
 					.filter((entry) => {
-						const entryDate = new Date(entry.date);
-						return entryDate >= startDate && entryDate <= endDate;
+						const entryDate = entry.date ? new Date(entry.date + 'T00:00:00') : null;
+						return entryDate && entryDate >= startDate && entryDate <= endDate;
 					})
 					.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
 
@@ -858,6 +886,8 @@
 					x: entry.date,
 					y: entry.weight,
 				}));
+
+                const accentRed = getCssVariable('--accent-red');
 
 				if (weightChartInstance) weightChartInstance.destroy();
 				weightChartInstance = new Chart(ctx, {
@@ -867,25 +897,26 @@
 							{
 								label: "Weight (kg)",
 								data: chartData,
-								borderColor: "var(--accent-red)",
-								backgroundColor: "rgba(255, 59, 48, 0.1)",
+								borderColor: accentRed,
+								backgroundColor: accentRed + '1A', // Red with alpha
 								fill: false, // Usually don't fill weight chart
 								tension: 0.1,
+                                pointBackgroundColor: accentRed,
 							},
 						],
 					},
 					options: {
-						...chartDefaultOptions,
+						...chartDefaultOptions(),
 						scales: {
-							...chartDefaultOptions.scales,
-							y: { beginAtZero: false },
+							...chartDefaultOptions().scales,
+							y: { ...chartDefaultOptions().scales.y, beginAtZero: false }, // Don't necessarily start Y at 0 for weight
 							x: {
-								...chartDefaultOptions.scales.x,
+								...chartDefaultOptions().scales.x,
 								time: {
 									unit:
-										period === "1y" || period === "all"
+										period === "1y" || period === "all" || period === "6m"
 											? "month"
-											: "day",
+											: period === "90d" ? "week" : "day",
 								},
 							},
 						},
@@ -895,7 +926,7 @@
 				const currentWeight =
 					filteredData.length > 0
 						? filteredData[filteredData.length - 1].weight
-						: "--";
+						: MOCK_DATA.profile.weight_kg || "--"; // Fallback to profile weight
 				const startWeight =
 					filteredData.length > 0 ? filteredData[0].weight : null;
 				const weightChange =
@@ -904,57 +935,50 @@
 						: "--";
 				const profileHeight = MOCK_DATA.profile.height_cm; // Get height from profile
 				const bmi =
-					currentWeight !== "--" && profileHeight
-						? (currentWeight / (profileHeight / 100) ** 2).toFixed(
-								1
-						  )
+					currentWeight !== "--" && profileHeight && profileHeight > 0
+						? (currentWeight / (profileHeight / 100) ** 2).toFixed(1)
 						: "--";
 				const weightGoal =
-					MOCK_DATA.goals.find((g) => g.type === "weight")
-						?.targetValue || "--";
+					MOCK_DATA.goals.find((g) => g.type === "weight")?.targetValue || "--";
 
-				document.getElementById(
-					"currentWeight"
-				).textContent = `${currentWeight} kg`;
-				document.getElementById(
-					"weightChange"
-				).textContent = `${weightChange} kg`;
+				document.getElementById("currentWeight").textContent = `${currentWeight} kg`;
+				document.getElementById("weightChange").textContent = `${weightChange} kg`;
 				document.getElementById("bmi").textContent = bmi;
-				document.getElementById(
-					"weightGoal"
-				).textContent = `${weightGoal} kg`;
+				document.getElementById("weightGoal").textContent = `${weightGoal} kg`;
 			}
 
 			function logWeight() {
 				const today = new Date().toISOString().split("T")[0];
-				const currentWeight =
-					MOCK_DATA.weightLog.length > 0
-						? MOCK_DATA.weightLog[MOCK_DATA.weightLog.length - 1]
-								.weight
-						: "";
+				const latestWeightEntry = MOCK_DATA.weightLog.length > 0 ? MOCK_DATA.weightLog[MOCK_DATA.weightLog.length - 1] : null;
+                const currentWeightSuggest = latestWeightEntry ? latestWeightEntry.weight : (MOCK_DATA.profile.weight_kg || "");
+
 				const weightStr = prompt(
 					`Enter current weight (kg) for ${today}:`,
-					currentWeight
+					currentWeightSuggest
 				);
 				const weight = parseFloat(weightStr);
 
 				if (!isNaN(weight) && weight > 0) {
-					
 					const existingIndex = MOCK_DATA.weightLog.findIndex(
 						(e) => e.date === today
 					);
 					if (existingIndex > -1) {
+						// Update existing entry for today
 						MOCK_DATA.weightLog[existingIndex].weight = weight;
 					} else {
-						MOCK_DATA.weightLog.push({
-							date: today,
-							weight: weight,
-						});
+                        // Add new entry
+						MOCK_DATA.weightLog.push({ date: today, weight: weight });
+                        // Sort after adding
+                        MOCK_DATA.weightLog.sort((a, b) => new Date(a.date) - new Date(b.date));
 					}
-					saveMockData();
-					updateWeightChart();
-				} else if (weightStr !== null) {
-					alert("Invalid weight entered.");
+                    // Also update profile weight
+                    MOCK_DATA.profile.weight_kg = weight;
+                    localStorage.setItem('userProfile', JSON.stringify(MOCK_DATA.profile));
+
+					saveMockData(); // Save updated weight log
+					updateWeightChart(); // Refresh chart
+				} else if (weightStr !== null && weightStr !== "") { // Avoid alert if cancelled
+					alert("Invalid weight entered. Please enter a positive number.");
 				}
 			}
 
@@ -969,19 +993,19 @@
 					noAchievementsMsg.classList.remove("d-none");
 				} else {
 					noAchievementsMsg.classList.add("d-none");
-					MOCK_DATA.achievements.forEach((ach) => {
+					// Only show up to 2 achievements
+					const limitedAchievements = MOCK_DATA.achievements.slice(0, 2);
+					limitedAchievements.forEach((ach) => {
 						const item = document.createElement("li");
 						item.classList.add("achievement-item");
+						// Get color from CSS variable name stored in mock data
+						const iconColor = ach.color ? getCssVariable(ach.color) : getCssVariable('--primary-color');
 						item.innerHTML = `
-                            <span class="achievement-icon" style="color: ${
-								ach.color || "var(--accent-purple)"
-							}">${ach.icon || "🏆"}</span>
-                            <div class="achievement-details">
-                                <div class="achievement-name">${ach.name}</div>
-                                <div class="achievement-date">Achieved: ${
-									ach.date
-								}</div>
-                            </div>`;
+							<span class="achievement-icon" style="color: ${iconColor}"></span>
+							<div class="achievement-details">
+								<div class="achievement-name">${ach.name}</div>
+								<div class="achievement-date">Achieved: ${ach.date}</div>
+							</div>`;
 						list.appendChild(item);
 					});
 				}
@@ -992,16 +1016,17 @@
 				if (url && url !== "#") {
 					window.location.href = url;
 				} else {
-					alert(
-						`Navigation to ${url} page/section (implementation needed)`
-					);
+                    console.warn(`Navigation to ${url} not implemented or invalid.`);
 				}
 			}
 
 			document.addEventListener("DOMContentLoaded", () => {
+				// Ensure profile data is loaded before charts that might depend on it (like BMI)
 				MOCK_DATA.profile = JSON.parse(
 					localStorage.getItem("userProfile") || "{}"
 				);
+                MOCK_DATA.goals = JSON.parse(localStorage.getItem("userGoals") || "[]");
+                MOCK_DATA.weightLog = JSON.parse(localStorage.getItem("weightLog") || "[]").sort((a, b) => new Date(a.date) - new Date(b.date)); // Load and sort weight log
 
 				updateActivityChart();
 				updateNutritionChart();

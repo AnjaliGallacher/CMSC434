@@ -1,75 +1,39 @@
-/* --- Root Variables (Light Mode - Healthcare Theme) --- */
 :root {
-	color-scheme: light dark; /* Signal supported schemes */
+	color-scheme: light;
 
-	--primary-color: #007aff; /* iOS Blue */
-	--primary-light: #e6f2ff;
-	--accent-red: #ff3b30; /* iOS Red */
-	--accent-green: #34c759; /* iOS Green */
-	--accent-orange: #ff9500; /* iOS Orange */
-	--accent-teal: #5ac8fa; /* iOS Teal */
-	--accent-purple: #af52de; /* iOS Purple */
+	--primary-color: #005fac;
+	--accent-red: #c8102e;
+	--text-primary: #1a1a1a;
+	--header-color: #adebff;
+	--surface-color: #ffffff;
+	--body-bg-color: #f9faf8;
+	--background-color: #cbffaf;
 
-	--body-bg-color: #dcdce1; /* Outer background light */
-	--background-color: #f2f2f7; /* App background light */
-	--surface-color: #ffffff; /* Card/Surface light */
-	--surface-secondary-color: #e5e5ea; /* Input units, etc. light */
-	--bottom-nav-background: rgba(248, 248, 248, 0.92); /* Translucent Light */
+	--primary-light: #e6f0f9;
+	--accent-green: #007a33;
+	--accent-orange: #ff8c00;
+	--accent-teal: #00a3a3;
+	--accent-purple: #5a3a8a;
 
-	--text-primary: #000000; /* Black */
-	--text-secondary: #3c3c43; /* Dark Gray */
-	--text-tertiary: #8e8e93; /* Medium Gray */
+	--text-secondary: #495057;
+	--text-tertiary: #6c757d;
 	--text-link: var(--primary-color);
-	--text-on-primary: #ffffff; /* White on Blue */
-	--text-on-accent: #ffffff; /* White on Red/Green etc. */
-	--text-placeholder: #a9a9a9; /* Placeholder text */
+	--text-on-primary: #ffffff;
+	--text-on-accent: #ffffff;
+	--text-placeholder: #adb5bd;
 
-	--border-color: #d1d1d6; /* Light Border */
+	--border-color: #dee2e6;
+	--surface-secondary-color: #e9ecef;
+	--bottom-nav-background: #ffffff;
 	--shadow-color: rgba(0, 0, 0, 0.06);
-	--shadow-strong-color: rgba(0, 0, 0, 0.12);
+	--shadow-strong-color: rgba(0, 0, 0, 0.1);
+	--chart-track-color: #e9ecef;
 
 	--nav-height: 70px;
 	--content-padding: 24px;
-	--card-border-radius: 16px;
-	--chart-track-color: #ebebf0;
+	--card-border-radius: 12px;
 
-	/* SVG Arrow for Select (Light Mode) - URL Encoded #8e8e93 */
-	--select-arrow-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238e8e93'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
-}
-
-/* --- Dark Mode Variables --- */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--primary-color: #0a84ff; /* iOS Blue Dark */
-		--primary-light: #1a3a5c; /* Darker Blue Tint */
-		--accent-red: #ff453a; /* iOS Red Dark */
-		--accent-green: #30d158; /* iOS Green Dark */
-		--accent-orange: #ff9f0a; /* iOS Orange Dark */
-		--accent-teal: #64d2ff; /* iOS Teal Dark */
-		--accent-purple: #bf5af2; /* iOS Purple Dark */
-
-		--body-bg-color: #111; /* Outer background dark */
-		--background-color: #000000; /* App background dark */
-		--surface-color: #1c1c1e; /* Card/Surface dark */
-		--surface-secondary-color: #2c2c2e; /* Input units, etc. dark */
-		--bottom-nav-background: rgba(28, 28, 30, 0.92); /* Translucent Dark */
-
-		--text-primary: #ffffff; /* White */
-		--text-secondary: #e5e5ea; /* Light Gray */
-		--text-tertiary: #8e8e93; /* Medium Gray (Same) */
-		--text-link: var(--primary-color);
-		--text-on-primary: #ffffff;
-		--text-on-accent: #000000; /* Black on lighter accents */
-		--text-placeholder: #6a6a6e;
-
-		--border-color: #3a3a3c; /* Dark Border */
-		--shadow-color: rgba(0, 0, 0, 0.2);
-		--shadow-strong-color: rgba(0, 0, 0, 0.35);
-
-		--chart-track-color: #2c2c2e;
-
-		--select-arrow-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238e8e93'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
-	}
+	--select-arrow-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236c757d'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
 }
 
 body,
@@ -79,9 +43,7 @@ html {
 	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		Helvetica, Arial, sans-serif;
 	height: 100%;
-	background-color: var(
-		--body-bg-color
-	); /* Use variable for outer background */
+	background-color: var(--body-bg-color);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: var(--text-primary);
@@ -113,7 +75,7 @@ html {
 	flex-shrink: 0;
 	position: relative;
 	z-index: 10;
-	background-color: var(--surface-color);
+	background-color: var(--header-color);
 	border-bottom: 1px solid var(--border-color);
 }
 .header-title,
@@ -133,7 +95,7 @@ html {
 	transform: translateY(-50%);
 }
 .header-spacer {
-	width: 60px; /* Adjust width to balance title */
+	width: 60px;
 	flex-shrink: 0;
 }
 .action-button,
@@ -173,16 +135,9 @@ html {
 	position: absolute;
 	top: 8px;
 	right: 5px;
-	border: 2px solid var(--surface-color); /* Use surface color */
-}
-/* Explicit dark mode border for notification dot */
-@media (prefers-color-scheme: dark) {
-	.notification-icon::after {
-		border-color: var(--surface-color);
-	}
+	border: 2px solid var(--surface-color);
 }
 
-/* --- Main Content --- */
 .main-content {
 	flex-grow: 1;
 	overflow-y: auto;
@@ -203,7 +158,6 @@ html {
 	background: transparent;
 }
 
-/* --- Bottom Navigation --- */
 .bottom-nav {
 	position: absolute;
 	bottom: 0;
@@ -211,9 +165,7 @@ html {
 	right: 0;
 	height: var(--nav-height);
 	background-color: var(--bottom-nav-background);
-	backdrop-filter: blur(15px);
-	-webkit-backdrop-filter: blur(15px);
-	border-top: 0.5px solid var(--border-color);
+	border-top: 1px solid var(--border-color);
 	display: flex;
 	justify-content: space-around;
 	align-items: stretch;
@@ -250,7 +202,6 @@ html {
 	color: var(--primary-color);
 }
 
-/* --- Forms --- */
 .input-group {
 	margin-bottom: 25px;
 }
@@ -280,18 +231,17 @@ html {
 	width: 100%;
 	padding: 14px 16px;
 	border: 1px solid var(--border-color);
-	border-radius: 10px;
-	font-size: 17px;
+	border-radius: 8px;
+	font-size: 16px;
 	color: var(--text-primary);
-	background-color: var(--surface-color); /* Explicit background */
+	background-color: var(--surface-color);
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
-	box-shadow: none; /* Remove inner shadow, rely on border */
+	box-shadow: none;
 }
-/* Placeholder text color */
 .form-input::placeholder,
 .form-textarea::placeholder {
 	color: var(--text-placeholder);
-	opacity: 1; /* Ensure visibility */
+	opacity: 1;
 }
 
 .form-input:focus,
@@ -300,7 +250,7 @@ html {
 	outline: none;
 	border-color: var(--primary-color);
 	box-shadow: 0 0 0 3px
-		color-mix(in srgb, var(--primary-color) 25%, transparent); /* Use color-mix for focus ring */
+		color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
 
 .form-textarea {
@@ -310,14 +260,14 @@ html {
 .form-select {
 	appearance: none;
 	-webkit-appearance: none;
-	background-image: var(--select-arrow-svg); /* Use variable for SVG */
+	background-image: var(--select-arrow-svg);
 	background-repeat: no-repeat;
 	background-position: right 16px center;
 	background-size: 16px 16px;
 	padding-right: 40px;
 	cursor: pointer;
 }
-/* Input with Unit */
+
 .input-with-unit {
 	display: flex;
 	align-items: stretch;
@@ -333,8 +283,8 @@ html {
 	background-color: var(--surface-secondary-color);
 	border: 1px solid var(--border-color);
 	border-left: none;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
 	font-size: 15px;
 	color: var(--text-secondary);
 	font-weight: 500;
@@ -346,7 +296,7 @@ html {
 	padding-right: 30px;
 	appearance: none;
 	-webkit-appearance: none;
-	background-image: var(--select-arrow-svg); /* Use variable */
+	background-image: var(--select-arrow-svg);
 	background-repeat: no-repeat;
 	background-position: right 8px center;
 	background-size: 16px 16px;
@@ -354,22 +304,21 @@ html {
 	cursor: pointer;
 }
 
-/* --- Cards --- */
 .card {
 	background-color: var(--surface-color);
 	border-radius: var(--card-border-radius);
 	margin-bottom: 20px;
 	padding: var(--content-padding);
-	box-shadow: 0 5px 15px var(--shadow-color);
+	box-shadow: 0 4px 10px var(--shadow-color);
 	overflow: hidden;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 	position: relative;
-	border: 1px solid var(--border-color); /* Consistent border */
+	border: 1px solid var(--border-color);
 }
 
 .card.clickable:hover {
-	transform: translateY(-3px);
-	box-shadow: 0 8px 20px var(--shadow-strong-color);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px var(--shadow-strong-color);
 	cursor: pointer;
 }
 .card-header {
@@ -414,12 +363,11 @@ html {
 	padding-top: 5px;
 }
 
-/* --- Buttons --- */
 .button {
 	display: inline-block;
 	padding: 12px 24px;
 	border: none;
-	border-radius: 10px;
+	border-radius: 8px;
 	font-size: 16px;
 	font-weight: 600;
 	cursor: pointer;
@@ -427,7 +375,7 @@ html {
 		box-shadow 0.2s ease;
 	text-align: center;
 	text-decoration: none;
-	box-shadow: 0 1px 3px var(--shadow-color); /* Subtle shadow */
+	box-shadow: 0 1px 3px var(--shadow-color);
 }
 .button:active {
 	transform: scale(0.98);
@@ -438,24 +386,18 @@ html {
 	color: var(--text-on-primary);
 }
 .button-primary:hover {
-	filter: brightness(110%); /* Simple hover effect */
+	background-color: color-mix(in srgb, var(--primary-color) 90%, black);
 }
 .button-secondary {
 	background-color: var(--surface-secondary-color);
 	color: var(--text-link);
 }
 .button-secondary:hover {
-	filter: brightness(95%);
-}
-@media (prefers-color-scheme: dark) {
-	.button-secondary {
-		color: var(
-			--text-primary
-		); /* Use primary text color on dark secondary buttons */
-	}
-	.button-secondary:hover {
-		filter: brightness(120%);
-	}
+	background-color: color-mix(
+		in srgb,
+		var(--surface-secondary-color) 90%,
+		black
+	);
 }
 
 .button-danger {
@@ -463,19 +405,16 @@ html {
 	color: var(--text-on-accent);
 }
 .button-danger:hover {
-	filter: brightness(110%);
+	background-color: color-mix(in srgb, var(--accent-red) 90%, black);
 }
 
-/* --- Modals --- */
 .modal-overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
+	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -493,12 +432,12 @@ html {
 	background-color: var(--surface-color);
 	padding: var(--content-padding);
 	border-radius: var(--card-border-radius);
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 	width: 90%;
 	max-width: 500px;
 	transform: scale(0.95);
 	transition: transform 0.3s ease;
-	border: 1px solid var(--border-color); /* Add border */
+	border: 1px solid var(--border-color);
 }
 .modal-overlay.active .modal-content {
 	transform: scale(1);
@@ -531,8 +470,8 @@ html {
 }
 .modal-body {
 	margin-bottom: 20px;
-	max-height: 60vh; /* Limit modal height */
-	overflow-y: auto; /* Add scroll if content overflows */
+	max-height: 60vh;
+	overflow-y: auto;
 }
 .modal-footer {
 	display: flex;
@@ -542,7 +481,6 @@ html {
 	border-top: 1px solid var(--border-color);
 }
 
-/* --- Utility --- */
 .text-center {
 	text-align: center;
 }
