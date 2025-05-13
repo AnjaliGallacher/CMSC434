@@ -14,7 +14,319 @@
 			rel="stylesheet"
 		/>
 		<link rel="stylesheet" href="shared-styles.css" />
-		<link rel="stylesheet" href="css/profile.css" />
+		<style>
+
+			.header {
+				background-color: var(--background-color); /* Match app background */
+				border-bottom: 1px solid var(--border-color); /* Add border back for separation */
+			}
+
+			.profile-section {
+				display: flex;
+				align-items: center;
+				padding-bottom: 30px;
+				margin-bottom: 30px;
+				border-bottom: 1px solid var(--border-color);
+				gap: 25px;
+			}
+			.profile-picture-container {
+				position: relative;
+			}
+			.profile-picture {
+				width: 100px;
+				height: 100px;
+				border-radius: 50%;
+				background-color: var(--surface-secondary-color);
+				position: relative;
+				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-shrink: 0;
+				color: var(--primary-color);
+				cursor: pointer;
+				transition: transform 0.2s ease;
+				overflow: hidden;
+				border: 2px solid var(--surface-color);
+			}
+			.profile-picture img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+			.profile-picture-placeholder {
+				font-size: 50px;
+				opacity: 0.9;
+			}
+			.profile-picture:hover {
+				transform: scale(1.05);
+			}
+			.profile-picture-edit-icon {
+				content: "✏️";
+				position: absolute;
+				bottom: 5px;
+				right: 5px;
+				font-size: 18px;
+				background-color: var(--surface-color);
+				color: var(--text-primary);
+				border-radius: 50%;
+				padding: 5px;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+				opacity: 0;
+				transition: opacity 0.2s ease;
+				pointer-events: none;
+			}
+			.profile-picture:hover .profile-picture-edit-icon {
+				opacity: 1;
+			}
+
+			.profile-info {
+				flex-grow: 1;
+				text-align: left;
+			}
+			.username {
+				font-size: 24px;
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0 0 6px 0;
+			}
+			.user-details {
+				font-size: 15px;
+				color: var(--text-secondary);
+				line-height: 1.5;
+				margin: 0 0 10px 0;
+			}
+			.user-bio {
+				font-size: 16px;
+				color: var(--text-secondary);
+				line-height: 1.5;
+				margin: 0;
+				max-width: 450px;
+			}
+			.edit-profile-btn {
+				/* Use button classes */
+				margin-top: 15px;
+			}
+
+			.stats-section,
+			.goals-section,
+			.achievements-section,
+			.settings-section {
+				margin-bottom: 35px;
+			}
+			.section-header {
+				font-size: 18px;
+				font-weight: 600;
+				color: var(--text-primary);
+				margin-bottom: 20px;
+				padding-bottom: 10px;
+				border-bottom: 1px solid var(--surface-secondary-color);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.profile-stats-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+				gap: 18px;
+			}
+			.profile-stat-box {
+				background-color: var(--surface-color);
+				border-radius: var(--card-border-radius);
+				padding: 18px;
+				box-shadow: 0 4px 12px var(--shadow-color);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				display: flex;
+				flex-direction: column;
+				min-height: 130px;
+				border: 1px solid var(--border-color); /* Use theme border */
+			}
+			/* Removed light mode specific border */
+
+			.profile-stat-box.clickable:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 6px 16px var(--shadow-strong-color);
+				cursor: pointer;
+			}
+			.profile-stat-header {
+				display: flex;
+				align-items: center;
+				font-size: 13px;
+				font-weight: 500;
+				color: var(--text-secondary);
+				margin-bottom: 10px;
+			}
+			.profile-stat-icon {
+				font-size: 18px;
+				margin-right: 8px;
+                 /* Color is now set inline based on variable */
+			}
+			.profile-stat-value {
+				font-size: 22px;
+				font-weight: 600;
+				color: var(--text-primary);
+				line-height: 1.2;
+				margin-top: auto;
+				padding-top: 5px;
+			}
+			.profile-stat-unit {
+				font-size: 13px;
+				color: var(--text-secondary);
+				margin-left: 4px;
+			}
+			.profile-stat-label {
+				font-size: 12px;
+				color: var(--text-tertiary);
+				margin-top: 3px;
+			}
+
+			/* Goals List */
+			.goal-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.goal-item {
+				background-color: var(--surface-color);
+				border-radius: 12px;
+				padding: 15px;
+				margin-bottom: 12px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				box-shadow: 0 2px 5px var(--shadow-color);
+				border: 1px solid var(--border-color);
+			}
+			.goal-info {
+				flex-grow: 1;
+				margin-right: 15px;
+			}
+			.goal-name {
+				font-weight: 600;
+				font-size: 16px;
+				margin-bottom: 5px;
+			}
+			.goal-details {
+				font-size: 13px;
+				color: var(--text-secondary);
+			}
+			.goal-progress {
+				font-weight: 500;
+				color: var(--accent-green);
+			}
+			.goal-actions button { /* Style action icons */
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
+				font-size: 18px;
+				margin-left: 5px;
+			}
+            .goal-actions button:hover {
+                opacity: 1;
+            }
+
+			/* Achievements Grid */
+			.achievements-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+				gap: 20px;
+				text-align: center;
+			}
+			.achievement-badge {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				cursor: pointer;
+				transition: transform 0.2s ease;
+			}
+			.achievement-badge:hover {
+				transform: scale(1.05);
+			}
+			.achievement-badge-icon {
+				font-size: 40px;
+				margin-bottom: 8px;
+                /* Color set inline from JS */
+			}
+			.achievement-badge-name {
+				font-size: 12px;
+				color: var(--text-secondary);
+				font-weight: 500;
+			}
+
+			/* Settings List */
+			.settings-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+                background-color: var(--surface-color); /* Group settings in a card-like bg */
+                border-radius: var(--card-border-radius);
+                border: 1px solid var(--border-color);
+                box-shadow: 0 4px 12px var(--shadow-color);
+                overflow: hidden; /* Ensures border radius applies to items */
+			}
+			.settings-item {
+				/* background-color: var(--surface-color); Removed, use list bg */
+				/* border-radius: 12px; Removed */
+				padding: 15px var(--content-padding);
+				/* margin-bottom: 10px; Removed, use border */
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				cursor: pointer;
+				transition: background-color 0.2s ease;
+				/* border: 1px solid var(--border-color); Removed */
+                border-bottom: 1px solid var(--border-color); /* Separator */
+			}
+            .settings-item:last-child {
+                 border-bottom: none; /* No border for last item */
+            }
+			.settings-item:hover {
+				background-color: var(--surface-secondary-color);
+			}
+			.settings-item-label {
+				font-weight: 500;
+			}
+			.settings-item-control {
+				color: var(--text-secondary);
+			}
+            /* Chevron for navigation items */
+            .settings-item.navigable .settings-item-control {
+                font-weight: bold;
+                font-size: 18px;
+                color: var(--text-tertiary);
+            }
+			.toggle-switch {
+				width: 50px;
+				height: 28px;
+				background-color: var(--surface-secondary-color);
+				border-radius: 14px;
+				position: relative;
+				cursor: pointer;
+                border: 1px solid var(--border-color);
+			}
+			.toggle-switch::before {
+				content: "";
+				position: absolute;
+				width: 24px;
+				height: 24px;
+				background-color: white;
+				border-radius: 50%;
+				top: 1px; /* Adjusted for border */
+				left: 1px; /* Adjusted for border */
+				transition: transform 0.2s ease;
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+			}
+			.toggle-switch.active {
+				background-color: var(--accent-green); /* Use green for active toggle */
+                border-color: var(--accent-green);
+			}
+			.toggle-switch.active::before {
+				transform: translateX(22px);
+			}
+		</style>
 	</head>
 	<body>
 		<div class="ipad-container">
@@ -23,14 +335,7 @@
 				<div class="header-spacer"></div>
 				<span class="header-title">Profile</span>
 				<div class="header-actions">
-					<button
-						class="action-icon notification-icon"
-						title="Notifications"
-						onclick="showNotifications()"
-					>
-						🔔
-						<span class="visually-hidden">Notifications</span>
-					</button>
+                    <!-- Settings icon moved to settings section header -->
 				</div>
 			</div>
 
@@ -92,7 +397,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-teal)"
+									style="color: var(--accent-teal)" /* Teal */
 									>👣</span
 								>
 								Daily Steps Avg
@@ -109,7 +414,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--primary-color)"
+									style="color: var(--primary-color)" /* Blue */
 									>🏃</span
 								>
 								Weekly Run Distance
@@ -126,7 +431,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-red)"
+									style="color: var(--accent-red)" /* Red */
 									>🔥</span
 								>
 								Avg Calories Burned
@@ -148,7 +453,7 @@
 							<div class="profile-stat-header">
 								<span
 									class="profile-stat-icon"
-									style="color: var(--accent-red)"
+									style="color: var(--accent-red)" /* Red */
 									>⚖️</span
 								>
 								Weight Trend
@@ -219,37 +524,25 @@
 								></div>
 							</div>
 						</li>
-						<li
-							class="settings-item navigable"
-							onclick="alert('Account Settings not implemented')"
-						>
+						<li class="settings-item navigable" onclick="alert('Account Settings not implemented')">
 							<span class="settings-item-label"
 								>Account Settings</span
 							>
 							<span class="settings-item-control">❯</span>
 						</li>
-						<li
-							class="settings-item navigable"
-							onclick="alert('Connected Apps not implemented')"
-						>
+						<li class="settings-item navigable" onclick="alert('Connected Apps not implemented')">
 							<span class="settings-item-label"
 								>Connected Apps</span
 							>
 							<span class="settings-item-control">❯</span>
 						</li>
-						<li
-							class="settings-item navigable"
-							onclick="exportData()"
-						>
+						<li class="settings-item navigable" onclick="exportData()">
 							<span class="settings-item-label"
 								>Export My Data</span
 							>
 							<span class="settings-item-control">❯</span>
 						</li>
-						<li
-							class="settings-item navigable"
-							onclick="alert('Help & Support not implemented')"
-						>
+                        <li class="settings-item navigable" onclick="alert('Help & Support not implemented')">
 							<span class="settings-item-label"
 								>Help & Support</span
 							>
@@ -267,6 +560,239 @@
 				</section>
 			</div>
 			<!-- End Main Content -->
+
+			<!-- Edit Profile Modal -->
+			<div class="modal-overlay" id="editProfileModal">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Edit Profile</h3>
+						<button
+							class="modal-close-btn"
+							onclick="closeEditProfileModal()"
+						>
+							×
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="edit-profile-form">
+							<div class="input-group">
+								<label for="editUsername" class="form-label"
+									>Username</label
+								>
+								<input
+									type="text"
+									id="editUsername"
+									name="username"
+									class="form-input"
+									required
+								/>
+							</div>
+							<div class="input-row">
+								<div>
+									<label for="editAge" class="form-label"
+										>Age</label
+									>
+									<input
+										type="number"
+										id="editAge"
+										name="age"
+										class="form-input"
+										min="1"
+									/>
+								</div>
+								<div>
+									<label for="editGender" class="form-label"
+										>Gender</label
+									>
+									<select
+										id="editGender"
+										name="gender"
+										class="form-select"
+									>
+										<option value="">Select...</option>
+										<option value="male">Male</option>
+										<option value="female">Female</option>
+										<option value="other">Other</option>
+										<option value="prefer_not_say">
+											Prefer not to say
+										</option>
+									</select>
+								</div>
+							</div>
+							<div class="input-row">
+								<div>
+									<label for="editHeight" class="form-label"
+										>Height (cm)</label
+									>
+									<input
+										type="number"
+										id="editHeight"
+										name="height_cm"
+										class="form-input"
+										min="50"
+									/>
+								</div>
+								<div>
+									<label for="editWeight" class="form-label"
+										>Current Weight (kg)</label
+									>
+									<input
+										type="number"
+										id="editWeight"
+										name="weight_kg"
+										class="form-input"
+										min="1"
+										step="0.1"
+									/>
+								</div>
+							</div>
+							<div class="input-group">
+								<label for="editBio" class="form-label"
+									>Bio</label
+								>
+								<textarea
+									id="editBio"
+									name="bio"
+									class="form-textarea"
+									rows="3"
+									placeholder="Tell us a bit about yourself..."
+								></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="button button-secondary"
+							onclick="closeEditProfileModal()"
+						>
+							Cancel
+						</button>
+						<button
+							type="button"
+							class="button button-primary"
+							onclick="saveProfile()"
+						>
+							Save Changes
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Add Goal Modal -->
+			<div class="modal-overlay" id="addGoalModal">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="goalModalTitle">
+							Add New Goal
+						</h3>
+						<button
+							class="modal-close-btn"
+							onclick="closeAddGoalModal()"
+						>
+							×
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="add-goal-form">
+							<input
+								type="hidden"
+								id="editGoalId"
+								name="goal_id"
+							/>
+							<div class="input-group">
+								<label for="goalName" class="form-label"
+									>Goal Description</label
+								>
+								<input
+									type="text"
+									id="goalName"
+									name="goal_name"
+									class="form-input"
+									placeholder="e.g., Run 5km without stopping"
+									required
+								/>
+							</div>
+							<div class="input-row">
+								<div>
+									<label for="goalType" class="form-label"
+										>Goal Type</label
+									>
+									<select
+										id="goalType"
+										name="goal_type"
+										class="form-select"
+										required
+									>
+                                        <option value="">Select Type...</option>
+										<option value="steps">Steps per Day</option>
+										<option value="exercise_duration">Exercise Minutes per Week</option>
+										<option value="weight">Target Weight</option>
+										<option value="water">Water Intake per Day (mL)</option>
+                                        <option value="calories">Calories per Day</option>
+                                        <option value="mindfulness">Mindfulness Minutes per Day</option>
+										<option value="frequency">Activity Frequency (e.g., run 3 times/week)</option>
+										<option value="custom">Custom / Milestone</option>
+									</select>
+								</div>
+								<div>
+									<label
+										for="goalTargetValue"
+										class="form-label"
+										>Target Value</label
+									>
+									<input
+										type="number"
+										id="goalTargetValue"
+										name="goal_target_value"
+										class="form-input"
+										placeholder="e.g., 10000, 70, 3, 2000"
+										step="any"
+									/>
+								</div>
+							</div>
+							<div class="input-group">
+								<label for="goalDeadline" class="form-label"
+									>Deadline (Optional)</label
+								>
+								<input
+									type="date"
+									id="goalDeadline"
+									name="goal_deadline"
+									class="form-input"
+								/>
+							</div>
+							<div class="input-group">
+								<label for="goalNotes" class="form-label"
+									>Notes (Optional)</label
+								>
+								<textarea
+									id="goalNotes"
+									name="goal_notes"
+									class="form-textarea"
+									rows="2"
+								></textarea>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="button button-secondary"
+							onclick="closeAddGoalModal()"
+						>
+							Cancel
+						</button>
+						<button
+							type="button"
+							class="button button-primary"
+							onclick="saveGoal()"
+						>
+							Save Goal
+						</button>
+					</div>
+				</div>
+			</div>
 
 			<!-- Bottom Navigation Bar -->
 			<nav class="bottom-nav" id="bottomNav">
@@ -314,7 +840,6 @@
 		</div>
 		<!-- End ipad Container -->
 
-		<!-- Consolidated JavaScript Files -->
 		<script src="js/shared.js"></script>
 		<script src="js/profile.js"></script>
 	</body>
